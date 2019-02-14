@@ -1,0 +1,28 @@
+{
+  "name": "admin_portal",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "@material-ui/styles": "^3.0.0-alpha.10",
+    "compression": "^1.7.3",
+    "css-mediaquery": "^0.1.2",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-optipng": "^6.0.0",
+    "imagemin-svgo": "^7.0.0",
+    "jss": "^9.8.7",
+    "next": "^7.0.2",
+    "next-optimized-images": "^2.3.3",
+    "next-size": "^2.0.1",
+    "prop-types": "^15.6.2",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "export": "next export"
+  }
+}
