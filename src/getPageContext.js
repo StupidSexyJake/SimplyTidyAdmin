@@ -70,7 +70,6 @@ const myTheme = createMuiTheme({
                 paddingRight: 2 * defaultTheme.spacing.unit,
                 '&:hover': {
                     color: defaultTheme.palette.primary.dark,
-                    marginTop: '-2px'
                 }
             },
             containedPrimary: {

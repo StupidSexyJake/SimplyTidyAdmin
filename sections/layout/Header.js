@@ -1,6 +1,5 @@
 import React from 'react'
 import Head from 'next/head'
-// Business data
 
 export default React.memo(function (props) {
     return (
