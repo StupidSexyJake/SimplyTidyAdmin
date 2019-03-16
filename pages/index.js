@@ -1,28 +1,39 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import '../src/bootstrap'
 import React from 'react'
+// Authentication
+import redirect from '../api/redirect'
+import checkLoggedIn from '../api/checkLoggedIn'
 // Material components
 import { makeStyles } from '@material-ui/styles'
-// Common sections
-import Header from '../sections/layout/Header'
-import Page from '../sections/layout/Page'
+// Global page layout
+import Page from '../sections/global/containers/Page'
 
 // Create Index styles
 const indexStyles = makeStyles(theme => ({
 }))
 
-export default function Index() {
+function Index() {
     // Define styles
     const classes = indexStyles()
     return (
         <React.Fragment>
-            <Header
-                title="Admin Portal"
-                metaDescription="Admin Portal for Gold Coast Maids"
-            />
-            <Page>
+            <Page
+                title='Admin Portal'
+                metaDescription='Admin Portal for Gold Coast Maids'
+            >
                 test
             </Page>
         </React.Fragment>
     )
 }
+
+Index.getInitialProps = async (context, apolloClient) => {
+    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
+    if (!loggedInUser.me) {
+        redirect(context, '/login')
+    }
+    return { loggedInUser }
+}
+
+export default Index

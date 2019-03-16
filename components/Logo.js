@@ -10,7 +10,8 @@ function LogoLogic(props) {
     const variant = {
         navbar: 'h6',
         sideMenu: 'h4',
-        section: 'h4'
+        section: 'h4',
+        title: 'h2'
     }
     return (
         <LogoLayout
@@ -88,7 +89,7 @@ function LogoLayout(props) {
             >
                 <Typography
                     variant={props.variant}
-                    component='span'
+                    component={props.component || 'span'}
                     align={props.align || 'left'}
                     className={
                         classNames(

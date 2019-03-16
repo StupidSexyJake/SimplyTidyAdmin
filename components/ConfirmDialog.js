@@ -1,33 +1,30 @@
 import React from 'react'
 // MUI Components
-import { makeStyles } from '@material-ui/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Slide from '@material-ui/core/Slide'
 
-// Create styles
-const confirmDialogStyles = makeStyles(theme => ({
-    formGroupContainer: {
-        paddingBottom: 0
-    },
-}))
+// Create transition
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+}
 
 export default function ConfirmDialog(props) {
-    // Define styles
-    const classes = confirmDialogStyles()
     return (
         <Dialog
+            fullWidth
             open={props.dialogState}
             onClose={props.closeDialog}
             aria-labelledby='confirm-dialog'
+            TransitionComponent={Transition}
         >
             <DialogTitle id='confirm-dialog'>
                 {props.title}
             </DialogTitle>
-            <DialogContent className={classes.formGroupContainer}>
+            <DialogContent className={props.contentClass}>
                 {props.content}
             </DialogContent>
             <DialogActions>

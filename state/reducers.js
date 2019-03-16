@@ -3,10 +3,17 @@ import {
     HANDLE_CLICK,
     OPEN_SNACKBAR,
     CLOSE_SNACKBAR,
+    RESET_STATE,
 } from './actions'
 
 // Set initial state values
 export const initialState = {
+    user: {
+        login: 0,
+        password: 0,
+        showPassword: false,
+        invalidLogin: false
+    },
     navigation: {
         services: false
     },
@@ -65,8 +72,14 @@ const reducer = (state, action) => {
                     showUndo: action.payload.showUndo
                 }
             })
+        case RESET_STATE:
+            return Object.assign({}, state, {
+                ...reduced,
+                [action.payload.stateType]: {
+                    ...initialState[action.payload.stateType]
+                }
+            })
         default: state
-
     }
 }
 

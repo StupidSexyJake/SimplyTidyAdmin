@@ -9,7 +9,7 @@ const containerStyles = makeStyles(theme => ({
     allVariants: {
         maxWidth: theme.breakpoints.values.xl,
         margin: '0 auto',
-        height: '100%',
+        // height: '100%',
         width: '100%'
     },
     section: {
@@ -53,7 +53,7 @@ export function Contained(props) {
     )
 }
 
-export function Wrapper(props) {
+export default function Wrapper(props) {
     // Define styles
     const classes = containerStyles()
     // Get variant

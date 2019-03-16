@@ -8,6 +8,8 @@ export const HANDLE_CLICK = 'HANDLE_CLICK'
 export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'
 // Handle snackbar close
 export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR'
+// Handle reset to initial values
+export const RESET_STATE = 'RESET_STATE'
 
 //
 // Action creators
@@ -48,6 +50,16 @@ export function closeSnackbar() {
             message: '',
             undo: '',
             showUndo: ''
+        }
+    }
+}
+
+// Handle reset to initial values
+export function resetState(stateType) {
+    return {
+        type: RESET_STATE,
+        payload: {
+            stateType: stateType
         }
     }
 }

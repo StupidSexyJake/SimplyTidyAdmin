@@ -1,30 +1,31 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import '../../src/bootstrap'
 import React from 'react'
-// MUI components
-import { makeStyles } from '@material-ui/styles'
-// Common sections
-import Header from '../../sections/layout/Header'
-import Page from '../../sections/layout/Page'
+// Authentication
+import redirect from '../../api/redirect'
+import checkLoggedIn from '../../api/checkLoggedIn'
+// Global page layout
+import Page from '../../sections/global/containers/Page'
 // Page specific sections
-import TeamList from '../../sections/containers/teams/profiles/listAll'
+import TeamList from '../../sections/teams/profiles/containers/'
 
-// Create Services styles
-const servicesStyles = makeStyles(theme => ({
-}))
-
-export default function TeamProfiles() {
-    // Define styles
-    const classes = servicesStyles()
+function TeamProfiles() {
     return (
-        <React.Fragment>
-            <Header
-                title='Services'
-                metaDescription='Services'
-            />
-            <Page>
-                <TeamList />
-            </Page>
-        </React.Fragment>
+        <Page
+            title='Services'
+            metaDescription='Services'
+        >
+            <TeamList />
+        </Page>
     )
 }
+
+TeamProfiles.getInitialProps = async (context, apolloClient) => {
+    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
+    if (!loggedInUser.me) {
+        redirect(context, '/login')
+    }
+    return {}
+}
+
+export default TeamProfiles

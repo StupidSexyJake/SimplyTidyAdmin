@@ -4,7 +4,7 @@ import React from 'react'
 import App, { Container } from 'next/app'
 import getPageContext from '../src/getPageContext'
 // Apollo
-import withApolloClient from '../server/api/with-apollo-client'
+import withApolloClient from '../api/with-apollo-client'
 import { ApolloProvider } from 'react-apollo'
 // State provider
 import { Provider } from '../state/store'
