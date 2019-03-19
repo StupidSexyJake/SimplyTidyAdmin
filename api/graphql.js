@@ -13,10 +13,19 @@ export const GET_ME = gql`
         }
     }
 `
+export const REFRESH_AUTH_TOKEN = gql`
+    mutation refreshAuthToken($refreshToken: String!) {
+        refreshAuthToken(refreshToken: $refreshToken) {
+            token
+            refreshToken
+        }
+    }
+`
 export const USER_SIGN_IN = gql`
     mutation signIn($login: String!, $password: String!) {
         signIn(login: $login, password: $password) {
             token
+            refreshToken
         }
     }
 `

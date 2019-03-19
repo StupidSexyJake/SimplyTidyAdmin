@@ -34,9 +34,6 @@ const indexStyles = makeStyles(theme => ({
     gridContainer: {
         height: '100%'
     },
-    gridItem: {
-        // marginTop: '-64px'
-    },
     pageIconContainer: {
         width: 'fit-content',
         margin: '0 auto'
@@ -47,14 +44,6 @@ const indexStyles = makeStyles(theme => ({
     signInFormContainer: {
         maxWidth: 60 * theme.spacing.unit,
     },
-    // card: {
-    //     maxWidth: 60 * theme.spacing.unit,
-    //     margin: '0 auto'
-    // },
-    // cardTitle: {
-    //     background: theme.palette.primary.main,
-    //     color: theme.palette.common.white
-    // }
 }))
 
 function Index() {
@@ -72,9 +61,7 @@ function Index() {
                     justify='center'
                     className={classes.gridContainer}
                 >
-                    <Grid item
-                        className={classes.gridItem}
-                    >
+                    <Grid item>
                         <div className={classes.pageIconContainer}>
                             <PageIcon className={classes.pageIcon} />
                         </div>
@@ -99,8 +86,8 @@ function Index() {
                             </Typography>
                             <Divider />
                         </Wrapper>
-                        <Typography style={{ paddingTop: '48px' }}>
-                            Copyright 2019 Gold Coast Maids. What the fuck did you say to me?
+                        <Typography style={{ paddingTop: '48px' }} align='center'>
+                            Copyright 2019 Gold Coast Maids.
                         </Typography>
                     </Grid>
                 </Grid>
@@ -109,7 +96,7 @@ function Index() {
     )
 }
 
-Index.getInitialProps = async (context, apolloClient) => {
+Index.getInitialProps = async (context) => {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
     if (loggedInUser.me) {
         redirect(context, '/')

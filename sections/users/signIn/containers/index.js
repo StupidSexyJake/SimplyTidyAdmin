@@ -28,8 +28,8 @@ function SignInFormContainer({ client }) {
 
     // Handle login value changes
     const onChange = event => {
-        const { name, value } = event.target;
-        (value.length === 0 || value.length === 1) && dispatch(handleClick('user', name, value.length))
+        const { name, value } = event.target
+        if (value.length === 0 || value.length === 1) return dispatch(handleClick('user', name, value.length))
     }
 
     // Handle form submit
@@ -44,6 +44,35 @@ function SignInFormContainer({ client }) {
         // Sign in
         try {
             await signIn({ variables: { login, password } })
+                .then(data => {
+                    // Store the tokens in cookies
+                    document.cookie = cookie.serialize('x-token', data.data.signIn.token, {})
+                    document.cookie = cookie.serialize('x-token-refresh', data.data.signIn.refreshToken, {})
+                    // Reset user login state
+                    dispatch(resetState('user'))
+                    // Force a reload of all the current queries
+                    client.cache.reset()
+                        // Redirect client back to homepage
+                        .then(() => {
+                            redirect({}, '/')
+                        })
+                })
+                .catch(error => {
+                    // Handle error messages
+                    if (error.message === 'GraphQL error: No user found with this login credentials.') {
+                        dispatch(handleClick('user', 'invalidLogin', true))
+                        dispatch(openSnackbar(
+                            true,
+                            'error',
+                            'Invalid login details',
+                            ''
+                        ))
+                    }
+                    // // Reset cookie
+                    // document.cookie = cookie.serialize('x-token', '', {
+                    //     maxAge: 0
+                    // })
+                })
         } catch (error) {
             console.log(error.message)
         }
@@ -58,42 +87,10 @@ function SignInFormContainer({ client }) {
         <Mutation
             mutation={USER_SIGN_IN}
             variables={{ login: state.user.login, password: state.user.password }}
-            onCompleted={data => {
-                // Store the token in cookie
-                document.cookie = cookie.serialize('token', data.signIn.token, {
-                    maxAge: 30 * 24 * 60 * 60 // 30 days
-                })
-                // Reset user login state
-                dispatch(resetState('user'))
-                // Force a reload of all the current queries
-                client.cache.reset()
-                    // Redirect client back to homepage
-                    .then(() => {
-                        redirect({}, '/')
-                    })
-            }}
-            onError={error => {
-                // Handle error messages
-                if (error.message === 'GraphQL error: No user found with this login credentials.') {
-                    dispatch(handleClick('user', 'invalidLogin', true))
-                    dispatch(openSnackbar(
-                        true,
-                        'error',
-                        'Invalid login details',
-                        ''
-                    ))
-                }
-                // Reset cookie
-                document.cookie = cookie.serialize('token', '', {
-                    maxAge: 0
-                })
-            }}
         >
             {(signIn, { data, loading, error }) => (
                 <Index
                     loading={loading}
-                    // loginValue={state.user.login}
-                    // passwordValue={state.user.password}
                     onSubmit={(event) => onSubmit(event, signIn)}
                     onChange={(event) => onChange(event)}
                     onShowHidePassword={onShowHidePassword}

@@ -20,7 +20,7 @@ function TeamProfiles() {
     )
 }
 
-TeamProfiles.getInitialProps = async (context, apolloClient) => {
+TeamProfiles.getInitialProps = async (context) => {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
     if (!loggedInUser.me) {
         redirect(context, '/login')

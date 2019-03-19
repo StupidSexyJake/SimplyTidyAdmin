@@ -6,34 +6,54 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import FilledInput from '@material-ui/core/FilledInput'
 import Switch from '@material-ui/core/Switch'
 import IconButton from '@material-ui/core/IconButton'
+import Divider from '@material-ui/core/Divider'
 // Icons
 import UsernameIcon from '@material-ui/icons/Person'
 import PasswordIcon from '@material-ui/icons/Lock'
 import ShowPasswordIcon from '@material-ui/icons/Visibility'
 import HidePasswordIcon from '@material-ui/icons/VisibilityOff'
-import { TextField } from '@material-ui/core';
 
 // Create Index styles
 const SignInFormLayoutStyles = makeStyles(theme => ({
     formControl: {
-        margin: theme.spacing.unit,
-    },
-    input: {
+        marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit,
     },
+    input: {
+        backgroundColor: theme.palette.common.white,
+        "&:hover": {
+            backgroundColor: theme.palette.common.white,
+        },
+        "&.focused": {
+            backgroundColor: theme.palette.common.white,
+        },
+    },
+    inputProps: {
+        marginLeft: theme.spacing.unit
+    },
     inputLabel: {
-        // marginLeft: '20px',
+        marginLeft: 5.5 * theme.spacing.unit
+    },
+    inputIcon: {
+        color: 'rgba(0, 0, 0, 0.54)',
+        marginRight: 1 * theme.spacing.unit,
+    },
+    divider: {
+        width: 1,
+        height: 28,
+        marginRight: 0.5 * theme.spacing.unit
     },
     rememberContainer: {
         margin: 0,
-        color: theme.palette.common.white
     },
     submitButton: {
-        margin: theme.spacing.unit
-    }
+        marginTop: theme.spacing.unit,
+        marginBottom: theme.spacing.unit,
+    },
 }))
 
 export default function SignInFormLayout(props) {
@@ -42,43 +62,36 @@ export default function SignInFormLayout(props) {
     return (
         <FormGroup>
             <form onSubmit={(event) => props.onSubmit(event)}>
-                <TextField
-                    error={props.isInvalidLogin}
-                    label='Username'
-                    variant='filled'
-                    fullWidth
-                    required
-                    name='login'
-                    id='login'
-                    onChange={(event) => props.onChange(event)}
-                    // value={props.loginValue}
-                    className={classes.input}
-                    helperText='test'
-                />
                 <FormControl
                     fullWidth
                     className={classes.formControl}
                 >
-
                     <InputLabel
-                        error={props.isInvalidLogin}
-                        htmlFor='login'
                         variant='filled'
+                        htmlFor='login'
+                        error={props.isInvalidLogin}
                         className={classes.inputLabel}
                     >
-
                         Username
                     </InputLabel>
                     <FilledInput
-                        error={props.isInvalidLogin}
                         fullWidth
                         required
                         name='login'
                         id='login'
                         onChange={(event) => props.onChange(event)}
-                        // value={props.loginValue}
-                        className={classes.input}
-                        helperText='test'
+                        classes={{
+                            root: classes.input,
+                            focused: 'focused',
+                        }}
+                        inputProps={{ className: classes.inputProps }}
+                        error={props.isInvalidLogin}
+                        startAdornment={
+                            <React.Fragment>
+                                <UsernameIcon className={classes.inputIcon} />
+                                <Divider className={classes.divider} />
+                            </React.Fragment>
+                        }
                     />
                 </FormControl>
                 <FormControl
@@ -86,28 +99,43 @@ export default function SignInFormLayout(props) {
                     className={classes.formControl}
                 >
                     <InputLabel
-                        error={props.isInvalidLogin}
-                        htmlFor='password'
                         variant='filled'
+                        htmlFor='password'
+                        error={props.isInvalidLogin}
+                        className={classes.inputLabel}
                     >
                         Password
                     </InputLabel>
                     <FilledInput
-                        error={props.isInvalidLogin}
                         fullWidth
                         required
+                        type={props.showPassword ? 'input' : 'password'}
                         name='password'
                         id='password'
-                        type={props.showPassword ? 'input' : 'password'}
                         onChange={(event) => props.onChange(event)}
-                        // value={props.passwordValue}
-                        className={classes.input}
+                        classes={{
+                            root: classes.input,
+                            focused: 'focused',
+                        }}
+                        inputProps={{ className: classes.inputProps }}
+                        error={props.isInvalidLogin}
+                        startAdornment={
+                            <React.Fragment>
+                                <PasswordIcon className={classes.inputIcon} />
+                                <Divider className={classes.divider} />
+                            </React.Fragment>
+                        }
                         endAdornment={
                             <IconButton onClick={props.onShowHidePassword}>
                                 {props.showPassword ? <HidePasswordIcon /> : <ShowPasswordIcon />}
                             </IconButton>
                         }
                     />
+                    {props.isInvalidLogin &&
+                        <FormHelperText error>
+                            Invalid username or password
+                        </FormHelperText>
+                    }
                 </FormControl>
                 <FormControlLabel
                     className={classes.rememberContainer}
@@ -133,6 +161,6 @@ export default function SignInFormLayout(props) {
                     Sign In
                 </Button>
             </form>
-        </FormGroup>
+        </FormGroup >
     )
 }

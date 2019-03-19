@@ -34,14 +34,21 @@ export default function TopNavigation() {
     const classes = topNavigationStyles()
 
     // Handle sign out
-    function signOut(client) {
-        // Delete cookie
-        document.cookie = cookie.serialize('token', '', {
-            expires: 0
-        })
+    async function signOut(client) {
+        // Delete cookies
+        const deleteCookies = () => {
+            document.cookie = cookie.serialize('x-token', '', {
+                maxAge: -1
+            })
+            document.cookie = cookie.serialize('x-token-refresh', '', {
+                maxAge: -1
+            })
+            console.log('cookies deleted')
+        }
+        await deleteCookies()
         // Reset store and return to home
         client.resetStore().then(() => {
-            redirect({}, '/')
+            redirect({}, '/login')
         })
     }
 
