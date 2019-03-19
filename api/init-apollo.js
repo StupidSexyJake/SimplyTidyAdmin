@@ -73,9 +73,6 @@ function create(initialState, { getToken }) {
     // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
     const client = new ApolloClient({
         connectToDevTools: process.browser,
-        fetchOptions: {
-            mode: 'no-cors',
-        },
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
             // onError(({ graphQLErrors, networkError, operation, forward }) => {
