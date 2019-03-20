@@ -6,7 +6,7 @@ import { getDataFromTree } from 'react-apollo'
 
 function parseCookies(req, options = {}) {
     console.log(req)
-    return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options)
+    return cookie.parse(document.cookie, options)
 }
 
 export default App => {
