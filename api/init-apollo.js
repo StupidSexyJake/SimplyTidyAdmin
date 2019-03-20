@@ -26,9 +26,9 @@ function create(initialState, { getToken }) {
         },
     }) : null
 
-    // Create an http link (allow batch)
+    // Create an http link (use batch, allow cookies response from server)
     const httpLink = new BatchHttpLink({
-        uri: 'http://108.61.96.127/api/',
+        uri: 'http://108.61.96.127:8080/graphql/',
         credentials: 'include'
     })
 
