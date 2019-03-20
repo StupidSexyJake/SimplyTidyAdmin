@@ -36,7 +36,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start -p 3030",
+    "start": "next start -p PORT",
     "export": "next export"
   }
 }
