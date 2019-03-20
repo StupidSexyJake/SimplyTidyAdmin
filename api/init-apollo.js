@@ -146,7 +146,7 @@ function create(initialState, { getToken }) {
             //         }
             //     }
             // }),
-            // authLink,
+            authLink,
             terminatingLink
         ]),
         cache: new InMemoryCache().restore(initialState || {})
