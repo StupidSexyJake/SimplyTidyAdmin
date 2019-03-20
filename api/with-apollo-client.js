@@ -4,9 +4,9 @@ import initApollo from './init-apollo'
 import Head from 'next/head'
 import { getDataFromTree } from 'react-apollo'
 
-function parseCookies(req, options = {}) {
-    return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options)
-}
+// function parseCookies(req, options = {}) {
+//     return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options)
+// }
 
 export default App => {
     return class WithData extends React.Component {
@@ -20,9 +20,9 @@ export default App => {
             } = ctx
             const apollo = initApollo(
                 {},
-                {
-                    getToken: () => parseCookies(req)
-                }
+                // {
+                //     getToken: () => parseCookies(req)
+                // }
             )
 
             ctx.ctx.apolloClient = apollo
