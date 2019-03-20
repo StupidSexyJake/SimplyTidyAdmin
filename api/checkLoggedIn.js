@@ -7,6 +7,7 @@ export default apolloClient =>
         })
         .then(({ data }) => {
             console.log('got me')
+            console.log(data)
             return { loggedInUser: data }
         })
         .catch((err) => {
