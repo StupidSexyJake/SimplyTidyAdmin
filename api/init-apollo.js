@@ -3,12 +3,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { BatchHttpLink } from 'apollo-link-batch-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
-import { onError } from 'apollo-link-error'
 import { ApolloLink, split, Observable } from 'apollo-link'
 import { setContext } from 'apollo-link-context'
 import fetch from 'isomorphic-unfetch'
-import { REFRESH_AUTH_TOKEN } from './graphql'
-import cookie from 'cookie'
 
 let apolloClient = null
 
@@ -55,97 +52,11 @@ function create(initialState, { getToken }) {
         }
     })
 
-    // Refresh auth token
-    function getNewAuthToken(refreshToken) {
-        client.mutate({
-            mutation: REFRESH_AUTH_TOKEN,
-            variables: {
-                refreshToken
-            },
-        })
-            .then(data => {
-                document.cookie = cookie.serialize('x-token', data)
-            })
-            .catch(err => { return err })
-    }
-
-
     // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
     const client = new ApolloClient({
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            // onError(({ graphQLErrors, networkError, operation, forward }) => {
-            //     if (graphQLErrors) {
-            //         console.log('***********************')
-            //         console.log('hit graphQL error')
-            //         console.log('******************')
-            //         for (let err of graphQLErrors) {
-            //             switch (err.extensions.code) {
-            //                 case 'UNAUTHENTICATED':
-            //                 // const oldHeaders = operation.getContext().headers
-            //                 // const refreshToken = oldHeaders['x-token-refresh']
-            //                 // promiseToObservable(getNewAuthToken(refreshToken)).flatMap(() => forward(operation))
-            //                 // .then(data => {
-            //                 //     console.log('***********************')
-            //                 //     console.log('then hit')
-            //                 //     console.log('***********************')
-            //                 //     operation.setContext({
-            //                 //         headers: {
-            //                 //             ...oldHeaders,
-            //                 //             'x-token': data.refreshAuthToken.token,
-            //                 //         },
-            //                 //     })
-            //                 //     return forward(operation)
-            //                 // })
-            //                 // .catch(err => {
-            //                 //     console.log('***********************')
-            //                 //     console.log('catch hit graphQL')
-            //                 //     console.log(err.errors)
-            //                 //     console.log('***********************')
-            //                 //     return {}
-            //                 // })
-            //             }
-            //         }
-            //     }
-            //     if (networkError) {
-            //         console.log('***********************')
-            //         console.log('hit network error')
-            //         console.log('******************')
-            //         for (let err of networkError.result.errors) {
-            //             switch (err.extensions.code) {
-            //                 case 'UNAUTHENTICATED':
-            //                     const oldHeaders = operation.getContext().headers
-            //                     const refreshToken = oldHeaders['x-token-refresh']
-            //                     client.mutate({
-            //                         mutation: REFRESH_AUTH_TOKEN,
-            //                         variables: {
-            //                             refreshToken
-            //                         },
-            //                     })
-            //                         .then(data => {
-            //                             console.log('***********************')
-            //                             console.log('then hit')
-            //                             console.log('***********************')
-            //                             operation.setContext({
-            //                                 headers: {
-            //                                     ...oldHeaders,
-            //                                     'x-token': data.refreshAuthToken.token,
-            //                                 },
-            //                             })
-            //                             return forward(operation)
-            //                         })
-            //                         .catch(err => {
-            //                             console.log('***********************')
-            //                             console.log('catch hit network')
-            //                             console.log(err)
-            //                             console.log('***********************')
-            //                             return {}
-            //                         })
-            //             }
-            //         }
-            //     }
-            // }),
             authLink,
             terminatingLink
         ]),
