@@ -95,6 +95,7 @@ function create(initialState, { getTokens }) {
         ]),
         cache: new InMemoryCache().restore(initialState || {}),
         onError: ({ graphQLErrors, networkError, operation, forward }) => {
+            console.log('error')
             if (graphQLErrors) {
                 for (let err of graphQLErrors) {
                     switch (err.extensions.code) {
