@@ -61,6 +61,26 @@ function create(initialState, { getTokens }) {
         }
     })
 
+    // Create error link
+    const errorLink = onError(({ graphQLErrors, networkError }) => {
+        console.log('error')
+        if (graphQLErrors) {
+            for (let err of graphQLErrors) {
+                switch (err.extensions.code) {
+                    case 'UNAUTHENTICATED':
+                        const headers = operation.getContext().headers
+                        operation.setContext({
+                            headers: {
+                                ...headers,
+                                'x-token': refreshAuthToken(),
+                            },
+                        })
+                        return forward(operation)
+                }
+            }
+        }
+    })
+
     // Refresh auth token
     const refreshAuthToken = () => {
         // Get refresh token from cookies
@@ -91,27 +111,10 @@ function create(initialState, { getTokens }) {
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
             authLink,
-            terminatingLink
+            terminatingLink,
+            errorLink
         ]),
         cache: new InMemoryCache().restore(initialState || {}),
-        onError: ({ graphQLErrors, networkError, operation, forward }) => {
-            console.log('error')
-            if (graphQLErrors) {
-                for (let err of graphQLErrors) {
-                    switch (err.extensions.code) {
-                        case 'UNAUTHENTICATED':
-                            const headers = operation.getContext().headers
-                            operation.setContext({
-                                headers: {
-                                    ...headers,
-                                    'x-token': refreshAuthToken(),
-                                },
-                            })
-                            return forward(operation)
-                    }
-                }
-            }
-        },
     })
     return client
 }
