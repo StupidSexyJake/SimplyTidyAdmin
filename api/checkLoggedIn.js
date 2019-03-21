@@ -12,6 +12,5 @@ export default apolloClient =>
         })
         .catch((err) => {
             console.log('no me')
-            console.log(err)
             return { loggedInUser: {} }
         })
