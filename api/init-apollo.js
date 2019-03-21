@@ -63,7 +63,7 @@ function create(initialState, { getTokens }) {
     })
 
     // Create error link
-    const errorLink = onError(({ graphQLErrors, networkError }) => {
+    const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
         console.log('error')
         if (graphQLErrors) {
             for (let err of graphQLErrors) {
