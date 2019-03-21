@@ -41,12 +41,16 @@ function create(initialState, { getTokens }) {
     ) : httpLink
 
     // Set headers to include cookies
-    const authLink = setContext(() => {
-        const tokens = getTokens()
+    const authLink = setContext((_, { headers }) => {
+        const tokens = getToken()
         console.log('getTokens in auth link')
         console.log(tokens)
         return {
-            cookies: tokens
+            headers: {
+                ...headers,
+                'x-token': tokens['x-token'] ? tokens['x-token'] : '',
+                'x-token-refresh': tokens['x-token-refresh'] ? tokens['x-token-refresh'] : ''
+            }
         }
     })
 
