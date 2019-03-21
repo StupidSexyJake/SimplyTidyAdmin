@@ -1,11 +1,15 @@
+import fetch from 'isomorphic-unfetch'
+// Apollo Client
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { getMainDefinition } from 'apollo-utilities'
+// Apollo Link
+import { ApolloLink, split } from 'apollo-link'
 import { BatchHttpLink } from 'apollo-link-batch-http'
 import { WebSocketLink } from 'apollo-link-ws'
-import { getMainDefinition } from 'apollo-utilities'
-import { ApolloLink, split, Observable } from 'apollo-link'
 import { setContext } from 'apollo-link-context'
-import fetch from 'isomorphic-unfetch'
+// GraphQL
+import { REFRESH_AUTH_TOKEN } from './graphql'
 
 let apolloClient = null
 
@@ -15,6 +19,7 @@ if (!process.browser) {
 }
 
 function create(initialState, { getTokens }) {
+
     // Create a WebSocket link
     const wsLink = process.browser ? new WebSocketLink({
         uri: `ws://108.61.96.127:8000/graphql`,
@@ -56,17 +61,57 @@ function create(initialState, { getTokens }) {
         }
     })
 
+    // Refresh auth token
+    const refreshAuthToken = () => {
+        // Get refresh token from cookies
+        const refreshToken = getTokens()['x-token-refresh']
+        // Get new auth token from server
+        client.mutate({
+            mutation: REFRESH_AUTH_TOKEN,
+            variables: {
+                refreshToken
+            }
+        })
+            .then(data => {
+                console.log(data)
+                return data
+            })
+            .catch(error => {
+                console.log('.............................................')
+                console.log('ERROR RECEIVED WHILE REFRESHING AUTH TOKEN:')
+                console.log('.............................................')
+                console.log(error)
+                return
+            })
+    }
+
     // Create Apollo Client
     const client = new ApolloClient({
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            authLink,
+            // authLink,
             terminatingLink
         ]),
-        cache: new InMemoryCache().restore(initialState || {})
+        cache: new InMemoryCache().restore(initialState || {}),
+        onError: ({ graphQLErrors, networkError, operation, forward }) => {
+            if (graphQLErrors) {
+                for (let err of graphQLErrors) {
+                    switch (err.extensions.code) {
+                        case 'UNAUTHENTICATED':
+                            const headers = operation.getContext().headers
+                            operation.setContext({
+                                headers: {
+                                    ...headers,
+                                    'x-token': refreshAuthToken(),
+                                },
+                            })
+                            return forward(operation)
+                    }
+                }
+            }
+        },
     })
-
     return client
 }
 
