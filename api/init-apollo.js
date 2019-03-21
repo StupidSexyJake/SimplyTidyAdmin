@@ -73,8 +73,8 @@ function create(initialState, { getTokens }) {
             }
         })
             .then(data => {
-                console.log(data)
-                return data
+                document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
+                return data.data.refreshAuthToken.token
             })
             .catch(error => {
                 console.log('.............................................')
