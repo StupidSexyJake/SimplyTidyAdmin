@@ -34,6 +34,7 @@ function SignInFormContainer({ client }) {
 
     // Handle form submit
     const onSubmit = async (event, signIn) => {
+        console.log('submitted login request')
         // Prevent default form behaviour
         event.preventDefault()
         // Get login values from form
