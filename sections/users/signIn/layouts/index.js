@@ -59,9 +59,14 @@ const SignInFormLayoutStyles = makeStyles(theme => ({
 export default function SignInFormLayout(props) {
     // Define styles
     const classes = SignInFormLayoutStyles()
+    const onSubmit = (event) => {
+        event.preventDefault()
+        console.log('form submitted')
+        return
+    }
     return (
         <FormGroup>
-            <form onSubmit={(event) => props.onSubmit(event)}>
+            <form onSubmit={(event) => onSubmit(event)}>
                 <FormControl
                     fullWidth
                     className={classes.formControl}
