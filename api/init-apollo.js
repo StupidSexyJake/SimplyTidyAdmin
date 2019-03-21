@@ -42,7 +42,7 @@ function create(initialState, options) {
 
     // Set headers to include cookies
     const authLink = setContext(() => {
-        const tokens = getToken()
+        const tokens = getTokens()
         console.log('getTokens in auth link')
         console.log(tokens)
         return {
