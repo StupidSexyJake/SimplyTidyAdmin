@@ -8,6 +8,7 @@ import { ApolloLink, split } from 'apollo-link'
 import { BatchHttpLink } from 'apollo-link-batch-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { setContext } from 'apollo-link-context'
+import { onError } from 'apollo-link-error'
 // GraphQL
 import { REFRESH_AUTH_TOKEN } from './graphql'
 
