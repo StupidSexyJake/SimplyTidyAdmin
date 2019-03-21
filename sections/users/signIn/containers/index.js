@@ -45,6 +45,8 @@ function SignInFormContainer({ client }) {
         try {
             await signIn({ variables: { login, password } })
                 .then(data => {
+                    console.log('sign in success. data:')
+                    console.log(data)
                     // // Store the tokens in cookies
                     // document.cookie = cookie.serialize('x-token', data.data.signIn.token, {})
                     // document.cookie = cookie.serialize('x-token-refresh', data.data.signIn.refreshToken, {})
@@ -58,6 +60,8 @@ function SignInFormContainer({ client }) {
                         })
                 })
                 .catch(error => {
+                    console.log('sign in failed. error:')
+                    console.log(error)
                     // Handle error messages
                     if (error.message === 'GraphQL error: No user found with this login credentials.') {
                         dispatch(handleClick('user', 'invalidLogin', true))
