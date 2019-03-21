@@ -41,26 +41,29 @@ function create(initialState, { getTokens }) {
     ) : httpLink
 
     // Set headers to include auth and refresh tokens
-    // const authLink = setContext((_, { headers }) => {
-    //     console.log('...................')
-    //     console.log('getTokens')
-    //     const tokens = getTokens()
-    //     console.log(tokens)
-    //     console.log('...................')
-    //     return {
-    //         headers: {
-    //             ...headers,
-    //             'x-token': tokens['x-token'] ? tokens['x-token'] : '',
-    //             'x-token-refresh': tokens['x-token-refresh'] ? tokens['x-token-refresh'] : ''
-    //         }
-    //     }
-    // })
+    const authLink = setContext((_, { headers }) => {
+        console.log('...................')
+        console.log('getTokens')
+        const tokens = getTokens()
+        console.log(tokens)
+        console.log('...................')
+        return {
+            headers: {
+                ...headers,
+                'x-token': tokens['x-token'] ? tokens['x-token'] : '',
+                'x-token-refresh': tokens['x-token-refresh'] ? tokens['x-token-refresh'] : ''
+            }
+        }
+    })
 
     // Create Apollo Client
     const client = new ApolloClient({
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-        link: terminatingLink,
+        link: ApolloLink.from([
+            authLink,
+            terminatingLink
+        ]),
         cache: new InMemoryCache().restore(initialState || {})
     })
 
