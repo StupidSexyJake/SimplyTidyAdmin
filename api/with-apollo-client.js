@@ -5,9 +5,6 @@ import Head from 'next/head'
 import { getDataFromTree } from 'react-apollo'
 
 function parseCookies(req, options = {}) {
-    console.log('req.headers.cookie from parseCookies')
-    console.log(req.headers.cookie)
-    console.log('..................')
     return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options)
 }
 
