@@ -40,24 +40,22 @@ function create(initialState, options) {
         httpLink,
     ) : httpLink
 
-    // Create auth link
-    // const authLink = setContext((_, { headers }) => {
-    //     const tokens = getToken()
-    //     return {
-    //         headers: {
-    //             ...headers,
-    //             'x-token': tokens['x-token'] ? tokens['x-token'] : '',
-    //             'x-token-refresh': tokens['x-token-refresh'] ? tokens['x-token-refresh'] : ''
-    //         }
-    //     }
-    // })
+    // Set headers to include cookies
+    const authLink = setContext(() => {
+        const tokens = getToken()
+        console.log('getTokens in auth link')
+        console.log(tokens)
+        return {
+            cookies: tokens
+        }
+    })
 
-    // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
+    // Create Apollo Client
     const client = new ApolloClient({
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            // authLink,
+            authLink,
             terminatingLink
         ]),
         cache: new InMemoryCache().restore(initialState || {})
