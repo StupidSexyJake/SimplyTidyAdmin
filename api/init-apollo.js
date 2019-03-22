@@ -36,7 +36,6 @@ function create(initialState, { getTokens }) {
         credentials: 'include'
     })
 
-
     // Split terminating link for websocket and http requests
     const terminatingLink = process.browser ? split(
         ({ query }) => {
@@ -75,6 +74,8 @@ function create(initialState, { getTokens }) {
                             }
                         })
                             .then(data => {
+                                console.log('new data')
+                                console.log(data)
                                 cookie.serialize('x-token-new', 'test data', {})
                                 operation.setContext({
                                     headers: {
@@ -88,22 +89,6 @@ function create(initialState, { getTokens }) {
             }
         }
     })
-
-    // Refresh auth token
-    const refreshAuthToken = async (refreshToken) => {
-        // Get refresh token from cookies
-        console.log('.............................................')
-        console.log('refresh auth token with token:')
-        console.log(refreshToken)
-        console.log('.............................................')
-        // Get new auth token from server
-        return client.mutate({
-            mutation: REFRESH_AUTH_TOKEN,
-            variables: {
-                refreshToken
-            }
-        })
-    }
 
     // Create Apollo Client
     const client = new ApolloClient({
