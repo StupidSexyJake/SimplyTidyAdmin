@@ -4,7 +4,7 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { getMainDefinition } from 'apollo-utilities'
 // Apollo Link
-import { ApolloLink, split } from 'apollo-link'
+import { ApolloLink, split, Observable } from 'apollo-link'
 import { BatchHttpLink } from 'apollo-link-batch-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { setContext } from 'apollo-link-context'
@@ -74,27 +74,107 @@ function create(initialState, { getTokens }) {
     }
 
     // Create error link
-    const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-        console.log(Router)
-        if (graphQLErrors) {
-            for (let err of graphQLErrors) {
-                switch (err.extensions.code) {
-                    case 'UNAUTHENTICATED':
-                        const headers = operation.getContext().headers
-                        operation.setContext({
-                            headers: {
-                                ...headers,
-                                'x-token': getNewToken()
-                            },
-                        })
-                        console.log('new token')
-                        console.log(getNewToken())
-                        console.log('retrying last request - next line should be "checking logged in"')
-                        return forward(operation)
+    // const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+    //     console.log(Router)
+    //     if (graphQLErrors) {
+    //         for (let err of graphQLErrors) {
+    //             switch (err.extensions.code) {
+    //                 case 'UNAUTHENTICATED':
+    //                     const headers = operation.getContext().headers
+    //                     operation.setContext({
+    //                         headers: {
+    //                             ...headers,
+    //                             'x-token': getNewToken()
+    //                         },
+    //                     })
+    //                     console.log('new token')
+    //                     console.log(getNewToken())
+    //                     console.log('retrying last request - next line should be "checking logged in"')
+    //                     return forward(operation)
+    //             }
+    //         }
+    //     }
+    // })
+
+    let isFetchingToken = false;
+    let tokenSubscribers = [];
+    function subscribeTokenRefresh(cb) {
+        tokenSubscribers.push(cb);
+    }
+    function onTokenRefreshed(err) {
+        tokenSubscribers.map(cb => cb(err));
+    }
+
+    const errorLink = () =>
+        onError(({ graphQLErrors, networkError, operation, forward }) => {
+            if (networkError) console.error(`[Network error]: ${networkError}`);
+
+            if (graphQLErrors) {
+                const { message, locations, path, extensions } = graphQLErrors[0];
+                console.error(
+                    `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${
+                    extensions.code
+                    }`,
+                );
+
+                if (extensions.code === 'UNAUTHENTICATED') {
+                    return new Observable(async observer => {
+                        try {
+                            const retryRequest = () => {
+                                operation.setContext({
+                                    headers: {
+                                        ...headers,
+                                        'x-token': getNewToken(),
+                                        'token-test': 'test'
+                                    },
+                                });
+
+                                const subscriber = {
+                                    next: observer.next.bind(observer),
+                                    error: observer.error.bind(observer),
+                                    complete: observer.complete.bind(observer),
+                                };
+
+                                return forward(operation).subscribe(subscriber);
+                            };
+
+                            const { headers } = operation.getContext();
+
+                            if (!isFetchingToken) {
+                                isFetchingToken = true;
+
+                                try {
+                                    await getNewToken();
+
+                                    isFetchingToken = false;
+                                    onTokenRefreshed(null);
+                                    tokenSubscribers = [];
+
+                                    return retryRequest();
+                                } catch (e) {
+                                    onTokenRefreshed(new Error('Unable to refresh access token'));
+
+                                    tokenSubscribers = [];
+                                    isFetchingToken = false;
+                                    return
+                                    // return globalProvider.logOut({ forcedLogOut: true });
+                                }
+                            }
+
+                            const tokenSubscriber = new Promise((resolve, reject) => {
+                                subscribeTokenRefresh(errRefreshing => {
+                                    if (!errRefreshing) return resolve(retryRequest());
+                                });
+                            });
+
+                            return tokenSubscriber;
+                        } catch (e) {
+                            observer.error(e);
+                        }
+                    });
                 }
             }
-        }
-    })
+        });
 
     // Create Apollo Client
     const client = new ApolloClient({
