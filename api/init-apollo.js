@@ -95,7 +95,7 @@ function create(initialState, { getTokens }) {
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            authLink,
+            // authLink,
             errorLink,
             terminatingLink,
         ]),
