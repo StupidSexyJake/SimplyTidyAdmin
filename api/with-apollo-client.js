@@ -61,32 +61,32 @@ export default App => {
                 // getDataFromTree does not call componentWillUnmount
                 // head side effect therefore need to be cleared manually
                 Head.rewind()
-                // }
-
-                // Extract query data from the Apollo's store
-                const apolloState = apollo.cache.extract()
-
-                return {
-                    ...appProps,
-                    apolloState
-                }
             }
 
-            constructor(props) {
-                super(props)
-                // `getDataFromTree` renders the component first, the client is passed off as a property.
-                // After that rendering is done using Next's normal rendering pipeline
-                this.apolloClient = initApollo(props.apolloState,
-                    {
-                        getTokens: () => {
-                            return parseCookies()
-                        }
-                    }
-                )
-            }
+            // Extract query data from the Apollo's store
+            const apolloState = apollo.cache.extract()
 
-            render() {
-                return <App {...this.props} apolloClient={this.apolloClient} />
+            return {
+                ...appProps,
+                apolloState
             }
         }
+
+        constructor(props) {
+            super(props)
+            // `getDataFromTree` renders the component first, the client is passed off as a property.
+            // After that rendering is done using Next's normal rendering pipeline
+            this.apolloClient = initApollo(props.apolloState,
+                {
+                    getTokens: () => {
+                        return parseCookies()
+                    }
+                }
+            )
+        }
+
+        render() {
+            return <App {...this.props} apolloClient={this.apolloClient} />
+        }
     }
+}
