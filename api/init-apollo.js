@@ -98,7 +98,7 @@ function create(initialState, { getTokens }) {
             }
         })
             .then(data => {
-                document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
+                // document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
                 return data.data.refreshAuthToken.token
             })
             .catch(error => {
