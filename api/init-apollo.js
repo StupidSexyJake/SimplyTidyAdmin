@@ -64,6 +64,7 @@ function create(initialState, { getTokens }) {
         console.log('error')
         if (graphQLErrors) {
             for (let err of graphQLErrors) {
+                console.log(err)
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
