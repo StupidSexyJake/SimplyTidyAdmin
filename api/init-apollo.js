@@ -11,6 +11,8 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 // GraphQL
 import { REFRESH_AUTH_TOKEN } from './graphql'
+// Authentication
+import cookie from 'cookie'
 
 let apolloClient = null
 
@@ -20,7 +22,6 @@ if (!process.browser) {
 }
 
 function create(initialState, { getTokens }) {
-
     // Create a WebSocket link
     const wsLink = process.browser ? new WebSocketLink({
         uri: `ws://108.61.96.127:8000/graphql`,
@@ -48,11 +49,7 @@ function create(initialState, { getTokens }) {
 
     // Set headers to include auth and refresh tokens
     const authLink = setContext((_, { headers }) => {
-        console.log('...................')
-        console.log('getTokens')
         const tokens = getTokens()
-        console.log(tokens)
-        console.log('...................')
         return {
             headers: {
                 ...headers,
@@ -72,17 +69,17 @@ function create(initialState, { getTokens }) {
                         const headers = operation.getContext().headers
                         refreshAuthToken()
                             .then(data => {
-                                operation.setContext({
-                                    headers: {
-                                        ...headers,
-                                        'x-token': data,
-                                    },
-                                })
+                                console.log('.......................')
+                                console.log('results of refreshAuthToken (success!!) in onError')
+                                console.log(data)
+                                console.log('.......................')
                                 return forward(operation)
                             })
                             .catch(error => {
-                                console.log('catch hit init apollo')
+                                console.log('.......................')
+                                console.log('catch hit on onError in init apollo')
                                 console.log(error)
+                                console.log('.......................')
                                 return
                             })
                 }
@@ -98,6 +95,7 @@ function create(initialState, { getTokens }) {
         console.log('refresh auth token with token:')
         console.log(refreshToken)
         console.log('.............................................')
+
         // Get new auth token from server
         client.mutate({
             mutation: REFRESH_AUTH_TOKEN,
@@ -108,7 +106,7 @@ function create(initialState, { getTokens }) {
             .then(data => {
                 console.log('successfully refreshed')
                 console.log(data)
-                // document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
+                document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
                 return data.data.refreshAuthToken.token
             })
             .catch(error => {

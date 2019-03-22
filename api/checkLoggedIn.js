@@ -6,12 +6,13 @@ export default apolloClient =>
             query: GET_ME
         })
         .then(({ data }) => {
-            console.log('got me')
+            console.log('Got "me"')
             console.log(data)
             return { loggedInUser: data }
         })
         .catch((err) => {
-            console.log('no me')
+            console.log('Me not found - checkLoggedIn')
             console.log(err)
+            console.log('...................')
             return { loggedInUser: {} }
         })
