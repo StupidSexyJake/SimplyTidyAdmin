@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-unfetch'
-import Router from 'next/router'
 // Apollo Client
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -91,7 +90,6 @@ function create(initialState, { getTokens }) {
                         console.log('new token')
                         console.log(getNewToken())
                         console.log('retrying last request - next line should be "checking logged in"')
-                        Router.reload()
                         return forward(operation)
                 }
             }
