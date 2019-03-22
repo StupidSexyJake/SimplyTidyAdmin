@@ -67,24 +67,29 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        client.mutate({
-                            mutation: REFRESH_AUTH_TOKEN,
-                            variables: {
-                                refreshToken: getTokens()['x-token-refresh']
-                            }
-                        })
-                            .then(data => {
-                                console.log('new data')
-                                console.log(data)
-                                cookie.serialize('x-token-new', 'test data', {})
-                                operation.setContext({
-                                    headers: {
-                                        ...headers,
-                                        'x-token': data.data.refreshAuthToken.token
-                                    },
-                                })
-                                return forward(operation)
+                        const awaitMutation = async () => {
+                            await client.mutate({
+                                mutation: REFRESH_AUTH_TOKEN,
+                                variables: {
+                                    refreshToken: getTokens()['x-token-refresh']
+                                }
                             })
+                                .then(data => {
+                                    console.log('new data')
+                                    console.log(data)
+                                    cookie.serialize('x-token-new', 'test data', {})
+                                    operation.setContext({
+                                        headers: {
+                                            ...headers,
+                                            'x-token': data.data.refreshAuthToken.token,
+                                            'test-token-updated': 'test'
+                                        },
+                                    })
+                                })
+                            return forward(operation)
+                        }
+                        awaitMutation()
+
                 }
             }
         }
@@ -95,7 +100,7 @@ function create(initialState, { getTokens }) {
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            // authLink,
+            authLink,
             errorLink,
             terminatingLink,
         ]),
