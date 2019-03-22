@@ -97,6 +97,7 @@ function Index() {
 }
 
 Index.getInitialProps = async (context) => {
+    console.log('checked if logged in')
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
     console.log('...............................')
     console.log('loggedInUser.me')
