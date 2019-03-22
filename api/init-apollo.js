@@ -69,11 +69,17 @@ function create(initialState, { getTokens }) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
                         const doRefresh = async () => {
-                            const data = await refreshAuthToken()
+                            const refreshToken = await getTokens()['x-token-refresh']
+                            const data = await refreshAuthToken(refreshToken)
+                            try { cookie.serialize('x-token', data.data.refreshAuthToken.token, {}) }
+                            catch (error) {
+                                console.log('could not set cookie')
+                                console.log(error)
+                            }
                             operation.setContext({
                                 headers: {
                                     ...headers,
-                                    'x-token': data
+                                    'x-token': data.data.refreshAuthToken.token
                                 },
                             })
                             console.log('.......................')
@@ -89,40 +95,19 @@ function create(initialState, { getTokens }) {
     })
 
     // Refresh auth token
-    const refreshAuthToken = async () => {
+    const refreshAuthToken = async (refreshToken) => {
         // Get refresh token from cookies
-        const refreshToken = await getTokens()['x-token-refresh']
         console.log('.............................................')
         console.log('refresh auth token with token:')
         console.log(refreshToken)
         console.log('.............................................')
-
         // Get new auth token from server
-        client.mutate({
+        return client.mutate({
             mutation: REFRESH_AUTH_TOKEN,
             variables: {
                 refreshToken
             }
         })
-            .then(data => {
-                console.log('successfully refreshed')
-                console.log(data)
-                try { cookie.serialize('x-token', data.data.refreshAuthToken.token, {}) }
-                catch (error) {
-                    console.log('could not set cookie')
-                    console.log(error)
-                }
-                return data.data.refreshAuthToken.token
-            })
-            .catch(error => {
-                console.log('.............................................')
-                console.log('ERROR RECEIVED WHILE REFRESHING AUTH TOKEN:')
-                console.log('.............................................')
-                console.log(error)
-                console.log('.............................................')
-                error.networkError.result.errors.map(errorMsg => console.log(errorMsg))
-                return 'error'
-            })
     }
 
     // Create Apollo Client
