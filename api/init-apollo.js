@@ -13,6 +13,9 @@ import { onError } from 'apollo-link-error'
 import { REFRESH_AUTH_TOKEN } from './graphql'
 // Authentication
 import cookie from 'cookie'
+import Cookies from 'universal-cookie'
+
+const cookies = new Cookies()
 
 let apolloClient = null
 
@@ -71,15 +74,12 @@ function create(initialState, { getTokens }) {
                         const doRefresh = async () => {
                             const refreshToken = await getTokens()['x-token-refresh']
                             const data = await refreshAuthToken(refreshToken)
-                            try { cookie.serialize('x-token-new', data.data.refreshAuthToken.token, {}) }
-                            catch (error) {
-                                console.log('could not set cookie')
-                                console.log(error)
-                            }
                             console.log('.......................')
                             console.log('results of refreshAuthToken (success!!) in onError')
                             console.log(data.data.refreshAuthToken.token)
                             console.log('.......................')
+                            cookie.serialize('x-token-new', data.data.refreshAuthToken.token, {})
+                            cookies.set('myCat', 'Pacman')
                             operation.setContext({
                                 headers: {
                                     ...headers,
