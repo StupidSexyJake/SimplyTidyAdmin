@@ -22,7 +22,7 @@ if (!process.browser) {
     global.fetch = fetch
 }
 
-function createApolloClient(initialState, { getTokens }) {
+function create(initialState, { getTokens }) {
     // Create a WebSocket link
     const wsLink = process.browser ? new WebSocketLink({
         uri: `ws://108.61.96.127:8000/graphql`,
@@ -110,7 +110,6 @@ function createApolloClient(initialState, { getTokens }) {
     return client
 }
 
-const create = withRouter(createApolloClient)
 
 export default function initApollo(initialState, options) {
     // Make sure to create a new client for every server-side request so that data
