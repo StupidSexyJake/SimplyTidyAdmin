@@ -68,27 +68,27 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        refreshAuthToken()
-                            .then(data => {
-                                operation.setContext({
-                                    headers: {
-                                        ...headers,
-                                        'x-token': data
-                                    },
-                                })
-                                console.log('.......................')
-                                console.log('results of refreshAuthToken (success!!) in onError')
-                                console.log(data)
-                                console.log('.......................')
-                                return forward(operation)
+                        try {
+                            const newAuthToken = refreshAuthToken()
+                            operation.setContext({
+                                headers: {
+                                    ...headers,
+                                    'x-token': newAuthToken
+                                },
                             })
-                            .catch(error => {
-                                console.log('.......................')
-                                console.log('catch hit on onError in init apollo')
-                                console.log(error)
-                                console.log('.......................')
-                                return
-                            })
+                            console.log('.......................')
+                            console.log('results of refreshAuthToken (success!!) in onError')
+                            console.log(newAuthToken)
+                            console.log('.......................')
+                            return forward(operation)
+                        }
+                        catch (error) {
+                            console.log('.......................')
+                            console.log('catch hit on onError in init apollo')
+                            console.log(error)
+                            console.log('.......................')
+                            return
+                        }
                 }
             }
         }
