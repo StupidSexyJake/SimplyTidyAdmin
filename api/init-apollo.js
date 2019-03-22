@@ -49,45 +49,12 @@ function create(initialState, { getTokens }) {
 
     // Set headers to include auth and refresh tokens
     const authLink = setContext((_, { headers }) => {
-        let token, refreshToken
-        // Get tokens from cookies
         const tokens = getTokens()
-        // If no auth token provided...
-        if (!tokens['x-token']) {
-            console.log('no auth token provided')
-            console.log(tokens)
-            // If refresh token provided...
-            if (tokens['x-token-refresh']) {
-                console.log('refreshing token with refresh:')
-                refreshToken = tokens['x-token-refresh']
-                console.log(refreshToken)
-                // Attempt to refreh token
-                client.mutate({
-                    mutation: REFRESH_AUTH_TOKEN,
-                    variables: {
-                        refreshToken
-                    }
-                })
-                    // On successful refresh...
-                    .then(data => {
-                        console.log('refreshed token!')
-                        // Add new auth token to cookies
-                        document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
-                        // Define token
-                        token = data.data.refreshAuthToken.token
-                    })
-                    // On refresh failure...
-                    .catch(error => {
-                        console.log('failed to refresh token')
-                        console.log(error)
-                    })
-            }
-        }
         return {
             headers: {
                 ...headers,
-                'x-token': token,
-                'x-token-refresh': refreshToken
+                'x-token': tokens['x-token'] ? tokens['x-token'] : '',
+                'x-token-refresh': tokens['x-token-refresh'] ? tokens['x-token-refresh'] : ''
             }
         }
     })
