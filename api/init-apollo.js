@@ -70,25 +70,27 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        console.log(refreshAuthToken())
-                        operation.setContext({
-                            headers: {
-                                ...headers,
-                                'x-token': refreshAuthToken(),
-                            },
-                        })
+                        const newAuthToken = refreshAuthToken()
+                            .then(data => {
+                                operation.setContext({
+                                    headers: {
+                                        ...headers,
+                                        'x-token': newAuthToken,
+                                    },
+                                })
+                                return forward(operation)
+                            })
                         console.log('new headers:')
                         console.log(operation.getContext().headers)
-                        return forward(operation)
                 }
             }
         }
     })
 
     // Refresh auth token
-    const refreshAuthToken = () => {
+    const refreshAuthToken = async () => {
         // Get refresh token from cookies
-        const refreshToken = getTokens()['x-token-refresh']
+        const refreshToken = await getTokens()['x-token-refresh']
         console.log('.............................................')
         console.log('refresh auth token with token:')
         console.log(refreshToken)
@@ -113,7 +115,7 @@ function create(initialState, { getTokens }) {
                 console.log(error)
                 console.log('.............................................')
                 error.networkError.result.errors.map(errorMsg => console.log(errorMsg))
-                return
+                return 'error'
             })
     }
 
