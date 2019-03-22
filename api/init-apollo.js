@@ -68,11 +68,10 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        const refreshToken = await getTokens()['x-token-refresh']
                         client.mutate({
                             mutation: REFRESH_AUTH_TOKEN,
                             variables: {
-                                refreshToken
+                                refreshToken: getTokens()['x-token-refresh']
                             }
                         })
                             .then(data => {
