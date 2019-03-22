@@ -77,6 +77,8 @@ function create(initialState, { getTokens }) {
                                 'x-token': refreshAuthToken(),
                             },
                         })
+                        console.log('new headers:')
+                        console.log(operation.getContext().headers)
                         return forward(operation)
                 }
             }
