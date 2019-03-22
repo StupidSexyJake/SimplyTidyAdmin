@@ -98,7 +98,12 @@ function Index() {
 
 Index.getInitialProps = async (context) => {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
+    console.log('...............................')
+    console.log('loggedInUser.me')
+    console.log(loggedInUser.me)
+    console.log('...............................')
     if (loggedInUser.me) {
+        console.log('redirected home')
         redirect(context, '/')
     }
     return {}
