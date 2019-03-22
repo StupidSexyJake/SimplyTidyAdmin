@@ -68,36 +68,30 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        try {
-                            const newAuthToken = refreshAuthToken()
+                        const doRefresh = async () => {
+                            const data = await refreshAuthToken()
                             operation.setContext({
                                 headers: {
                                     ...headers,
-                                    'x-token': newAuthToken
+                                    'x-token': data
                                 },
                             })
                             console.log('.......................')
                             console.log('results of refreshAuthToken (success!!) in onError')
-                            console.log(newAuthToken)
+                            console.log(data)
                             console.log('.......................')
                             return forward(operation)
                         }
-                        catch (error) {
-                            console.log('.......................')
-                            console.log('catch hit on onError in init apollo')
-                            console.log(error)
-                            console.log('.......................')
-                            return
-                        }
+                        doRefresh()
                 }
             }
         }
     })
 
     // Refresh auth token
-    const refreshAuthToken = () => {
+    const refreshAuthToken = async () => {
         // Get refresh token from cookies
-        const refreshToken = getTokens()['x-token-refresh']
+        const refreshToken = await getTokens()['x-token-refresh']
         console.log('.............................................')
         console.log('refresh auth token with token:')
         console.log(refreshToken)
