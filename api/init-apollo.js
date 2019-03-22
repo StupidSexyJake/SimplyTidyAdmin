@@ -70,7 +70,7 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        const newToken = refreshAuthToken()
+                        const newToken = await refreshAuthToken()
                         operation.setContext({
                             headers: {
                                 ...headers,
