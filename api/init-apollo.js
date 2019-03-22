@@ -78,9 +78,9 @@ function create(initialState, { getTokens }) {
                             console.log('results of refreshAuthToken (success!!) in onError')
                             console.log(data.data.refreshAuthToken.token)
                             console.log('.......................')
-                            cookie.serialize('x-token-new', data.data.refreshAuthToken.token, {})
-                            cookies.set('myCat', 'Pacman')
-                            operation.setContext({
+                            await cookie.serialize('x-token-new', data.data.refreshAuthToken.token, {})
+                            await cookies.set('myCat', 'Pacman')
+                            await operation.setContext({
                                 headers: {
                                     ...headers,
                                     'x-token': data.data.refreshAuthToken.token
