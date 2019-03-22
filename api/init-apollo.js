@@ -86,8 +86,12 @@ function create(initialState, { getTokens }) {
     const refreshAuthToken = async () => {
         // Get refresh token from cookies
         const refreshToken = await getTokens()['x-token-refresh']
+        console.log('.............................................')
+        console.log('refresh auth token with token:')
+        console.log(refreshToken)
+        console.log('.............................................')
         // Get new auth token from server
-        client.mutate({
+        await client.mutate({
             mutation: REFRESH_AUTH_TOKEN,
             variables: {
                 refreshToken
