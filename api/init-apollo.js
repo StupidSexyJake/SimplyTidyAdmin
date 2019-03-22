@@ -84,6 +84,9 @@ function create(initialState, { getTokens }) {
                                 'x-token': getNewToken()
                             },
                         })
+                        console.log('new token')
+                        console.log(getNewToken())
+                        console.log('retrying last request - next line should be "checking logged in"')
                         return forward(operation)
                 }
             }
