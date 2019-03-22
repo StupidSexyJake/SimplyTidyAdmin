@@ -13,9 +13,6 @@ import { onError } from 'apollo-link-error'
 import { REFRESH_AUTH_TOKEN } from './graphql'
 // Authentication
 import cookie from 'cookie'
-import Cookies from 'universal-cookie'
-
-const cookies = new Cookies()
 
 let apolloClient = null
 
@@ -64,31 +61,30 @@ function create(initialState, { getTokens }) {
 
     // Create error link
     const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-        console.log('error')
+        console.log('error: ')
         if (graphQLErrors) {
             for (let err of graphQLErrors) {
                 console.log(err)
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        const doRefresh = async () => {
-                            const refreshToken = await getTokens()['x-token-refresh']
-                            const data = await refreshAuthToken(refreshToken)
-                            console.log('.......................')
-                            console.log('results of refreshAuthToken (success!!) in onError')
-                            console.log(data.data.refreshAuthToken.token)
-                            console.log('.......................')
-                            await cookie.serialize('x-token-new', data.data.refreshAuthToken.token, {})
-                            await cookies.set('myCat', 'Pacman')
-                            await operation.setContext({
-                                headers: {
-                                    ...headers,
-                                    'x-token': data.data.refreshAuthToken.token
-                                },
+                        const refreshToken = await getTokens()['x-token-refresh']
+                        client.mutate({
+                            mutation: REFRESH_AUTH_TOKEN,
+                            variables: {
+                                refreshToken
+                            }
+                        })
+                            .then(data => {
+                                cookie.serialize('x-token-new', 'test data', {})
+                                operation.setContext({
+                                    headers: {
+                                        ...headers,
+                                        'x-token': data.data.refreshAuthToken.token
+                                    },
+                                })
+                                return forward(operation)
                             })
-                            return forward(operation)
-                        }
-                        doRefresh()
                 }
             }
         }
@@ -115,8 +111,8 @@ function create(initialState, { getTokens }) {
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            errorLink,
             authLink,
+            errorLink,
             terminatingLink,
         ]),
         cache: new InMemoryCache().restore(initialState || {}),
