@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-unfetch'
+import Router from 'next/router'
 // Apollo Client
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -21,7 +22,7 @@ if (!process.browser) {
     global.fetch = fetch
 }
 
-function create(initialState, { getTokens }) {
+function createApolloClient(initialState, { getTokens }) {
     // Create a WebSocket link
     const wsLink = process.browser ? new WebSocketLink({
         uri: `ws://108.61.96.127:8000/graphql`,
@@ -73,6 +74,8 @@ function create(initialState, { getTokens }) {
 
     // Create error link
     const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+        console.log('router')
+        console.log(Router)
         if (graphQLErrors) {
             for (let err of graphQLErrors) {
                 switch (err.extensions.code) {
@@ -106,6 +109,8 @@ function create(initialState, { getTokens }) {
     })
     return client
 }
+
+const create = withRouter(createApolloClient)
 
 export default function initApollo(initialState, options) {
     // Make sure to create a new client for every server-side request so that data
