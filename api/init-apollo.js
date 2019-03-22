@@ -101,7 +101,7 @@ function create(initialState, { getTokens }) {
                 console.log('.............................................')
                 console.log('ERROR RECEIVED WHILE REFRESHING AUTH TOKEN:')
                 console.log('.............................................')
-                console.log(error)
+                error.networkError.result.errors.map(errorMsg => console.log(errorMsg))
                 return
             })
     }
