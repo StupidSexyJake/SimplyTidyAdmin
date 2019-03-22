@@ -83,9 +83,9 @@ function create(initialState, { getTokens }) {
     })
 
     // Refresh auth token
-    const refreshAuthToken = () => {
+    const refreshAuthToken = async () => {
         // Get refresh token from cookies
-        const refreshToken = getTokens()['x-token-refresh']
+        const refreshToken = await getTokens()['x-token-refresh']
         // Get new auth token from server
         client.mutate({
             mutation: REFRESH_AUTH_TOKEN,
