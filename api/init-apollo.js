@@ -61,10 +61,12 @@ function create(initialState, { getTokens }) {
 
     // Refresh auth token
     const getNewToken = () => {
+        const refreshToken = getTokens()['x-token-refresh']
+        if (!refreshToken) { return '' }
         client.mutate({
             mutation: REFRESH_AUTH_TOKEN,
             variables: {
-                refreshToken: getTokens()['x-token-refresh']
+                refreshToken
             }
         })
             .then(results => {
@@ -74,7 +76,6 @@ function create(initialState, { getTokens }) {
 
     // Create error link
     const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-        console.log('router')
         console.log(Router)
         if (graphQLErrors) {
             for (let err of graphQLErrors) {
@@ -90,6 +91,7 @@ function create(initialState, { getTokens }) {
                         console.log('new token')
                         console.log(getNewToken())
                         console.log('retrying last request - next line should be "checking logged in"')
+                        Router.reload()
                         return forward(operation)
                 }
             }
