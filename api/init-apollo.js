@@ -70,6 +70,12 @@ function create(initialState, { getTokens }) {
                         const headers = operation.getContext().headers
                         refreshAuthToken()
                             .then(data => {
+                                operation.setContext({
+                                    headers: {
+                                        ...headers,
+                                        'x-token': data
+                                    },
+                                })
                                 console.log('.......................')
                                 console.log('results of refreshAuthToken (success!!) in onError')
                                 console.log(data)
