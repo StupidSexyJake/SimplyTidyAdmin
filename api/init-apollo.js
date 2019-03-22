@@ -75,7 +75,7 @@ function create(initialState, { getTokens }) {
                                 operation.setContext({
                                     headers: {
                                         ...headers,
-                                        'x-token': newAuthToken,
+                                        'x-token': data,
                                     },
                                 })
                                 return forward(operation)
