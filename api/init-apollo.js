@@ -71,21 +71,21 @@ function create(initialState, { getTokens }) {
                         const doRefresh = async () => {
                             const refreshToken = await getTokens()['x-token-refresh']
                             const data = await refreshAuthToken(refreshToken)
-                            try { cookie.serialize('x-token', data.data.refreshAuthToken.token, {}) }
+                            try { cookie.serialize('x-token-new', data.data.refreshAuthToken.token, {}) }
                             catch (error) {
                                 console.log('could not set cookie')
                                 console.log(error)
                             }
+                            console.log('.......................')
+                            console.log('results of refreshAuthToken (success!!) in onError')
+                            console.log(data.data.refreshAuthToken.token)
+                            console.log('.......................')
                             operation.setContext({
                                 headers: {
                                     ...headers,
                                     'x-token': data.data.refreshAuthToken.token
                                 },
                             })
-                            console.log('.......................')
-                            console.log('results of refreshAuthToken (success!!) in onError')
-                            console.log(data)
-                            console.log('.......................')
                             return forward(operation)
                         }
                         doRefresh()
