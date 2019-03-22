@@ -53,13 +53,13 @@ function create(initialState, { getTokens }) {
         // Get tokens from cookies
         const tokens = getTokens()
         // If no auth token provided...
-        if (!tokens.token) {
+        if (!tokens['x-token']) {
             console.log('no auth token provided')
             console.log(tokens)
             // If refresh token provided...
-            if (tokens.refreshToken) {
+            if (tokens['x-token-refresh']) {
                 console.log('refreshing token with refresh:')
-                refreshToken = tokens.refreshToken
+                refreshToken = tokens['x-token-refresh']
                 console.log(refreshToken)
                 // Attempt to refreh token
                 client.mutate({
@@ -72,7 +72,7 @@ function create(initialState, { getTokens }) {
                     .then(data => {
                         console.log('refreshed token!')
                         // Add new auth token to cookies
-                        // document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
+                        document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
                         // Define token
                         token = data.data.refreshAuthToken.token
                     })
