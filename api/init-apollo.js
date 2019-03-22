@@ -54,9 +54,12 @@ function create(initialState, { getTokens }) {
         const tokens = getTokens()
         // If no auth token provided...
         if (!tokens.token) {
+            console.log('no auth token provided')
             // If refresh token provided...
             if (tokens.refreshToken) {
+                console.log('refreshing token with refresh:')
                 refreshToken = tokens.refreshToken
+                console.log(refreshToken)
                 // Attempt to refreh token
                 client.mutate({
                     mutation: REFRESH_AUTH_TOKEN,
@@ -66,6 +69,7 @@ function create(initialState, { getTokens }) {
                 })
                     // On successful refresh...
                     .then(data => {
+                        console.log('refreshed token!')
                         // Add new auth token to cookies
                         // document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
                         // Define token
