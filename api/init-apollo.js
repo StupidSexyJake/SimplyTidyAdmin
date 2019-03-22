@@ -58,40 +58,33 @@ function create(initialState, { getTokens }) {
         }
     })
 
+    // Refresh auth token
+    const getNewToken = () => {
+        client.mutate({
+            mutation: REFRESH_AUTH_TOKEN,
+            variables: {
+                refreshToken: getTokens()['x-token-refresh']
+            }
+        })
+            .then(results => {
+                return results.data.refreshAuthToken.token
+            })
+    }
+
     // Create error link
     const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-        console.log('error: ')
         if (graphQLErrors) {
             for (let err of graphQLErrors) {
-                console.log(err)
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        console.log('operation')
-                        console.log(operation)
-                        const awaitMutation = async () => {
-                            await client.mutate({
-                                mutation: REFRESH_AUTH_TOKEN,
-                                variables: {
-                                    refreshToken: getTokens()['x-token-refresh']
-                                }
-                            })
-                                .then(data => {
-                                    console.log('new data')
-                                    console.log(data)
-                                    cookie.serialize('x-token-new', 'test data', {})
-                                    operation.setContext({
-                                        headers: {
-                                            ...headers,
-                                            'x-token': data.data.refreshAuthToken.token,
-                                            'test-token-updated': 'test'
-                                        },
-                                    })
-                                })
-                            return forward(operation)
-                        }
-                        awaitMutation()
-
+                        operation.setContext({
+                            headers: {
+                                ...headers,
+                                'x-token': getNewToken()
+                            },
+                        })
+                        return forward(operation)
                 }
             }
         }

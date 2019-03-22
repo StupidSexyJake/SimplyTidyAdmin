@@ -1,7 +1,8 @@
 import { GET_ME } from './graphql'
 
-export default apolloClient =>
-    apolloClient
+export default apolloClient => {
+    console.log('checking logged in')
+    return apolloClient
         .query({
             query: GET_ME
         })
@@ -13,6 +14,6 @@ export default apolloClient =>
         .catch((err) => {
             console.log('Me not found - checkLoggedIn')
             console.log(err)
-            console.log('...................')
             return { loggedInUser: {} }
         })
+}
