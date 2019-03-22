@@ -55,6 +55,7 @@ function create(initialState, { getTokens }) {
         // If no auth token provided...
         if (!tokens.token) {
             console.log('no auth token provided')
+            console.log(tokens)
             // If refresh token provided...
             if (tokens.refreshToken) {
                 console.log('refreshing token with refresh:')
