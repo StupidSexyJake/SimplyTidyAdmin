@@ -70,6 +70,7 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
+                        console.log(refreshAuthToken())
                         operation.setContext({
                             headers: {
                                 ...headers,
@@ -98,6 +99,8 @@ function create(initialState, { getTokens }) {
             }
         })
             .then(data => {
+                console.log('successfully refreshed')
+                console.log(data)
                 // document.cookie = cookie.serialize('x-token', data.data.refreshAuthToken.token, {})
                 return data.data.refreshAuthToken.token
             })
