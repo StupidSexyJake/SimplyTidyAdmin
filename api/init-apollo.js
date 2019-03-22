@@ -70,14 +70,21 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
-                        const newToken = await refreshAuthToken()
-                        operation.setContext({
-                            headers: {
-                                ...headers,
-                                'x-token': newToken,
-                            },
-                        })
-                        return forward(operation)
+                        refreshAuthToken()
+                            .then(data => {
+                                operation.setContext({
+                                    headers: {
+                                        ...headers,
+                                        'x-token': newToken,
+                                    },
+                                })
+                                return forward(operation)
+                            })
+                            .catch(error => {
+                                console.log('catch hit init apollo')
+                                console.log(error)
+                                return
+                            })
                 }
             }
         }
