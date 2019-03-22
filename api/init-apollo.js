@@ -67,6 +67,8 @@ function create(initialState, { getTokens }) {
                 switch (err.extensions.code) {
                     case 'UNAUTHENTICATED':
                         const headers = operation.getContext().headers
+                        console.log('operation')
+                        console.log(operation)
                         const awaitMutation = async () => {
                             await client.mutate({
                                 mutation: REFRESH_AUTH_TOKEN,
