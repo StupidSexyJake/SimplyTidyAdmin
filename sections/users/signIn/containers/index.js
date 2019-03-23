@@ -42,44 +42,40 @@ function SignInFormContainer({ client }) {
         const login = formData.get('login')
         const password = formData.get('password')
         // Sign in
-        try {
-            console.log('attempting to sign in')
-            await signIn({ variables: { login, password } })
-                .then(data => {
-                    console.log('sign in success. data:')
-                    console.log(data)
-                    // // Store the tokens in cookies
-                    document.cookie = cookie.serialize('x-token', data.data.signIn.token, {})
-                    document.cookie = cookie.serialize('x-token-refresh', data.data.signIn.refreshToken, {})
-                })
-                .then(() => {
-                    // Reset user login state
-                    dispatch(resetState('user'))
-                    // Force a reload of all the current queries
-                    client.cache.reset()
-                        // Redirect client back to homepage
-                        .then(() => {
-                            console.log('redirecting home')
-                            redirect({}, '/')
-                        })
-                })
-                .catch(error => {
-                    console.log('sign in failed. error:')
-                    console.log(error)
-                    // Handle error messages
-                    if (error.message === 'GraphQL error: No user found with this login credentials.') {
-                        dispatch(handleClick('user', 'invalidLogin', true))
-                        dispatch(openSnackbar(
-                            true,
-                            'error',
-                            'Invalid login details',
-                            ''
-                        ))
-                    }
-                })
-        } catch (error) {
-            console.log(error.message)
-        }
+        console.log('attempting to sign in')
+        await signIn({ variables: { login, password } })
+            .then(data => {
+                console.log('sign in success. data:')
+                console.log(data)
+                // // Store the tokens in cookies
+                document.cookie = cookie.serialize('x-token', data.data.signIn.token, {})
+                document.cookie = cookie.serialize('x-token-refresh', data.data.signIn.refreshToken, {})
+            })
+            .then(() => {
+                // Reset user login state
+                dispatch(resetState('user'))
+                // Force a reload of all the current queries
+                client.cache.reset()
+                    // Redirect client back to homepage
+                    .then(() => {
+                        console.log('redirecting home')
+                        redirect({}, '/')
+                    })
+            })
+            .catch(error => {
+                console.log('sign in failed. error:')
+                console.log(error)
+                // Handle error messages
+                if (error.message === 'GraphQL error: No user found with this login credentials.') {
+                    dispatch(handleClick('user', 'invalidLogin', true))
+                    dispatch(openSnackbar(
+                        true,
+                        'error',
+                        'Invalid login details',
+                        ''
+                    ))
+                }
+            })
     }
 
     // Handle show/hide password
