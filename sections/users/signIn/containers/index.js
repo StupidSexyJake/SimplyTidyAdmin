@@ -45,7 +45,7 @@ function SignInFormContainer({ client }) {
         // Sign in
         console.log('attempting to sign in')
         await signIn({ variables: { login, password } })
-            .then(data => {
+            .then(async data => {
                 console.log('sign in success. data:')
                 console.log(data)
                 // // Store the tokens in cookies
