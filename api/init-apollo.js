@@ -110,18 +110,7 @@ function create(initialState, { getTokens }) {
                             // Create a new Observer
                             return new Observable(async observer => {
                                 // Refresh auth token
-                                await Promise.resolve(fetchNewAuthToken(refreshToken, operation))
-                                    .then(newAuthToken => {
-                                        console.log('**********************')
-                                        console.log('new auth token received:')
-                                        console.log(newAuthToken)
-                                        console.log('**********************')
-
-                                        console.log('**********************')
-                                        console.log('new headers:')
-                                        console.log(operation.getContext().headers)
-                                        console.log('**********************')
-                                    })
+                                fetchNewAuthToken(refreshToken, operation)
                                     .then(() => {
                                         // Bind observable subscribers
                                         const subscriber = {
@@ -130,6 +119,7 @@ function create(initialState, { getTokens }) {
                                             complete: observer.complete.bind(observer)
                                         }
                                         // Retry last failed request
+                                        console.log('retrying last request')
                                         forward(operation).subscribe(subscriber)
                                     })
                                     .catch(error => {
