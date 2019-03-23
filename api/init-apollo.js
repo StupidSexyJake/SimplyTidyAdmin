@@ -51,7 +51,7 @@ function create(initialState, { getTokens }) {
         const tokens = getTokens()
         console.log('auth link runs')
         console.log('cookie.parse(x-token)')
-        console.log(cookie.parse('x-token'))
+        console.log(cookie.parse(''))
         return {
             headers: {
                 ...headers,
