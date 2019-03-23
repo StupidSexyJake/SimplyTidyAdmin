@@ -72,6 +72,14 @@ function create(initialState, { getTokens }) {
                 console.log('new auth token fetched successfully:')
                 console.log(results)
                 console.log('**********************')
+                operation.setContext(({ headers = {} }) => ({
+                    headers: {
+                        // Re-add old headers
+                        ...headers,
+                        // Switch out old access token for new one
+                        'x-token': newAuthToken || null,
+                    }
+                }))
                 return results.data.refreshAuthToken.token
             })
             .catch(error => {
@@ -110,20 +118,13 @@ function create(initialState, { getTokens }) {
                             // Create a new Observer
                             return new Observable(async observer => {
                                 // Refresh auth token
-                                await fetchNewAuthToken(refreshToken)
+                                await fetchNewAuthToken(refreshToken, operation)
                                     .then(newAuthToken => {
                                         console.log('**********************')
                                         console.log('new auth token received:')
                                         console.log(newAuthToken)
                                         console.log('**********************')
-                                        operation.setContext(({ headers = {} }) => ({
-                                            headers: {
-                                                // Re-add old headers
-                                                ...headers,
-                                                // Switch out old access token for new one
-                                                'x-token': newAuthToken || null,
-                                            }
-                                        }))
+
                                         console.log('**********************')
                                         console.log('new headers:')
                                         console.log(operation.getContext().headers)
