@@ -59,9 +59,7 @@ function create(initialState, { getTokens }) {
     })
 
     // Refresh auth token
-    const getNewToken = () => {
-        const refreshToken = getTokens()['x-token-refresh']
-        if (!refreshToken) { return '' }
+    function fetchNewAuthToken(refreshToken) {
         client.mutate({
             mutation: REFRESH_AUTH_TOKEN,
             variables: {
@@ -96,85 +94,63 @@ function create(initialState, { getTokens }) {
     //     }
     // })
 
-    let isFetchingToken = false;
-    let tokenSubscribers = [];
-    function subscribeTokenRefresh(cb) {
-        tokenSubscribers.push(cb);
-    }
-    function onTokenRefreshed(err) {
-        tokenSubscribers.map(cb => cb(err));
-    }
 
+    // Create error link
     const errorLink = () =>
         onError(({ graphQLErrors, networkError, operation, forward }) => {
-            if (networkError) console.error(`[Network error]: ${networkError}`);
-
+            // If network error, output message in console for debugging
+            if (networkError) console.error(`[Network error]: ${networkError}`)
+            // If graphQL error...
             if (graphQLErrors) {
-                const { message, locations, path, extensions } = graphQLErrors[0];
+                // Get error details
+                const { message, locations, path, extensions } = graphQLErrors[0]
+                // Output to console for debugging
                 console.error(
                     `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${
                     extensions.code
                     }`,
-                );
-
-                if (extensions.code === 'UNAUTHENTICATED') {
-                    return new Observable(async observer => {
-                        try {
-                            const retryRequest = () => {
-                                operation.setContext({
-                                    headers: {
-                                        ...headers,
-                                        'x-token': getNewToken(),
-                                        'token-test': 'test'
-                                    },
-                                });
-
-                                const subscriber = {
-                                    next: observer.next.bind(observer),
-                                    error: observer.error.bind(observer),
-                                    complete: observer.complete.bind(observer),
-                                };
-
-                                return forward(operation).subscribe(subscriber);
-                            };
-
-                            const { headers } = operation.getContext();
-
-                            if (!isFetchingToken) {
-                                isFetchingToken = true;
-
-                                try {
-                                    await getNewToken();
-
-                                    isFetchingToken = false;
-                                    onTokenRefreshed(null);
-                                    tokenSubscribers = [];
-
-                                    return retryRequest();
-                                } catch (e) {
-                                    onTokenRefreshed(new Error('Unable to refresh access token'));
-
-                                    tokenSubscribers = [];
-                                    isFetchingToken = false;
-                                    return
-                                    // return globalProvider.logOut({ forcedLogOut: true });
-                                }
-                            }
-
-                            const tokenSubscriber = new Promise((resolve, reject) => {
-                                subscribeTokenRefresh(errRefreshing => {
-                                    if (!errRefreshing) return resolve(retryRequest());
-                                });
-                            });
-
-                            return tokenSubscriber;
-                        } catch (e) {
-                            observer.error(e);
-                        }
-                    });
+                )
+                // Only continue if a refresh and auth token is available
+                const refreshToken = getTokens()['x-token-refresh']
+                const authToken = getTokens()['x-token']
+                if (refreshToken && authToken) {
+                    // If error is due to being unathenticated...
+                    if (extensions.code === 'UNAUTHENTICATED') {
+                        // Create a new Observer
+                        return new Observable(async observer => {
+                            // Refresh auth token
+                            fetchNewAuthToken(refreshToken)
+                                .then(fetchResults => {
+                                    // Set headers to include new auth token
+                                    const newAuthToken = fetchResults.data.refreshAuthToken.token
+                                    operation.setContext(({ headers = {} }) => ({
+                                        headers: {
+                                            // Re-add old headers
+                                            ...headers,
+                                            // Switch out old access token for new one
+                                            'x-token': newAuthToken || null,
+                                        }
+                                    }))
+                                })
+                                .then(() => {
+                                    // Bind observable subscribers
+                                    const subscriber = {
+                                        next: observer.next.bind(observer),
+                                        error: observer.error.bind(observer),
+                                        complete: observer.complete.bind(observer)
+                                    }
+                                    // Retry last failed request
+                                    forward(operation).subscribe(subscriber)
+                                })
+                                .catch(error => {
+                                    // No refresh or client token available, force user to login
+                                    observer.error(error)
+                                })
+                        })
+                    }
                 }
             }
-        });
+        })
 
     // Create Apollo Client
     const client = new ApolloClient({
