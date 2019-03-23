@@ -49,8 +49,8 @@ function create(initialState, { getTokens }) {
     // Set headers to include auth and refresh tokens
     const authLink = setContext((_, { headers }) => {
         console.log('getting from local storage')
-        const token = localStorage.getItem('x-token')
-        const refreshToken = localStorage.getItem('x-token-refresh')
+        // const token = localStorage.getItem('x-token')
+        // const refreshToken = localStorage.getItem('x-token-refresh')
         console.log('auth link runs. tokens:')
         console.log(token, refreshToken)
         return {
