@@ -49,17 +49,9 @@ function SignInFormContainer({ client }) {
             .then(async data => {
                 console.log('sign in success. data:')
                 console.log(data)
-                // // Store the tokens in header
-                const setHeaders = setContext((_, { headers }) => {
-                    return {
-                        headers: {
-                            ...headers,
-                            'x-token': data.data.signIn.token ? data.data.signIn.token : '',
-                            'x-token-refresh': data.data.signIn.refreshToken ? data.data.signIn.refreshToken : ''
-                        }
-                    }
-                })
-                await setHeaders()
+                // // Store the tokens
+                localStorage.setItem('x-token', data.data.signIn.token)
+                localStorage.setItem('x-token-refresh', data.data.signIn.refreshToken)
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries

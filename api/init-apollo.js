@@ -48,13 +48,14 @@ function create(initialState, { getTokens }) {
 
     // Set headers to include auth and refresh tokens
     const authLink = setContext((_, { headers }) => {
-        const tokens = getTokens()
+        const token = localStorage.getItem('x-token')
+        const refreshToken = localStorage.getItem('x-token-refresh')
         console.log('auth link runs')
         return {
             headers: {
                 ...headers,
-                'x-token': tokens['x-token'] ? tokens['x-token'] : '',
-                'x-token-refresh': tokens['x-token-refresh'] ? tokens['x-token-refresh'] : ''
+                'x-token': token ? token : '',
+                'x-token-refresh': refreshToken ? refreshToken : ''
             }
         }
     })
@@ -68,6 +69,9 @@ function create(initialState, { getTokens }) {
             }
         })
             .then(results => {
+                // // Store the tokens
+                localStorage.setItem('x-token', data.data.refreshAuthToken.token)
+                // Update headers
                 operation.setContext(({ headers = {} }) => ({
                     headers: {
                         // Re-add old headers
@@ -76,15 +80,11 @@ function create(initialState, { getTokens }) {
                         'x-token': results.data.refreshAuthToken.token || null,
                     }
                 }))
-                console.log('new auth being returned')
-                console.log(results.data.refreshAuthToken.token)
                 return results.data.refreshAuthToken.token
             })
             .catch(error => {
-                console.log('**********************')
-                console.log('error on fetchNewAuthToken')
+                console.log('error on fetchNewAuthToken: ')
                 console.log(error)
-                console.log('**********************')
             })
     }
 
@@ -93,7 +93,7 @@ function create(initialState, { getTokens }) {
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            // authLink,
+            authLink,
             onError(({ graphQLErrors, networkError, operation, forward }) => {
                 // If network error, output message in console for debugging
                 if (networkError) console.error(`[Network error]: ${networkError}`)
