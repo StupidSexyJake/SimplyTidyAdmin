@@ -60,7 +60,7 @@ function create(initialState, { getTokens }) {
     })
 
     // Refresh auth token
-    async function fetchNewAuthToken(refreshToken) {
+    async function fetchNewAuthToken(refreshToken, operation) {
         client.mutate({
             mutation: REFRESH_AUTH_TOKEN,
             variables: {
