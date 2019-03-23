@@ -74,8 +74,6 @@ function create(initialState, { getTokens }) {
                         'x-token': results.data.refreshAuthToken.token || null,
                     }
                 }))
-                console.log('new auth being returned')
-                console.log(results.data.refreshAuthToken.token)
                 return results.data.refreshAuthToken.token
             })
             .catch(error => {
@@ -117,14 +115,9 @@ function create(initialState, { getTokens }) {
                                             complete: observer.complete.bind(observer)
                                         }
                                         // Retry last failed request
-                                        console.log('retrying last request')
                                         forward(operation).subscribe(subscriber)
                                     })
                                     .catch(error => {
-                                        console.log('**********************')
-                                        console.log('error getting new auth tokens line 167')
-                                        console.log(error)
-                                        console.log('**********************')
                                         // No refresh or client token available, force user to login
                                         observer.error(error)
                                     })
