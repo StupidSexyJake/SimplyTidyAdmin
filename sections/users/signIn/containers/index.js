@@ -34,6 +34,7 @@ function SignInFormContainer({ client }) {
 
     // Handle form submit
     const onSubmit = async (event, signIn) => {
+        console.log
         // Prevent default form behaviour
         event.preventDefault()
         // Get login values from form
@@ -48,8 +49,8 @@ function SignInFormContainer({ client }) {
                 console.log('sign in success. data:')
                 console.log(data)
                 // // Store the tokens in cookies
-                document.cookie = cookie.serialize('x-token', data.data.signIn.token, {})
-                document.cookie = cookie.serialize('x-token-refresh', data.data.signIn.refreshToken, {})
+                document.cookie = await cookie.serialize('x-token', data.data.signIn.token, {})
+                document.cookie = await cookie.serialize('x-token-refresh', data.data.signIn.refreshToken, {})
             })
             .then(() => {
                 // Reset user login state
