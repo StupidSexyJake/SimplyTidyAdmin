@@ -95,69 +95,65 @@ function create(initialState, { getTokens }) {
     // })
 
 
-    // Create error link
-    const errorLink = () =>
-        onError(({ graphQLErrors, networkError, operation, forward }) => {
-            // If network error, output message in console for debugging
-            if (networkError) console.error(`[Network error]: ${networkError}`)
-            // If graphQL error...
-            if (graphQLErrors) {
-                // Get error details
-                const { message, locations, path, extensions } = graphQLErrors[0]
-                // Output to console for debugging
-                console.error(
-                    `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${
-                    extensions.code
-                    }`,
-                )
-                // Only continue if a refresh and auth token is available
-                const refreshToken = getTokens()['x-token-refresh']
-                const authToken = getTokens()['x-token']
-                if (refreshToken && authToken) {
-                    // If error is due to being unathenticated...
-                    if (extensions.code === 'UNAUTHENTICATED') {
-                        // Create a new Observer
-                        return new Observable(async observer => {
-                            // Refresh auth token
-                            fetchNewAuthToken(refreshToken)
-                                .then(fetchResults => {
-                                    // Set headers to include new auth token
-                                    const newAuthToken = fetchResults.data.refreshAuthToken.token
-                                    operation.setContext(({ headers = {} }) => ({
-                                        headers: {
-                                            // Re-add old headers
-                                            ...headers,
-                                            // Switch out old access token for new one
-                                            'x-token': newAuthToken || null,
-                                        }
-                                    }))
-                                })
-                                .then(() => {
-                                    // Bind observable subscribers
-                                    const subscriber = {
-                                        next: observer.next.bind(observer),
-                                        error: observer.error.bind(observer),
-                                        complete: observer.complete.bind(observer)
-                                    }
-                                    // Retry last failed request
-                                    forward(operation).subscribe(subscriber)
-                                })
-                                .catch(error => {
-                                    // No refresh or client token available, force user to login
-                                    observer.error(error)
-                                })
-                        })
-                    }
-                }
-            }
-        })
-
     // Create Apollo Client
     const client = new ApolloClient({
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            errorLink,
+            onError(({ graphQLErrors, networkError, operation, forward }) => {
+                // If network error, output message in console for debugging
+                if (networkError) console.error(`[Network error]: ${networkError}`)
+                // If graphQL error...
+                if (graphQLErrors) {
+                    // Get error details
+                    const { message, locations, path, extensions } = graphQLErrors[0]
+                    // Output to console for debugging
+                    console.error(
+                        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${
+                        extensions.code
+                        }`,
+                    )
+                    // Only continue if a refresh and auth token is available
+                    const refreshToken = getTokens()['x-token-refresh']
+                    const authToken = getTokens()['x-token']
+                    if (refreshToken && authToken) {
+                        // If error is due to being unathenticated...
+                        if (extensions.code === 'UNAUTHENTICATED') {
+                            // Create a new Observer
+                            return new Observable(async observer => {
+                                // Refresh auth token
+                                fetchNewAuthToken(refreshToken)
+                                    .then(fetchResults => {
+                                        // Set headers to include new auth token
+                                        const newAuthToken = fetchResults.data.refreshAuthToken.token
+                                        operation.setContext(({ headers = {} }) => ({
+                                            headers: {
+                                                // Re-add old headers
+                                                ...headers,
+                                                // Switch out old access token for new one
+                                                'x-token': newAuthToken || null,
+                                            }
+                                        }))
+                                    })
+                                    .then(() => {
+                                        // Bind observable subscribers
+                                        const subscriber = {
+                                            next: observer.next.bind(observer),
+                                            error: observer.error.bind(observer),
+                                            complete: observer.complete.bind(observer)
+                                        }
+                                        // Retry last failed request
+                                        forward(operation).subscribe(subscriber)
+                                    })
+                                    .catch(error => {
+                                        // No refresh or client token available, force user to login
+                                        observer.error(error)
+                                    })
+                            })
+                        }
+                    }
+                }
+            }),
             authLink,
             terminatingLink,
         ]),
