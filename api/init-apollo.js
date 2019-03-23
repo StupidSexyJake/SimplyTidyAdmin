@@ -164,6 +164,10 @@ function create(initialState, { getTokens }) {
                                         forward(operation).subscribe(subscriber)
                                     })
                                     .catch(error => {
+                                        console.log('**********************')
+                                        console.log('error getting new auth tokens line 167')
+                                        console.log(error)
+                                        console.log('**********************')
                                         // No refresh or client token available, force user to login
                                         observer.error(error)
                                     })
