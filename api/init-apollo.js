@@ -77,7 +77,7 @@ function create(initialState, { getTokens }) {
                         // Re-add old headers
                         ...headers,
                         // Switch out old access token for new one
-                        'x-token': newAuthToken || null,
+                        'x-token': results.data.refreshAuthToken.token || null,
                     }
                 }))
                 return results.data.refreshAuthToken.token
