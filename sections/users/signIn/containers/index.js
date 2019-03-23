@@ -9,7 +9,6 @@ import {
 } from '../../../../state/actions'
 // API and authentication
 import cookie from 'cookie'
-import { setContext } from 'apollo-link-context'
 import redirect from '../../../../api/redirect'
 import {
     Mutation,
@@ -49,9 +48,10 @@ function SignInFormContainer({ client }) {
             .then(async data => {
                 console.log('sign in success. data:')
                 console.log(data)
+                console.log(cookie.parse('x-token'))
                 // // Store the tokens
-                localStorage.setItem('x-token', data.data.signIn.token)
-                localStorage.setItem('x-token-refresh', data.data.signIn.refreshToken)
+                // localStorage.setItem('x-token', data.data.signIn.token)
+                // localStorage.setItem('x-token-refresh', data.data.signIn.refreshToken)
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries

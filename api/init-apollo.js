@@ -48,16 +48,15 @@ function create(initialState, { getTokens }) {
 
     // Set headers to include auth and refresh tokens
     const authLink = setContext((_, { headers }) => {
-        console.log('getting from local storage')
-        // const token = localStorage.getItem('x-token')
-        // const refreshToken = localStorage.getItem('x-token-refresh')
-        console.log('auth link runs. tokens:')
-        console.log(token, refreshToken)
+        const tokens = getTokens()
+        console.log('auth link runs')
+        console.log('cookie.parse(x-token)')
+        console.log(cookie.parse('x-token'))
         return {
             headers: {
                 ...headers,
-                'x-token': token ? token : '',
-                'x-token-refresh': refreshToken ? refreshToken : ''
+                'x-token': tokens['x-token'] ? tokens['x-token'] : '',
+                'x-token-refresh': tokens['x-token-refresh'] ? tokens['x-token-refresh'] : ''
             }
         }
     })
@@ -71,10 +70,6 @@ function create(initialState, { getTokens }) {
             }
         })
             .then(results => {
-                // // Store the tokens
-                console.log('storing new auth token')
-                localStorage.setItem('x-token', data.data.refreshAuthToken.token)
-                // Update headers
                 operation.setContext(({ headers = {} }) => ({
                     headers: {
                         // Re-add old headers
@@ -83,11 +78,15 @@ function create(initialState, { getTokens }) {
                         'x-token': results.data.refreshAuthToken.token || null,
                     }
                 }))
+                console.log('new auth being returned')
+                console.log(results.data.refreshAuthToken.token)
                 return results.data.refreshAuthToken.token
             })
             .catch(error => {
-                console.log('error on fetchNewAuthToken: ')
+                console.log('**********************')
+                console.log('error on fetchNewAuthToken')
                 console.log(error)
+                console.log('**********************')
             })
     }
 
