@@ -68,7 +68,17 @@ function create(initialState, { getTokens }) {
             }
         })
             .then(results => {
+                console.log('**********************')
+                console.log('new auth token fetched successfully:')
+                console.log(results)
+                console.log('**********************')
                 return results.data.refreshAuthToken.token
+            })
+            .catch(error => {
+                console.log('**********************')
+                console.log('error on fetchNewAuthToken')
+                console.log(error)
+                console.log('**********************')
             })
     }
 
