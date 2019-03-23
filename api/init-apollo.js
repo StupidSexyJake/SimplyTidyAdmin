@@ -137,6 +137,10 @@ function create(initialState, { getTokens }) {
                                                 'x-token': newAuthToken || null,
                                             }
                                         }))
+                                        console.log('**********************')
+                                        console.log('new headers:')
+                                        console.log(operation.getContext().headers)
+                                        console.log('**********************')
                                     })
                                     .then(() => {
                                         // Bind observable subscribers
