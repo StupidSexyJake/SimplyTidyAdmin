@@ -123,9 +123,7 @@ function create(initialState, { getTokens }) {
                             return new Observable(async observer => {
                                 // Refresh auth token
                                 fetchNewAuthToken(refreshToken)
-                                    .then(fetchResults => {
-                                        // Set headers to include new auth token
-                                        const newAuthToken = fetchResults.data.refreshAuthToken.token
+                                    .then(newAuthToken => {
                                         operation.setContext(({ headers = {} }) => ({
                                             headers: {
                                                 // Re-add old headers
