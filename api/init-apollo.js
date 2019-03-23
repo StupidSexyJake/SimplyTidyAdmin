@@ -76,6 +76,8 @@ function create(initialState, { getTokens }) {
                         'x-token': results.data.refreshAuthToken.token || null,
                     }
                 }))
+                console.log('new auth being returned')
+                console.log(results.data.refreshAuthToken.token)
                 return results.data.refreshAuthToken.token
             })
             .catch(error => {
