@@ -68,10 +68,6 @@ function create(initialState, { getTokens }) {
             }
         })
             .then(results => {
-                console.log('**********************')
-                console.log('new auth token fetched successfully:')
-                console.log(results)
-                console.log('**********************')
                 operation.setContext(({ headers = {} }) => ({
                     headers: {
                         // Re-add old headers
@@ -102,13 +98,7 @@ function create(initialState, { getTokens }) {
                 // If graphQL error...
                 if (graphQLErrors) {
                     // Get error details
-                    const { message, locations, path, extensions } = graphQLErrors[0]
-                    // Output to console for debugging
-                    console.error(
-                        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${
-                        extensions.code
-                        }`,
-                    )
+                    const { extensions } = graphQLErrors[0]
                     // Only continue if a refresh and auth token is available
                     const refreshToken = getTokens()['x-token-refresh']
                     const authToken = getTokens()['x-token']
@@ -118,7 +108,7 @@ function create(initialState, { getTokens }) {
                             // Create a new Observer
                             return new Observable(async observer => {
                                 // Refresh auth token
-                                await fetchNewAuthToken(refreshToken, operation)
+                                await Promise.resolve(fetchNewAuthToken(refreshToken, operation))
                                     .then(newAuthToken => {
                                         console.log('**********************')
                                         console.log('new auth token received:')
