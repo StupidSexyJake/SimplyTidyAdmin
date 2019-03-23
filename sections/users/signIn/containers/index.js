@@ -8,7 +8,6 @@ import {
     openSnackbar
 } from '../../../../state/actions'
 // API and authentication
-import cookie from 'cookie'
 import redirect from '../../../../api/redirect'
 import {
     Mutation,
@@ -17,7 +16,6 @@ import {
 import { USER_SIGN_IN } from '../../../../api/graphql'
 // Layout
 import Index from '../layouts/'
-
 
 function SignInFormContainer({ client }) {
     // Get state contexts
@@ -46,9 +44,6 @@ function SignInFormContainer({ client }) {
         console.log('attempting to sign in')
         await signIn({ variables: { login, password } })
             .then(async data => {
-                console.log('sign in success. data:')
-                console.log(data)
-                console.log(cookie.parse('x-token'))
                 // // Store the tokens
                 // localStorage.setItem('x-token', data.data.signIn.token)
                 // localStorage.setItem('x-token-refresh', data.data.signIn.refreshToken)

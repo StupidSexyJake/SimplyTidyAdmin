@@ -12,9 +12,6 @@ import { onError } from 'apollo-link-error'
 // GraphQL
 import { REFRESH_AUTH_TOKEN } from './graphql'
 // Authentication
-import Cookies from 'universal-cookie'
-
-const cookies = new Cookies()
 
 let apolloClient = null
 
@@ -51,9 +48,6 @@ function create(initialState, { getTokens }) {
     // Set headers to include auth and refresh tokens
     const authLink = setContext((_, { headers }) => {
         const tokens = getTokens()
-        console.log('auth link runs')
-        console.log('get auth cookies')
-        console.log(cookies.get('x-token'))
         return {
             headers: {
                 ...headers,
