@@ -43,6 +43,7 @@ function SignInFormContainer({ client }) {
         const password = formData.get('password')
         // Sign in
         try {
+            console.log('attempting to sign in')
             await signIn({ variables: { login, password } })
                 .then(data => {
                     console.log('sign in success. data:')
@@ -56,6 +57,7 @@ function SignInFormContainer({ client }) {
                     client.cache.reset()
                         // Redirect client back to homepage
                         .then(() => {
+                            console.log('redirecting home')
                             redirect({}, '/')
                         })
                 })
