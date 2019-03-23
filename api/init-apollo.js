@@ -49,6 +49,7 @@ function create(initialState, { getTokens }) {
     // Set headers to include auth and refresh tokens
     const authLink = setContext((_, { headers }) => {
         const tokens = getTokens()
+        console.log('auth link runs')
         return {
             headers: {
                 ...headers,
