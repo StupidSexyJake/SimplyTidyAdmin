@@ -93,7 +93,7 @@ function create(initialState, { getTokens }) {
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
-            authLink,
+            // authLink,
             onError(({ graphQLErrors, networkError, operation, forward }) => {
                 // If network error, output message in console for debugging
                 if (networkError) console.error(`[Network error]: ${networkError}`)
