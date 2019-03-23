@@ -82,30 +82,6 @@ function create(initialState, { getTokens }) {
             })
     }
 
-    // Create error link
-    // const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-    //     console.log(Router)
-    //     if (graphQLErrors) {
-    //         for (let err of graphQLErrors) {
-    //             switch (err.extensions.code) {
-    //                 case 'UNAUTHENTICATED':
-    //                     const headers = operation.getContext().headers
-    //                     operation.setContext({
-    //                         headers: {
-    //                             ...headers,
-    //                             'x-token': getNewToken()
-    //                         },
-    //                     })
-    //                     console.log('new token')
-    //                     console.log(getNewToken())
-    //                     console.log('retrying last request - next line should be "checking logged in"')
-    //                     return forward(operation)
-    //             }
-    //         }
-    //     }
-    // })
-
-
     // Create Apollo Client
     const client = new ApolloClient({
         connectToDevTools: process.browser,
@@ -134,7 +110,7 @@ function create(initialState, { getTokens }) {
                             // Create a new Observer
                             return new Observable(async observer => {
                                 // Refresh auth token
-                                fetchNewAuthToken(refreshToken)
+                                await fetchNewAuthToken(refreshToken)
                                     .then(newAuthToken => {
                                         console.log('**********************')
                                         console.log('new auth token received:')
