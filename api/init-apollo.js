@@ -125,6 +125,10 @@ function create(initialState, { getTokens }) {
                                 // Refresh auth token
                                 fetchNewAuthToken(refreshToken)
                                     .then(newAuthToken => {
+                                        console.log('**********************')
+                                        console.log('new auth token received:')
+                                        console.log(newAuthToken)
+                                        console.log('**********************')
                                         operation.setContext(({ headers = {} }) => ({
                                             headers: {
                                                 // Re-add old headers
