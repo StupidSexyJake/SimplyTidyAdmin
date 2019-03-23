@@ -51,8 +51,6 @@ function SignInFormContainer({ client }) {
                 // // Store the tokens in cookies
                 document.cookie = await cookie.serialize('x-token', data.data.signIn.token, {})
                 document.cookie = await cookie.serialize('x-token-refresh', data.data.signIn.refreshToken, {})
-            })
-            .then(() => {
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries
