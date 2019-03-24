@@ -65,6 +65,7 @@ function SignInFormContainer({ client }) {
                 client.cache.reset()
                     // Redirect user to homepage
                     .then(() => {
+                        console.log('redirecting...')
                         redirect({}, '/')
                     })
             })
