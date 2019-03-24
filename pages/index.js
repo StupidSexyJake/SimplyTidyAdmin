@@ -28,11 +28,12 @@ function Index() {
     )
 }
 
+// Before page is rendered...
 Index.getInitialProps = async ctx => {
+    // Get logged in user
     const isLoggedIn = await checkLoggedIn(ctx)
-    if (!isLoggedIn) {
-        redirect(context, '/login')
-    }
+    // Redirect user to login page if not logged in
+    if (isLoggedIn) { redirect(ctx, '/login') }
     return
 }
 
