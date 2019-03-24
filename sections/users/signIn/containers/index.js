@@ -34,8 +34,7 @@ function SignInFormContainer({ client }) {
     }
 
     // Handle form submit
-    const onSubmit = event => {
-        console.log('signing in')
+    const onSubmit = async (event) => {
         // Prevent default form behaviour
         event.preventDefault()
 
@@ -44,8 +43,9 @@ function SignInFormContainer({ client }) {
         const formData = new window.FormData(form)
         const login = formData.get('login')
         const password = formData.get('password')
+        console.log('signing in')
         // Attempt to sign in
-        signInUser(login, password)
+        signInUser(login, password, client)
             // On successful sign-in
             .then(({ token, refreshToken }) => {
                 console.log('login success')
