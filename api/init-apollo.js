@@ -10,6 +10,7 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 // Authorisation
+import cookie from 'js-cookie'
 import { refreshAuthToken } from './auth'
 
 let apolloClient = null

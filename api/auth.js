@@ -21,11 +21,12 @@ export async function checkLoggedIn(ctx, token) {
             return true
         })
 
-        // Return false on verification failure and output error to console for debugging
+        // Return false on failure to authenticate
         .catch((error) => {
             console.error('Error in catch of checkLoggedIn() in auth.js:')
             console.error(error)
             console.log('*****************')
+            // 
             return false
         })
 }
