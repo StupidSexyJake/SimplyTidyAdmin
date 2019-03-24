@@ -102,7 +102,7 @@ function create(initialState, { getTokens }) {
     ]),
 
     // Create cache
-    const cache = new InMemoryCache().restore(initialState || {}),
+    const cache = new InMemoryCache().restore(initialState || {})
 
     // Create Apollo Client
     const client = new ApolloClient({
