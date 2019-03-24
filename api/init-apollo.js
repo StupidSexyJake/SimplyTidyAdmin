@@ -66,6 +66,7 @@ function create(initialState, { getTokens }) {
             onError(({ graphQLErrors, networkError, operation, forward }) => {
                 // If network error, output message to console for debugging
                 if (networkError) console.error(`[Network error]: ${networkError}`)
+
                 // If graphQL error...
                 if (graphQLErrors) {
                     // If error is due to unathenticated user request and a refresh token is available...
@@ -75,22 +76,28 @@ function create(initialState, { getTokens }) {
                         // Create a new Observerable
                         return new Observable(async observer => {
                             // Refresh the auth token
-                            refreshAuthToken(refreshToken, client)
+                            await refreshAuthToken(refreshToken, client)
                                 // On successful refresh...
                                 .then((newToken) => {
+                                    console.log('new auth token')
+                                    console.log(newToken)
                                     // Save new token to cookies
                                     cookie.set('x-token', newToken)
+
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
                                         error: observer.error.bind(observer),
                                         complete: observer.complete.bind(observer)
                                     }
+
+                                    console.log('retrying last request')
                                     // Retry last failed request
                                     forward(operation).subscribe(subscriber)
                                 })
+
+                                // Force user to login if refresh fails
                                 .catch(error => {
-                                    // No refresh or client token available, force user to login
                                     observer.error(error)
                                 })
                         })

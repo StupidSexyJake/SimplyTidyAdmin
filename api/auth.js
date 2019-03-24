@@ -62,8 +62,6 @@ export async function refreshAuthToken(refreshToken, client) {
     })
         // Return new auth token
         .then(data => {
-            console.log('refresh token returns:')
-            console.log(data.data.refreshAuthToken)
             return data.data.refreshAuthToken
         })
 
