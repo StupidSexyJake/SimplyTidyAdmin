@@ -2,8 +2,10 @@
 import '../src/bootstrap'
 import React from 'react'
 // Authentication
-import redirect from '../api/redirect'
-import checkLoggedIn from '../api/checkLoggedIn'
+import {
+    checkLoggedIn,
+    redirect,
+} from '../api/auth'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 // Global page layout

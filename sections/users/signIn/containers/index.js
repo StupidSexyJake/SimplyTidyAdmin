@@ -8,7 +8,10 @@ import {
 } from '../../../../state/actions'
 // API and authentication
 import cookie from 'js-cookie'
-import redirect from '../../../../api/redirect'
+import {
+    signIn,
+    redirect,
+} from '../../../../api/auth'
 import {
     Mutation,
     withApollo
@@ -31,7 +34,7 @@ function SignInFormContainer({ client }) {
     }
 
     // Handle form submit
-    const onSubmit = async (event, signIn) => {
+    const onSubmit = async (event) => {
         // Prevent default form behaviour
         event.preventDefault()
 
@@ -41,30 +44,17 @@ function SignInFormContainer({ client }) {
         const login = formData.get('login')
         const password = formData.get('password')
 
-        // Sign in
-        await signIn({ variables: { login, password } })
-            // On successful login...
-            .then(({ data }) => {
-                console.log('sign in data results:')
-                console.log(data)
-
-                // Store tokens in cookies
-                cookie.set('x-token', data.signIn.token)
-                cookie.set('x-token-refresh', data.signIn.refreshToken)
-
+        // Attempt to sign in
+        signInUser(login, password)
+            // On successful sign-in
+            .then(({ token, refreshToken }) => {
+                // Save tokens in cookies
+                cookie.set('x-token', token)
+                cookie.set('x-token-refresh', refreshToken)
                 // Reset user login state
                 dispatch(resetState('user'))
-
-                // Force a reload of all the current queries
-                client.cache.reset()
-
-                    // Redirect client back to homepage
-                    .then(() => { redirect({}, '/') })
-            })
-            // Return error message on login fail for debugging
-            .catch(error => {
-                console.log('sign in failed. error:')
-                console.log(error)
+                // Redirect user to homepage
+                redirect({}, '/')
             })
     }
 
