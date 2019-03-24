@@ -75,6 +75,9 @@ function create(initialState, { getTokens }) {
                     if (extensions.code === 'UNAUTHENTICATED' && refreshToken) {
                         // Create a new Observerable
                         return new Observable(async observer => {
+                            console.log('refreshAuthToken')
+                            const x = refreshAuthToken(refreshToken, client)
+                            console.log(x)
                             // Refresh the auth token
                             await refreshAuthToken(refreshToken, client)
                                 // On successful refresh...
