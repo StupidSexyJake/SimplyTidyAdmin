@@ -15,10 +15,7 @@ export const GET_ME = gql`
 `
 export const REFRESH_AUTH_TOKEN = gql`
     mutation refreshAuthToken($refreshToken: String!) {
-        refreshAuthToken(refreshToken: $refreshToken) {
-            token
-            refreshToken
-        }
+        refreshAuthToken(refreshToken: $refreshToken)
     }
 `
 export const USER_SIGN_IN = gql`
