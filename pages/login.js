@@ -97,15 +97,8 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    // Get token from cookies
-    const token = cookie(ctx)['x-token']
-
-    // Check if user is already logged in
-    const isLoggedIn = await checkLoggedIn(ctx, token)
-
-    // Redirect user to home page if already logged in
-    if (!isLoggedIn) { redirect(ctx, '/') }
-
+    // Restrict page access to NOT authenticated users only
+    restrictToPublic(ctx)
     // getInitialProps must return an object
     return {}
 }

@@ -83,6 +83,18 @@ export function restrictToAuthUsers(ctx) {
     if (!isLoggedIn) { redirect(ctx, '/login') }
 }
 
+// Restrict page access to NOT authenticated users only
+export function restrictToPublic(ctx) {
+    // Get token from cookies
+    const token = cookie(ctx)['x-token']
+
+    // Get logged in user
+    const isLoggedIn = await checkLoggedIn(ctx, token)
+
+    // Redirect user to login page if not logged in
+    if (isLoggedIn) { redirect(ctx, '/') }
+}
+
 // Handle redirects
 export function redirect(ctx, target) {
     // Check if in server
