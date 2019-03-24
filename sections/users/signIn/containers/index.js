@@ -44,13 +44,13 @@ function SignInFormContainer({ client }) {
         // Sign in
         await signIn({ variables: { login, password } })
             // On successful login...
-            .then(({ data }) => {
+            .then(({ data: { signIn } }) => {
                 console.log('sign in data results:')
                 console.log(data)
 
                 // Store tokens in cookies
-                cookie.set('x-token', data.token)
-                cookie.set('x-token-refresh', data.refreshToken)
+                cookie.set('x-token', signIn.token)
+                cookie.set('x-token-refresh', signIn.refreshToken)
 
                 // Reset user login state
                 dispatch(resetState('user'))
