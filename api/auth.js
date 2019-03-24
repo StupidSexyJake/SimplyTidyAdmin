@@ -66,6 +66,8 @@ export async function refreshAuthToken(refreshToken, client, operation) {
         // On success...
         .then(data => {
             // Save new token to cookies
+            console.log('get context')
+            console.log(operation.getContext())
             setCookie(operation.getContext(), 'x-token-test', data.data.refreshAuthToken)
 
             // Return new token
