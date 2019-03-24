@@ -3,7 +3,7 @@ import '../src/bootstrap'
 import React from 'react'
 // Authentication
 import redirect from '../api/redirect'
-import checkLoggedIn from '../api/checkLoggedInkLoggedIn'
+import checkLoggedIn from '../api/checkLoggedIn'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
