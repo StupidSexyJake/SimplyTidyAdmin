@@ -57,60 +57,54 @@ function create(initialState, { getTokens }) {
         }
     })
 
-    // Concat links
-    const link = ApolloLink.from([
-        authLink,
-        terminatingLink,
-    ])
-
-    // Create cache
-    const cache = new InMemoryCache().restore(initialState || {})
-
     // Create Apollo Client
     const client = new ApolloClient({
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-        link,
-        cache,
-        onError: () => onError(({ graphQLErrors, networkError, operation, forward }) => {
-            console.log('Error received in initApollo')
-            // If network error, output message to console for debugging
-            if (networkError) console.error(`[Network error]: ${networkError}`)
-            // If graphQL error...
-            if (graphQLErrors) {
-                // If error is due to unathenticated user request and a refresh token is available...
-                const { extensions } = graphQLErrors[0]
-                const refreshToken = getTokens()['x-token-refresh']
-                console.log('extensions and refreshToken')
-                console.log(extensions, refreshToken)
-                if (extensions.code === 'UNATHENTICATED' && refreshToken) {
-                    console.log('unauthenticated with refresh token')
-                    // Create a new Observerable
-                    return new Observable(async observer => {
-                        // Refresh the auth token
-                        refreshAuthToken(refreshToken, client)
-                            // On successful refresh...
-                            .then((newToken) => {
-                                // Save new token to cookies
-                                cookie.set('x-token', newToken)
-                                // Bind observable subscribers
-                                const subscriber = {
-                                    next: observer.next.bind(observer),
-                                    error: observer.error.bind(observer),
-                                    complete: observer.complete.bind(observer)
-                                }
-                                // Retry last failed request
-                                forward(operation).subscribe(subscriber)
-                            })
-                            .catch(error => {
-                                // No refresh or client token available, force user to login
-                                observer.error(error)
-                            })
-                    })
+        link: ApolloLink.from([
+            authLink,
+            onError(({ graphQLErrors, networkError, operation, forward }) => {
+                console.log('Error received in initApollo')
+                // If network error, output message to console for debugging
+                if (networkError) console.error(`[Network error]: ${networkError}`)
+                // If graphQL error...
+                if (graphQLErrors) {
+                    // If error is due to unathenticated user request and a refresh token is available...
+                    const { extensions } = graphQLErrors[0]
+                    const refreshToken = getTokens()['x-token-refresh']
+                    console.log('extensions and refreshToken')
+                    console.log(extensions, refreshToken)
+                    if (extensions.code === 'UNATHENTICATED' && refreshToken) {
+                        console.log('unauthenticated with refresh token')
+                        // Create a new Observerable
+                        return new Observable(async observer => {
+                            // Refresh the auth token
+                            refreshAuthToken(refreshToken, client)
+                                // On successful refresh...
+                                .then((newToken) => {
+                                    // Save new token to cookies
+                                    cookie.set('x-token', newToken)
+                                    // Bind observable subscribers
+                                    const subscriber = {
+                                        next: observer.next.bind(observer),
+                                        error: observer.error.bind(observer),
+                                        complete: observer.complete.bind(observer)
+                                    }
+                                    // Retry last failed request
+                                    forward(operation).subscribe(subscriber)
+                                })
+                                .catch(error => {
+                                    // No refresh or client token available, force user to login
+                                    observer.error(error)
+                                })
+                        })
 
+                    }
                 }
-            }
-        })
+            }),
+            terminatingLink,
+        ]),
+        cache: new InMemoryCache().restore(initialState || {})
     })
     return client
 }
