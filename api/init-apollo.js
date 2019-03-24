@@ -99,14 +99,17 @@ function create(initialState, { getTokens }) {
         authLink,
         errorLink,
         terminatingLink,
-    ]),
+    ])
+
+    // Create cache
+    const cache = new InMemoryCache().restore(initialState || {})
 
     // Create Apollo Client
     const client = new ApolloClient({
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link,
-        cache: new InMemoryCache().restore(initialState || {})
+        cache
     })
     return client
 }
