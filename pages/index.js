@@ -28,7 +28,7 @@ function Index() {
     )
 }
 
-Index.getInitialProps = async (context) => {
+Index.getInitialProps = async ctx => {
     const isLoggedIn = await checkLoggedIn(ctx)
     if (!isLoggedIn) {
         redirect(context, '/login')
