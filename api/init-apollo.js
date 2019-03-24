@@ -58,46 +58,12 @@ function create(initialState, { getTokens }) {
     })
 
     // Handle errors
-    const errorLink = () => onError(({ graphQLErrors, networkError, operation, forward }) => {
-        // If network error, output message to console for debugging
-        if (networkError) console.error(`[Network error]: ${networkError}`)
-        // If graphQL error...
-        if (graphQLErrors) {
-            // If error is due to unathenticated user request and a refresh token is available...
-            const { extensions } = graphQLErrors[0]
-            const refreshToken = getTokens()['x-token-refresh']
-            if (extensions.code === 'UNATHENTICATED' && refreshToken) {
-                // Create a new Observerable
-                return new Observable(async observer => {
-                    // Refresh the auth token
-                    refreshAuthToken(refreshToken)
-                        // On successful refresh...
-                        .then((newToken) => {
-                            // Save new token to cookies
-                            cookie.set('x-token', newToken)
-                            // Bind observable subscribers
-                            const subscriber = {
-                                next: observer.next.bind(observer),
-                                error: observer.error.bind(observer),
-                                complete: observer.complete.bind(observer)
-                            }
-                            // Retry last failed request
-                            forward(operation).subscribe(subscriber)
-                        })
-                        .catch(error => {
-                            // No refresh or client token available, force user to login
-                            observer.error(error)
-                        })
-                })
-
-            }
-        }
-    })
+    // const errorLink = () => 
 
     // Concat links
     const link = ApolloLink.from([
         authLink,
-        errorLink,
+        // errorLink,
         terminatingLink,
     ])
 
@@ -109,7 +75,42 @@ function create(initialState, { getTokens }) {
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link,
-        cache
+        cache,
+        onError: () => onError(({ graphQLErrors, networkError, operation, forward }) => {
+            // If network error, output message to console for debugging
+            if (networkError) console.error(`[Network error]: ${networkError}`)
+            // If graphQL error...
+            if (graphQLErrors) {
+                // If error is due to unathenticated user request and a refresh token is available...
+                const { extensions } = graphQLErrors[0]
+                const refreshToken = getTokens()['x-token-refresh']
+                if (extensions.code === 'UNATHENTICATED' && refreshToken) {
+                    // Create a new Observerable
+                    return new Observable(async observer => {
+                        // Refresh the auth token
+                        refreshAuthToken(refreshToken)
+                            // On successful refresh...
+                            .then((newToken) => {
+                                // Save new token to cookies
+                                cookie.set('x-token', newToken)
+                                // Bind observable subscribers
+                                const subscriber = {
+                                    next: observer.next.bind(observer),
+                                    error: observer.error.bind(observer),
+                                    complete: observer.complete.bind(observer)
+                                }
+                                // Retry last failed request
+                                forward(operation).subscribe(subscriber)
+                            })
+                            .catch(error => {
+                                // No refresh or client token available, force user to login
+                                observer.error(error)
+                            })
+                    })
+
+                }
+            }
+        })
     })
     return client
 }
