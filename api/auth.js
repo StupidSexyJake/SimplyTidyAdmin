@@ -11,7 +11,7 @@ import { parseCookies, setCookie, destroyCookie } from 'nookies'
 // Check if user is logged in
 export async function checkLoggedIn(ctx) {
     // Get token from cookies
-    const token = cookies(ctx)['x-token']
+    const token = nextCookie(ctx)['x-token']
 
     // Return no user if no auth token available
     if (!token) { return { loggedInUser: {} } }
