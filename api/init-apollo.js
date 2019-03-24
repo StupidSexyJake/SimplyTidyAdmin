@@ -88,9 +88,8 @@ function create(initialState, { getTokens }) {
                                     // Save new token to cookies
                                     cookie.set('x-token', data.refreshAuthToken)
                                     cookie.set('newtest', 'test')
-                                    console.log(data.refreshAuthToken)
-                                    console.log('get cookies')
-                                    console.log(cookie.get('x-token'))
+                                    console.log('process.browser')
+                                    console.log(process.browser)
 
                                     // Bind observable subscribers
                                     const subscriber = {
