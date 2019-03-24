@@ -67,7 +67,6 @@ function create(initialState, { getTokens, ctx }) {
             onError(({ graphQLErrors, networkError, operation, forward }) => {
                 // If network error, output message to console for debugging
                 if (networkError) console.error(`[Network error]: ${networkError}`)
-
                 // If graphQL error...
                 if (graphQLErrors) {
                     // If error is due to unathenticated user request and a refresh token is available...
@@ -77,34 +76,18 @@ function create(initialState, { getTokens, ctx }) {
                         // Create a new Observerable
                         return new Observable(async observer => {
                             // Refresh the auth token
-                            await client.mutate({
-                                mutation: REFRESH_AUTH_TOKEN,
-                                variables: {
-                                    refreshToken
-                                }
-                            })
+                            await refreshAuthToken(refreshToken, client, ctx)
                                 // On successful refresh...
                                 .then(({ data }) => {
-                                    // Save new token to cookies
-                                    console.log('refresh token for cookies:')
-                                    console.log(data.refreshAuthToken)
-                                    try { setCookie(ctx, 'x-token-test', data.refreshAuthToken) }
-                                    catch (error) {
-                                        console.log('error setting cookie:')
-                                        console.log(error)
-                                    }
-
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
                                         error: observer.error.bind(observer),
                                         complete: observer.complete.bind(observer)
                                     }
-
                                     // Retry last failed request
                                     forward(operation).subscribe(subscriber)
                                 })
-
                                 // Force user to login if refresh fails
                                 .catch(error => {
                                     console.error('Error received in onError link in init-apollo')

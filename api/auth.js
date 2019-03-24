@@ -6,6 +6,7 @@ import {
 } from './graphql'
 import nextCookie from 'next-cookies'
 import cookie from 'js-cookie'
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 // Check if user is logged in
 export async function checkLoggedIn(ctx, token) {
@@ -54,7 +55,7 @@ export function signInUser(login, password) {
 }
 
 // Refresh expired auth tokens
-export async function refreshAuthToken(refreshToken, client) {
+export async function refreshAuthToken(refreshToken, client, ctx) {
     // Fetch a new auth token from the server
     await client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
@@ -64,6 +65,9 @@ export async function refreshAuthToken(refreshToken, client) {
     })
         // Return new auth token
         .then(data => {
+            // Save new token to cookies
+            setCookie(ctx, 'x-token-test', data.refreshAuthToken)
+
             // Return new token
             return data.data.refreshAuthToken
         })
