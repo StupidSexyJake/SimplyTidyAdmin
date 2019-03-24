@@ -1,25 +1,20 @@
 import Router from 'next/router'
-import cookie from 'next-cookies'
 import {
     GET_ME,
     USER_SIGN_IN,
     REFRESH_AUTH_TOKEN,
 } from './graphql'
+import cookie from 'next-cookies'
 
 // Check if user is logged in
-export function checkLoggedIn(ctx) {
-    // Get auth token from cookies
-    const token = cookie(ctx)['x-token']
-
+export function checkLoggedIn(token) {
     // Return false if no auth token provided
     if (!token) { return false }
 
     // Verify auth token with server (auth token sent in request headers in ./init-apollo.js)
-    ctx.apolloClient
-    client.query({
+    ctx.apolloClient.query({
         query: GET_ME,
     })
-
         // Return true on verification success
         .then(() => {
             return true
@@ -34,7 +29,7 @@ export function checkLoggedIn(ctx) {
         })
 }
 
-// Sign in user
+// Attempt to sign in user
 export function signInUser(login, password) {
     // Attempt to sign in
     client.query({
@@ -74,6 +69,18 @@ export function refreshAuthToken(refreshToken) {
             console.error(error)
             console.log('*****************')
         })
+}
+
+// Restrict page access to authenticated users only
+export function restrictToAuthUsers(ctx) {
+    // Get token from cookies
+    const token = cookie(ctx)['x-token']
+
+    // Get logged in user
+    const isLoggedIn = await checkLoggedIn(ctx, token)
+
+    // Redirect user to login page if not logged in
+    if (!isLoggedIn) { redirect(ctx, '/login') }
 }
 
 // Handle redirects

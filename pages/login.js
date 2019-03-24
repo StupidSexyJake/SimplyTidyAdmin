@@ -2,10 +2,7 @@
 import '../src/bootstrap'
 import React from 'react'
 // Authentication
-import {
-    checkLoggedIn,
-    redirect,
-} from '../api/auth'
+import { restrictToPublic } from '../api/auth'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
@@ -100,11 +97,9 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    // Get logged in user
-    const isLoggedIn = await checkLoggedIn(ctx)
-    // Redirect user to home page if already logged in
-    if (isLoggedIn) { redirect(ctx, '/') }
-    // Return empty object (getInitialProps must return an object)
+    // Restrict page access to users NOT logged in already
+    restrictToPublic(ctx)
+    // getInitialProps must return an object
     return {}
 }
 

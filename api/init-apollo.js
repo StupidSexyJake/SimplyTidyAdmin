@@ -57,13 +57,9 @@ function create(initialState, { getTokens }) {
         }
     })
 
-    // Handle errors
-    // const errorLink = () => 
-
     // Concat links
     const link = ApolloLink.from([
         authLink,
-        // errorLink,
         terminatingLink,
     ])
 

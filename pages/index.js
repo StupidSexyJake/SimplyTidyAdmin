@@ -2,10 +2,7 @@
 import '../src/bootstrap'
 import React from 'react'
 // Authentication
-import {
-    checkLoggedIn,
-    redirect,
-} from '../api/auth'
+import { restrictToAuthUsers } from '../api/auth'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 // Global page layout
@@ -32,11 +29,16 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    // Get logged in user
-    const isLoggedIn = await checkLoggedIn(ctx)
-    // Redirect user to login page if not logged in
-    if (!isLoggedIn) { redirect(ctx, '/login') }
-    // Return empty object (getInitialProps must return an object)
+    // Get token from cookies
+    const token = cookie(ctx)['x-token']
+
+    // Check if user is already logged in
+    const isLoggedIn = await checkLoggedIn(ctx, token)
+
+    // Redirect user to home page if already logged in
+    if (!isLoggedIn) { redirect(ctx, '/') }
+
+    // getInitialProps must return an object
     return {}
 }
 

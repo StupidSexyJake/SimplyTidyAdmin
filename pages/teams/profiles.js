@@ -2,6 +2,7 @@
 import '../../src/bootstrap'
 import React from 'react'
 // Authentication
+import cookie from 'next-cookies'
 import {
     redirect,
     checkLoggedIn
@@ -22,11 +23,11 @@ function TeamProfiles() {
     )
 }
 
-TeamProfiles.getInitialProps = async (context) => {
-    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
-    if (!loggedInUser.me) {
-        redirect(context, '/login')
-    }
+// Before page is rendered...
+TeamProfiles.getInitialProps = async ctx => {
+    // Restrict page access to authenticated users only
+    restrictToAuthUsers(ctx)
+    // getInitialProps must return an object
     return {}
 }
 
