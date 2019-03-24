@@ -64,7 +64,6 @@ function create(initialState, { getTokens }) {
         link: ApolloLink.from([
             authLink,
             onError(({ graphQLErrors, networkError, operation, forward }) => {
-                console.log('Error received in initApollo')
                 // If network error, output message to console for debugging
                 if (networkError) console.error(`[Network error]: ${networkError}`)
                 // If graphQL error...
@@ -72,8 +71,10 @@ function create(initialState, { getTokens }) {
                     // If error is due to unathenticated user request and a refresh token is available...
                     const { extensions } = graphQLErrors[0]
                     const refreshToken = getTokens()['x-token-refresh']
-                    console.log('extensions and refreshToken')
-                    console.log(extensions, refreshToken)
+                    console.log('extensions.code === UNATHENTICATED')
+                    console.log(extensions.code === 'UNATHENTICATED')
+                    console.log('extensions.code && refreshToken')
+                    console.log(extensions.code === 'UNATHENTICATED' && refreshToken)
                     if (extensions.code === 'UNATHENTICATED' && refreshToken) {
                         console.log('unauthenticated with refresh token')
                         // Create a new Observerable
