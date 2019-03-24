@@ -67,7 +67,7 @@ export async function refreshAuthToken(refreshToken, client, operation) {
         .then(data => {
             // Save new token to cookies
             console.log('get context')
-            console.log(operation.getContext())
+            console.log(operation.getContext().response)
             operation.setContext({
                 response: {
                     ...operation.getContext().response,
