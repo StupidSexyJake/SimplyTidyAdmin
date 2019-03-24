@@ -66,7 +66,7 @@ export async function refreshAuthToken(refreshToken, client, ctx) {
         // Return new auth token
         .then(data => {
             // Save new token to cookies
-            setCookie(ctx, 'x-token-test', data.refreshAuthToken)
+            setCookie(ctx, 'x-token-test', data.data.refreshAuthToken)
 
             // Return new token
             return data.data.refreshAuthToken
