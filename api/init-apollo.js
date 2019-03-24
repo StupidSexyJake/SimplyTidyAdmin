@@ -73,9 +73,9 @@ function create(initialState, { getTokens }) {
                     // Refresh the auth token
                     refreshAuthToken(refreshToken)
                         // On successful refresh...
-                        .then(() => {
+                        .then((newToken) => {
                             // Save new token to cookies
-                            cookie.set('x-token', data.data.refreshAuthToken.token)
+                            cookie.set('x-token', newToken)
                             // Bind observable subscribers
                             const subscriber = {
                                 next: observer.next.bind(observer),
