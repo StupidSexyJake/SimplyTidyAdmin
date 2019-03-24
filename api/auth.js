@@ -55,7 +55,7 @@ export function signInUser(login, password) {
 }
 
 // Refresh expired auth tokens
-export async function refreshAuthToken(refreshToken, client, ctx) {
+export async function refreshAuthToken(refreshToken, client, operation) {
     // Fetch a new auth token from the server
     await client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
@@ -63,10 +63,10 @@ export async function refreshAuthToken(refreshToken, client, ctx) {
             refreshToken
         }
     })
-        // Return new auth token
+        // On success...
         .then(data => {
             // Save new token to cookies
-            setCookie(ctx, 'x-token-test', data.data.refreshAuthToken)
+            setCookie(operation.getContext(), 'x-token-test', data.data.refreshAuthToken)
 
             // Return new token
             return data.data.refreshAuthToken
