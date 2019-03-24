@@ -71,8 +71,8 @@ export function refreshAuthToken(refreshToken) {
         })
 }
 
-// Restrict page access to authenticated users only
-export function restrictToAuthUsers(ctx) {
+// Restrict page access
+export function restrictPageAccess(ctx, restrictedTo) {
     // Get token from cookies
     const token = cookie(ctx)['x-token']
 
@@ -80,19 +80,10 @@ export function restrictToAuthUsers(ctx) {
     const isLoggedIn = await checkLoggedIn(ctx, token)
 
     // Redirect user to login page if not logged in
-    if (!isLoggedIn) { redirect(ctx, '/login') }
-}
+    if (!isLoggedIn && restrictedTo === 'users') { redirect(ctx, '/login') }
 
-// Restrict page access to NOT authenticated users only
-export function restrictToPublic(ctx) {
-    // Get token from cookies
-    const token = cookie(ctx)['x-token']
-
-    // Get logged in user
-    const isLoggedIn = await checkLoggedIn(ctx, token)
-
-    // Redirect user to login page if not logged in
-    if (isLoggedIn) { redirect(ctx, '/') }
+    // Redirect user to home page if already logged in
+    if (isLoggedIn && restrictedTo === 'public') { redirect(ctx, '/') }
 }
 
 // Handle redirects

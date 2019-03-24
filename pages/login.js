@@ -2,7 +2,7 @@
 import '../src/bootstrap'
 import React from 'react'
 // Authentication
-import { restrictToPublic } from '../api/auth'
+import { restrictPageAccess } from '../api/auth'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
@@ -97,8 +97,8 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    // Restrict page access to NOT authenticated users only
-    restrictToPublic(ctx)
+    // Restrict page access to NOT authenticated users (public) only
+    restrictPageAccess(ctx, 'public')
     // getInitialProps must return an object
     return {}
 }

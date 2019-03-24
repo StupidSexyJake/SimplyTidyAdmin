@@ -2,11 +2,7 @@
 import '../../src/bootstrap'
 import React from 'react'
 // Authentication
-import cookie from 'next-cookies'
-import {
-    redirect,
-    checkLoggedIn
-} from '../../api/auth'
+import { restrictPageAccess } from '../../api/auth'
 // Global page layout
 import Page from '../../sections/global/containers/Page'
 // Page specific sections
@@ -26,7 +22,7 @@ function TeamProfiles() {
 // Before page is rendered...
 TeamProfiles.getInitialProps = async ctx => {
     // Restrict page access to authenticated users only
-    restrictToAuthUsers(ctx)
+    restrictPageAccess(ctx, 'users')
     // getInitialProps must return an object
     return {}
 }
