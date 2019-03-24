@@ -101,11 +101,11 @@ Index.getInitialProps = async ctx => {
     console.log('check logged in')
     console.log(checkLoggedIn(ctx))
     // Check if user is logged in
-    const { loggedInUser } = await checkLoggedIn(ctx)
+    const me = await checkLoggedIn(ctx)
     // If already signed in, redirect to home page
-    if (loggedInUser.me) { redirect(ctx, '/') }
-    // Return the logged in user
-    return { loggedInUser }
+    if (me) { redirect(ctx, '/') }
+    // Return
+    return {}
 }
 
 export default Index

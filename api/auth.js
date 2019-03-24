@@ -18,7 +18,7 @@ export function checkLoggedIn(ctx) {
         .then((data) => {
             console.log('get me results:')
             console.log(data)
-            return { loggedInUser: data }
+            return { data }
         })
 
         // Return no user on verification failure
@@ -26,7 +26,7 @@ export function checkLoggedIn(ctx) {
             console.error('Error in catch of checkLoggedIn() in auth.js:')
             console.error(error)
             console.log('*****************')
-            return { loggedInUser: {} }
+            return {}
         })
 }
 
