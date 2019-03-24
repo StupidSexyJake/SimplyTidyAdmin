@@ -7,7 +7,7 @@ import {
 import cookie from 'next-cookies'
 
 // Check if user is logged in
-export function checkLoggedIn(token) {
+export function checkLoggedIn(ctx, token) {
     // Return false if no auth token provided
     if (!token) { return false }
 
@@ -52,7 +52,7 @@ export function signInUser(login, password) {
 }
 
 // Refresh expired auth tokens
-export function refreshAuthToken(refreshToken) {
+export function refreshAuthToken(refreshToken, client) {
     // Fetch a new auth token from the server
     client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
@@ -77,7 +77,7 @@ export function restrictPageAccess(ctx, restrictedTo) {
     const token = cookie(ctx)['x-token']
 
     // Get logged in user
-    const isLoggedIn = await checkLoggedIn(ctx, token)
+    const isLoggedIn = checkLoggedIn(ctx, token)
 
     // Redirect user to login page if not logged in
     if (!isLoggedIn && restrictedTo === 'users') { redirect(ctx, '/login') }
