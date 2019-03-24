@@ -18,7 +18,9 @@ export async function checkLoggedIn(ctx, token) {
         query: GET_ME,
     })
         // Return logged in user on verification success
-        .then(() => {
+        .then((data) => {
+            console.log('get me results:')
+            console.log(data)
             return { loggedInUser: data }
         })
 
