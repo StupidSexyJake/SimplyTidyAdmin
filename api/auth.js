@@ -15,7 +15,7 @@ export function checkLoggedIn(ctx) {
         query: GET_ME,
     })
         // Return logged in user on verification success
-        .then((data) => {
+        .then(({ data }) => {
             console.log('get me results:')
             console.log(data)
             return { data }
