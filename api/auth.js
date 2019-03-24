@@ -34,7 +34,7 @@ export async function checkLoggedIn(ctx, token) {
 }
 
 // Attempt to sign in user
-export async function signInUser(login, password, client) {
+export function signInUser(login, password, client) {
     console.log('logging in...')
     // Attempt to sign in
     client.query({

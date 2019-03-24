@@ -45,7 +45,7 @@ function SignInFormContainer({ client }) {
         const password = formData.get('password')
         console.log('signing in')
         // Attempt to sign in
-        signInUser(login, password, client)
+        await signInUser(login, password, client)
             // On successful sign-in
             .then(({ token, refreshToken }) => {
                 console.log('login success')
