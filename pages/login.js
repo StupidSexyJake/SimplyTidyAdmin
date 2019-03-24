@@ -2,7 +2,7 @@
 import '../src/bootstrap'
 import React from 'react'
 // Authentication
-import { restrictPageAccess } from '../api/auth'
+import { checkLoggedIn, redirect } from '../api/auth'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
@@ -97,10 +97,12 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    // Restrict page access to NOT authenticated users (public) only
-    restrictPageAccess(ctx, 'public')
-    // getInitialProps must return an object
-    return {}
+    // Check if user is logged in
+    const { loggedInUser } = await checkLoggedIn(ctx.apolloClient)
+    // If already signed in, redirect to home page
+    if (loggedInUser.me) { redirect(ctx, '/') }
+    // Return the logged in user
+    return { loggedInUser }
 }
 
 export default Index
