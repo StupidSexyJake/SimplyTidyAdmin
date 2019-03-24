@@ -76,13 +76,19 @@ function create(initialState, { getTokens }) {
                         // Create a new Observerable
                         return new Observable(async observer => {
                             // Refresh the auth token
-                            refreshAuthToken(refreshToken, client)
+                            await client.mutate({
+                                mutation: REFRESH_AUTH_TOKEN,
+                                variables: {
+                                    refreshToken
+                                }
+                            })
                                 // On successful refresh...
-                                .then((newToken) => {
+                                .then(({ data }) => {
                                     console.log('newToken')
-                                    console.log(newToken)
+                                    console.log(data)
+                                    console.log(data.refreshAuthToken)
                                     // Save new token to cookies
-                                    cookie.set('x-token', newToken)
+                                    cookie.set('x-token', data.refreshAuthToken)
                                     cookie.set('newtest', 'test')
 
                                     // Bind observable subscribers
@@ -98,6 +104,9 @@ function create(initialState, { getTokens }) {
 
                                 // Force user to login if refresh fails
                                 .catch(error => {
+                                    console.error('Error received in onError link in init-apollo')
+                                    console.error(error)
+                                    console.log('*****************')
                                     observer.error(error)
                                 })
                         })
