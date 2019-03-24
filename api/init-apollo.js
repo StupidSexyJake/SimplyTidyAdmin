@@ -13,7 +13,6 @@ import { onError } from 'apollo-link-error'
 import cookie from 'js-cookie'
 import { refreshAuthToken } from './auth'
 
-
 let apolloClient = null
 
 // Polyfill fetch() on the server (used by apollo-client)
@@ -95,16 +94,22 @@ function create(initialState, { getTokens }) {
         }
     })
 
+    // Concat links
+    const link = ApolloLink.from([
+        authLink,
+        errorLink,
+        terminatingLink,
+    ]),
+
+    // Create cache
+    const cache = new InMemoryCache().restore(initialState || {}),
+
     // Create Apollo Client
     const client = new ApolloClient({
         connectToDevTools: process.browser,
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-        link: ApolloLink.from([
-            authLink,
-            errorLink,
-            terminatingLink,
-        ]),
-        cache: new InMemoryCache().restore(initialState || {}),
+        link,
+        cache
     })
     return client
 }
