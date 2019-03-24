@@ -7,12 +7,12 @@ import {
 import cookie from 'next-cookies'
 
 // Check if user is logged in
-export function checkLoggedIn(ctx, token) {
+export async function checkLoggedIn(ctx, token) {
     // Return false if no auth token provided
     if (!token) { return false }
 
     // Verify auth token with server (auth token sent in request headers in ./init-apollo.js)
-    ctx.apolloClient.query({
+    await ctx.apolloClient.query({
         query: GET_ME,
     })
         // Return true on verification success
@@ -62,6 +62,8 @@ export async function refreshAuthToken(refreshToken, client) {
     })
         // Return new auth token
         .then(data => {
+            console.log('returning new auth token')
+            console.log(data.data.refreshAuthToken)
             return data.data.refreshAuthToken
         })
 
