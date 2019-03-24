@@ -43,7 +43,7 @@ function SignInFormContainer({ client }) {
         const formData = new window.FormData(form)
         const login = formData.get('login')
         const password = formData.get('password')
-
+        console.log('signing in')
         // Attempt to sign in
         signInUser(login, password)
             // On successful sign-in
