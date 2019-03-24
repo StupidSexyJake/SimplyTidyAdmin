@@ -2,7 +2,7 @@ import cookie from 'next-cookies'
 import { GET_ME } from './graphql'
 
 // Function: check if user is logged in
-export const isLoggedIn = ctx => {
+export default isLoggedIn = ctx => {
     // Get auth token from cookies
     const token = cookie(ctx)['x-token']
 
