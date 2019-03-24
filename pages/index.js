@@ -30,7 +30,7 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    cookies.set('test', 'test')
+    cookie.set('test', 'test')
     // Restrict page access to authenticated users only
     restrictPageAccess(ctx, 'users')
     // getInitialProps must return an object
