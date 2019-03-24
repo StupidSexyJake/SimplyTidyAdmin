@@ -24,7 +24,7 @@ Index.getInitialProps = async ctx => {
     // Check if user is logged in
     const { loggedInUser } = await checkLoggedIn(ctx.apolloClient)
     // If not signed in, redirect to login page
-    if (loggedInUser.me) { redirect(ctx, '/') }
+    if (!loggedInUser.me) { redirect(ctx, '/login') }
     // Return the logged in user
     return { loggedInUser }
 }
