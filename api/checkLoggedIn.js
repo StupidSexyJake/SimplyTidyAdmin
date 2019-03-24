@@ -16,7 +16,10 @@ export default function checkLoggedin(ctx) {
         })
 
         // Return true on verification success
-        .then(() => { return true })
+        .then((data) => {
+            console.log(data)
+            return true
+        })
 
         // Return false on verification failure
         .catch(() => { return false })
