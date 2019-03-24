@@ -28,6 +28,7 @@
     "next-cookies": "^1.1.2",
     "next-optimized-images": "^2.3.3",
     "next-size": "^2.0.2",
+    "nookies": "^2.0.4",
     "pg": "^7.8.1",
     "prop-types": "^15.6.2",
     "react": "^16.8.3",
