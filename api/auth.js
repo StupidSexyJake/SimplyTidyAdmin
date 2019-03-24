@@ -42,6 +42,8 @@ export function signInUser(login, password) {
     })
         // On successful login...
         .then((data) => {
+            console.log('success login')
+            console.log(data)
             // Force a reload of all the current queries
             client.cache.reset()
             // Return new tokens
