@@ -34,7 +34,7 @@ function SignInFormContainer({ client }) {
     }
 
     // Handle form submit
-    const onSubmit = async (event) => {
+    const onSubmit = async (event, signIn) => {
         // Prevent default form behaviour
         event.preventDefault()
 
@@ -45,19 +45,28 @@ function SignInFormContainer({ client }) {
         const password = formData.get('password')
         console.log('signing in')
         // Attempt to sign in
-        await signInUser(login, password, client)
+        signIn({
+            variables: {
+                login,
+                password
+            }
+        })
             // On successful sign-in
-            .then(({ token, refreshToken }) => {
+            .then(data => {
                 console.log('login success')
                 // Save tokens in cookies
-                cookie.set('x-token', token)
-                cookie.set('x-token-refresh', refreshToken)
+                cookie.set('x-token', data.data.signIn.token)
+                cookie.set('x-token-refresh', data.data.signIn.refreshToken)
 
                 // Reset user login state
                 dispatch(resetState('user'))
 
-                // Redirect user to homepage
-                redirect({}, '/')
+                // Force a reload of all the current queries
+                client.cache.reset()
+                    // Redirect user to homepage
+                    .then(() => {
+                        redirect({}, '/')
+                    })
             })
             .catch(error => {
                 console.log('error logging in:')
