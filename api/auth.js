@@ -55,7 +55,7 @@ export function signInUser(login, password) {
 }
 
 // Refresh expired auth tokens
-export async function refreshAuthToken(refreshToken, client, operation) {
+export async function refreshAuthToken(refreshToken, client, ctx) {
     // Fetch a new auth token from the server
     await client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
@@ -66,21 +66,9 @@ export async function refreshAuthToken(refreshToken, client, operation) {
         // On success...
         .then(data => {
             // Save new token to cookies
-            console.log('get context')
-            console.log(operation.getContext().response.Response)
-            operation.setContext({
-                response: {
-                    ...operation.getContext().response,
-                    Response: {
-                        ...operation.getContext().response.Response,
-                        headers: {
-                            ...operation.getContext.response.Response.headers,
-                            'Set-Cookie': 'test=test'
-                        }
-                    }
-                }
-            })
-            setCookie(operation.getContext(), 'x-token-test', data.data.refreshAuthToken)
+            console.log('process.browser')
+            console.log(process.browser)
+            setCookie(ctx, 'x-token-test', data.data.refreshAuthToken)
 
             // Return new token
             return data.data.refreshAuthToken
