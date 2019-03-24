@@ -85,9 +85,8 @@ function create(initialState, { getTokens }) {
                             })
                                 // On successful refresh...
                                 .then(({ data }) => {
-                                    console.log('newToken')
-                                    console.log(data)
-                                    console.log(data.refreshAuthToken)
+                                    console.log('cookie.set')
+                                    console.log(cookie.set('new test', 'test'))
                                     // Save new token to cookies
                                     cookie.set('x-token', data.refreshAuthToken)
                                     cookie.set('newtest', 'test')
