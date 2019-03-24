@@ -48,6 +48,8 @@ function SignInFormContainer({ client }) {
         signInUser(login, password)
             // On successful sign-in
             .then(({ token, refreshToken }) => {
+                console.log('process.browser')
+                console.log(process.browser)
                 // Save tokens in cookies
                 cookie.set('x-token', token)
                 cookie.set('x-token-refresh', refreshToken)
