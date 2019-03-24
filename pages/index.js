@@ -3,8 +3,6 @@ import '../src/bootstrap'
 import React from 'react'
 // Authentication
 import { restrictPageAccess } from '../api/auth'
-import cookie from 'js-cookie'
-import { parseCookies, setCookie, destroyCookie } from 'nookies'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 // Global page layout
@@ -31,8 +29,6 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    cookie.set('test', 'test')
-    setCookie(ctx, 'test', 'test')
     // Restrict page access to authenticated users only
     restrictPageAccess(ctx, 'users')
     // getInitialProps must return an object

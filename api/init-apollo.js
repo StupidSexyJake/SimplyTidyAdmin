@@ -11,7 +11,7 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 // Authorisation
 import { REFRESH_AUTH_TOKEN } from './graphql'
-import cookie from 'js-cookie'
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { refreshAuthToken } from './auth'
 
 let apolloClient = null
@@ -21,7 +21,7 @@ if (!process.browser) {
     global.fetch = fetch
 }
 
-function create(initialState, { getTokens }) {
+function create(initialState, { getTokens, ctx }) {
     // Create a WebSocket link
     const wsLink = process.browser ? new WebSocketLink({
         uri: `ws://108.61.96.127:8000/graphql`,
@@ -86,10 +86,9 @@ function create(initialState, { getTokens }) {
                                 // On successful refresh...
                                 .then(({ data }) => {
                                     // Save new token to cookies
-                                    cookie.set('x-token', data.refreshAuthToken)
-                                    cookie.set('newtest', 'test')
-                                    console.log('process.browser')
-                                    console.log(process.browser)
+                                    console.log('ctx:')
+                                    console.log(ctx)
+                                    setCookie(ctx, 'test', 'test')
 
                                     // Bind observable subscribers
                                     const subscriber = {

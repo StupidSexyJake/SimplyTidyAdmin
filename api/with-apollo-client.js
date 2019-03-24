@@ -21,7 +21,8 @@ export default App => {
             const apollo = initApollo(
                 {},
                 {
-                    getTokens: () => parseCookies(req)
+                    getTokens: () => parseCookies(req),
+                    ctx: ctx
                 }
             )
 
@@ -80,7 +81,8 @@ export default App => {
                 {
                     getTokens: () => {
                         return parseCookies()
-                    }
+                    },
+                    ctx: ctx
                 }
             )
         }
