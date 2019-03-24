@@ -52,7 +52,7 @@ export function signInUser(login, password) {
 }
 
 // Refresh expired auth tokens
-export function refreshAuthToken(refreshToken, client) {
+export async function refreshAuthToken(refreshToken, client) {
     // Fetch a new auth token from the server
     client.mutate({
         mutation: REFRESH_AUTH_TOKEN,

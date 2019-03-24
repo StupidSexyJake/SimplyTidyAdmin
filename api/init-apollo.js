@@ -76,7 +76,7 @@ function create(initialState, { getTokens }) {
                         // Create a new Observerable
                         return new Observable(async observer => {
                             // Refresh the auth token
-                            await refreshAuthToken(refreshToken, client)
+                            refreshAuthToken(refreshToken, client)
                                 // On successful refresh...
                                 .then((newToken) => {
                                     console.log('new auth token')
