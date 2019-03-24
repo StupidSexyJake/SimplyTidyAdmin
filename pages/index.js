@@ -30,8 +30,10 @@ function Index() {
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
     console.log('home page getInitialProps hit')
+    // Get token    
+    const token = nextCookie(ctx)['x-token']
     // Check if user is logged in
-    const { loggedInUser } = await checkLoggedIn(ctx.apolloClient)
+    const { loggedInUser } = await checkLoggedIn(ctx.apolloClient, token)
     console.log('loggedInUser')
     console.log(loggedInUser)
     // If not signed in, redirect to login page
