@@ -73,11 +73,11 @@ function create(initialState, { getTokens }) {
                     const refreshToken = getTokens()['x-token-refresh']
                     console.log('extension code')
                     console.log(extensions.code)
-                    console.log('extensions.code === UNATHENTICATED')
-                    console.log(extensions.code === 'UNATHENTICATED')
+                    console.log('extensions.code === UNAUTHENTICATED')
+                    console.log(extensions.code === 'UNAUTHENTICATED')
                     console.log('extensions.code && refreshToken')
-                    console.log(extensions.code === 'UNATHENTICATED' && refreshToken)
-                    if (extensions.code === 'UNATHENTICATED' && refreshToken) {
+                    console.log(extensions.code === 'UNAUTHENTICATED' && refreshToken)
+                    if (extensions.code === 'UNAUTHENTICATED' && refreshToken) {
                         console.log('unauthenticated with refresh token')
                         // Create a new Observerable
                         return new Observable(async observer => {
