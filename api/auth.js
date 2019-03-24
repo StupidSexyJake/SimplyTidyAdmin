@@ -71,9 +71,12 @@ export async function refreshAuthToken(refreshToken, client, operation) {
             operation.setContext({
                 response: {
                     ...operation.getContext().response,
-                    headers: {
-                        ...operation.getContext.response.headers,
-                        'Set-Cookie': 'test=test'
+                    Response: {
+                        ...operation.getContext().response.Response,
+                        headers: {
+                            ...operation.getContext.response.Response.headers,
+                            'Set-Cookie': 'test=test'
+                        }
                     }
                 }
             })
