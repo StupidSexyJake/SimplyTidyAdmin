@@ -82,7 +82,6 @@ export default App => {
                     getTokens: () => {
                         return parseCookies()
                     },
-                    ctx: ctx
                 }
             )
         }
