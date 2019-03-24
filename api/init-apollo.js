@@ -78,12 +78,7 @@ function create(initialState, { getTokens }) {
                             // Refresh the auth token
                             refreshAuthToken(refreshToken, client)
                                 // On successful refresh...
-                                .then(newToken => {
-                                    console.log('new auth token')
-                                    console.log(newToken)
-                                    // Save new token to cookies
-                                    cookie.set('x-token', newToken)
-
+                                .then(() => {
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
@@ -91,7 +86,6 @@ function create(initialState, { getTokens }) {
                                         complete: observer.complete.bind(observer)
                                     }
 
-                                    console.log('retrying last request')
                                     // Retry last failed request
                                     forward(operation).subscribe(subscriber)
                                 })

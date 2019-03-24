@@ -4,7 +4,8 @@ import {
     USER_SIGN_IN,
     REFRESH_AUTH_TOKEN,
 } from './graphql'
-import cookie from 'next-cookies'
+import nextCookie from 'next-cookies'
+import cookie from 'js-cookie'
 
 // Check if user is logged in
 export async function checkLoggedIn(ctx, token) {
@@ -62,8 +63,10 @@ export async function refreshAuthToken(refreshToken, client) {
     })
         // Return new auth token
         .then(data => {
-            console.log('returning new auth token')
-            console.log(data.data.refreshAuthToken)
+            // Save new token to cookies
+            cookie.set('x-token', data.data.refreshAuthToken)
+
+            // Return new token
             return data.data.refreshAuthToken
         })
 
@@ -78,7 +81,7 @@ export async function refreshAuthToken(refreshToken, client) {
 // Restrict page access
 export function restrictPageAccess(ctx, restrictedTo) {
     // Get token from cookies
-    const token = cookie(ctx)['x-token']
+    const token = nextCookie(ctx)['x-token']
 
     // Get logged in user
     const isLoggedIn = checkLoggedIn(ctx, token)
