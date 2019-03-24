@@ -71,14 +71,7 @@ function create(initialState, { getTokens }) {
                     // If error is due to unathenticated user request and a refresh token is available...
                     const { extensions } = graphQLErrors[0]
                     const refreshToken = getTokens()['x-token-refresh']
-                    console.log('extension code')
-                    console.log(extensions.code)
-                    console.log('extensions.code === UNAUTHENTICATED')
-                    console.log(extensions.code === 'UNAUTHENTICATED')
-                    console.log('extensions.code && refreshToken')
-                    console.log(extensions.code === 'UNAUTHENTICATED' && refreshToken)
                     if (extensions.code === 'UNAUTHENTICATED' && refreshToken) {
-                        console.log('unauthenticated with refresh token')
                         // Create a new Observerable
                         return new Observable(async observer => {
                             // Refresh the auth token
