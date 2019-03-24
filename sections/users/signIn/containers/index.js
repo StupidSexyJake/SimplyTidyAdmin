@@ -9,7 +9,7 @@ import {
 // API and authentication
 import cookie from 'js-cookie'
 import {
-    signIn,
+    signInUser,
     redirect,
 } from '../../../../api/auth'
 import {
