@@ -66,9 +66,7 @@ export async function refreshAuthToken(refreshToken, client, ctx) {
         // On success...
         .then(data => {
             // Save new token to cookies
-            console.log('process.browser')
-            console.log(process.browser)
-            setCookie(ctx, 'x-token-test', data.data.refreshAuthToken)
+            setCookie(ctx.apolloClient, 'x-token-test', data.data.refreshAuthToken)
 
             // Return new token
             return data.data.refreshAuthToken
