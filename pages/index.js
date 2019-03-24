@@ -29,11 +29,11 @@ function Index() {
 }
 
 Index.getInitialProps = async (context) => {
-    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
-    if (!loggedInUser.me) {
+    const isLoggedIn = await checkLoggedIn(ctx)
+    if (!isLoggedIn) {
         redirect(context, '/login')
     }
-    return { loggedInUser }
+    return
 }
 
 export default Index
