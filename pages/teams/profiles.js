@@ -2,8 +2,10 @@
 import '../../src/bootstrap'
 import React from 'react'
 // Authentication
-import redirect from '../../api/redirect'
-import checkLoggedIn from '../../api/checkLoggedIn'
+import {
+    redirect,
+    checkLoggedIn
+} from '../../api/auth'
 // Global page layout
 import Page from '../../sections/global/containers/Page'
 // Page specific sections
