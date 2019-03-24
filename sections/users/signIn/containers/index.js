@@ -7,6 +7,7 @@ import {
     resetState,
 } from '../../../../state/actions'
 // API and authentication
+import cookie from 'js-cookie'
 import redirect from '../../../../api/redirect'
 import {
     Mutation,
