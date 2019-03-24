@@ -5,7 +5,6 @@ import { Store } from '../../../../state/store'
 import {
     handleClick,
     resetState,
-    openSnackbar
 } from '../../../../state/actions'
 // API and authentication
 import redirect from '../../../../api/redirect'
@@ -27,49 +26,44 @@ function SignInFormContainer({ client }) {
     // Handle login value changes
     const onChange = event => {
         const { name, value } = event.target
-        if (value.length === 0 || value.length === 1) return dispatch(handleClick('user', name, value.length))
+        dispatch(handleClick('user', name, value.length))
     }
 
     // Handle form submit
     const onSubmit = async (event, signIn) => {
-        console.log
         // Prevent default form behaviour
         event.preventDefault()
+
         // Get login values from form
         const form = event.target
         const formData = new window.FormData(form)
         const login = formData.get('login')
         const password = formData.get('password')
+
         // Sign in
-        console.log('attempting to sign in')
         await signIn({ variables: { login, password } })
-            .then(async data => {
-                // // Store the tokens
-                // localStorage.setItem('x-token', data.data.signIn.token)
-                // localStorage.setItem('x-token-refresh', data.data.signIn.refreshToken)
+            // On successful login...
+            .then(({ data }) => {
+                console.log('sign in data results:')
+                console.log(data)
+
+                // Store tokens in cookies
+                cookie.set('x-token', data.token)
+                cookie.set('x-token-refresh', data.refreshToken)
+
                 // Reset user login state
                 dispatch(resetState('user'))
+
                 // Force a reload of all the current queries
                 client.cache.reset()
+
                     // Redirect client back to homepage
-                    .then(() => {
-                        console.log('redirecting home')
-                        redirect({}, '/')
-                    })
+                    .then(() => { redirect({}, '/') })
             })
+            // Return error message on login fail for debugging
             .catch(error => {
                 console.log('sign in failed. error:')
                 console.log(error)
-                // Handle error messages
-                if (error.message === 'GraphQL error: No user found with this login credentials.') {
-                    dispatch(handleClick('user', 'invalidLogin', true))
-                    dispatch(openSnackbar(
-                        true,
-                        'error',
-                        'Invalid login details',
-                        ''
-                    ))
-                }
             })
     }
 

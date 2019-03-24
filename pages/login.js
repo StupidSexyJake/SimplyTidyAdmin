@@ -3,7 +3,7 @@ import '../src/bootstrap'
 import React from 'react'
 // Authentication
 import redirect from '../api/redirect'
-import checkLoggedIn from '../api/checkLoggedIn'
+import checkLoggedIn from '../api/checkLoggedInkLoggedIn'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
@@ -96,12 +96,12 @@ function Index() {
     )
 }
 
-Index.getInitialProps = async (context) => {
-    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
-    if (loggedInUser.me) {
-        console.log('redirected home')
-        redirect(context, '/')
-    }
+// Before page is rendered...
+Index.getInitialProps = async ctx => {
+    // Get logged in user
+    const isLoggedIn = await checkLoggedIn(ctx)
+    // Redirect user to home page if already logged in
+    if (isLoggedIn) { redirect(ctx, '/') }
     return {}
 }
 

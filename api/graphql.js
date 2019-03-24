@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 //
-// :::::::::::
-// Users
-// :::::::::::
+// ::::::::::::::::::::::
+// Users & Authentication
+// ::::::::::::::::::::::
 export const GET_ME = gql`
     {
         me {
@@ -30,9 +30,9 @@ export const USER_SIGN_IN = gql`
     }
 `
 //
-// :::::::::::
+// ::::::::::::::::::::::
 // Teams
-// :::::::::::
+// ::::::::::::::::::::::
 //
 // Create
 export const CREATE_TEAM = gql`

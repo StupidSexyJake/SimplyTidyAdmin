@@ -1,19 +1,23 @@
+import cookie from 'next-cookies'
 import { GET_ME } from './graphql'
 
-export default apolloClient => {
-    console.log('checking logged in')
-    return apolloClient
+// Function: check if user is logged in
+export const isLoggedIn = ctx => {
+    // Get auth token from cookies
+    const token = cookie(ctx)['x-token']
+
+    // Return false if no auth token provided
+    if (!token) { return false }
+
+    // Verify auth token with server (auth token sent in request headers in ./init-apollo.js)
+    return ctx.apolloClient
         .query({
-            query: GET_ME
+            query: GET_ME,
         })
-        .then(({ data }) => {
-            console.log('Got "me"')
-            console.log(data)
-            return { loggedInUser: data }
-        })
-        .catch((err) => {
-            console.log('Me not found - checkLoggedIn')
-            console.log(err)
-            return { loggedInUser: {} }
-        })
+
+        // Return true on verification success
+        .then(() => { return true })
+
+        // Return false on verification failure
+        .catch(() => { return false })
 }

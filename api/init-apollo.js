@@ -11,7 +11,6 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 // GraphQL
 import { REFRESH_AUTH_TOKEN } from './graphql'
-// Authentication
 
 let apolloClient = null
 
@@ -95,17 +94,17 @@ function create(initialState, { getTokens }) {
                 if (networkError) console.error(`[Network error]: ${networkError}`)
                 // If graphQL error...
                 if (graphQLErrors) {
-                    // Get error details
-                    const { extensions } = graphQLErrors[0]
+                    // Get error code
+                    const { extensions: { code } } = graphQLErrors[0]
                     // Only continue if a refresh and auth token is available
-                    const refreshToken = getTokens()['x-token-refresh']
                     const authToken = getTokens()['x-token']
-                    if (refreshToken && authToken) {
+                    const refreshToken = getTokens()['x-token-refresh']
+                    if (authToken && refreshToken) {
                         // If error is due to being unathenticated...
-                        if (extensions.code === 'UNAUTHENTICATED') {
+                        if (code === 'UNAUTHENTICATED') {
                             // Create a new Observer
                             return new Observable(async observer => {
-                                // Refresh auth token
+                                // Refresh the auth token
                                 fetchNewAuthToken(refreshToken, operation)
                                     .then(() => {
                                         // Bind observable subscribers
@@ -135,16 +134,13 @@ function create(initialState, { getTokens }) {
 
 
 export default function initApollo(initialState, options) {
-    // Make sure to create a new client for every server-side request so that data
-    // isn't shared between connections (which would be bad)
+    // Make sure to create a new client for every server-side request so that data isn't shared between connections
     if (!process.browser) {
         return create(initialState, options)
     }
-
     // Reuse client on the client-side
     if (!apolloClient) {
         apolloClient = create(initialState, options)
     }
-
     return apolloClient
 }
