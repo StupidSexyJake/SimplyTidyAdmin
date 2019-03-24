@@ -86,9 +86,13 @@ function create(initialState, { getTokens, ctx }) {
                                 // On successful refresh...
                                 .then(({ data }) => {
                                     // Save new token to cookies
-                                    console.log('ctx:')
-                                    console.log(ctx)
-                                    setCookie(ctx, 'test', 'test')
+                                    console.log('refresh token for cookies:')
+                                    console.log(data.refreshAuthToken)
+                                    try { setCookie(ctx, 'x-token-test', data.refreshAuthToken) }
+                                    catch (error) {
+                                        console.log('error setting cookie:')
+                                        console.log(error)
+                                    }
 
                                     // Bind observable subscribers
                                     const subscriber = {
