@@ -58,6 +58,10 @@ function SignInFormContainer({ client }) {
                 // Redirect user to homepage
                 redirect({}, '/')
             })
+            .catch(error => {
+                console.log('error logging in:')
+                console.log(error)
+            })
     }
 
     // Handle show/hide password
