@@ -22,7 +22,7 @@ function TeamProfiles() {
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
     // Check if user is logged in
-    const { loggedInUser } = await checkLoggedIn(ctx.apolloClient)
+    const { loggedInUser } = await checkLoggedIn(ctx)
     // If not signed in, redirect to login page
     if (!loggedInUser.me) { redirect(ctx, '/login') }
     // Return the logged in user

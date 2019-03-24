@@ -2,7 +2,6 @@
 import '../src/bootstrap'
 import React from 'react'
 // Authentication
-import nextCookie from 'next-cookies'
 import { checkLoggedIn, redirect } from '../api/auth'
 // Material components
 import { makeStyles } from '@material-ui/styles'
@@ -30,13 +29,8 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    console.log('home page getInitialProps hit')
-    // Get token    
-    const token = nextCookie(ctx)['x-token']
     // Check if user is logged in
-    const { loggedInUser } = await checkLoggedIn(ctx.apolloClient, token)
-    console.log('loggedInUser')
-    console.log(loggedInUser)
+    const { loggedInUser } = await checkLoggedIn(ctx)
     // If not signed in, redirect to login page
     if (!loggedInUser.me) { redirect(ctx, '/login') }
     // Return the logged in user
