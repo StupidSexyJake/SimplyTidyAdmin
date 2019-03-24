@@ -54,7 +54,7 @@ export function signInUser(login, password) {
 // Refresh expired auth tokens
 export async function refreshAuthToken(refreshToken, client) {
     // Fetch a new auth token from the server
-    client.mutate({
+    await client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
         variables: {
             refreshToken

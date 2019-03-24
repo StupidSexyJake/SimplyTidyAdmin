@@ -78,7 +78,7 @@ function create(initialState, { getTokens }) {
                             // Refresh the auth token
                             refreshAuthToken(refreshToken, client)
                                 // On successful refresh...
-                                .then((newToken) => {
+                                .then(newToken => {
                                     console.log('new auth token')
                                     console.log(newToken)
                                     // Save new token to cookies
