@@ -1,7 +1,6 @@
 import Router from 'next/router'
 import {
     GET_ME,
-    USER_SIGN_IN,
     REFRESH_AUTH_TOKEN,
 } from './graphql'
 import nextCookie from 'next-cookies'
@@ -23,9 +22,9 @@ export function checkLoggedIn(ctx) {
 }
 
 // Refresh expired auth tokens
-export async function refreshAuthToken(refreshToken, client) {
+export function refreshAuthToken(refreshToken, client) {
     // Fetch a new auth token from the server
-    await client.mutate({
+    return client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
         variables: {
             refreshToken

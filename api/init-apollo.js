@@ -63,44 +63,46 @@ function create(initialState, { getTokens, ctx }) {
         ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
         link: ApolloLink.from([
             authLink,
-            // onError(({ graphQLErrors, networkError, operation, forward }) => {
-            //     // If network error, output message to console for debugging
-            //     if (networkError) console.error(`[Network error]: ${networkError}`)
-            //     // If graphQL error...
-            //     if (graphQLErrors) {
-            //         // If error is due to unathenticated user request and a refresh token is available...
-            //         const { extensions } = graphQLErrors[0]
-            //         const refreshToken = getTokens()['x-token-refresh']
-            //         if (extensions.code === 'UNAUTHENTICATED' && refreshToken) {
-            //             // Create a new Observerable
-            //             return new Observable(async observer => {
-            //                 // Refresh the auth token
-            //                 await refreshAuthToken(refreshToken, client)
-            //                     // On successful refresh...
-            //                     .then((newToken) => {
-            //                         // Update cookies with new token                                    
-            //                         setCookie(ctx, 'x-token-test', 'test')
-            //                         // Bind observable subscribers
-            //                         const subscriber = {
-            //                             next: observer.next.bind(observer),
-            //                             error: observer.error.bind(observer),
-            //                             complete: observer.complete.bind(observer)
-            //                         }
-            //                         // Retry last failed request
-            //                         forward(operation).subscribe(subscriber)
-            //                     })
-            //                     // Force user to login if refresh fails
-            //                     .catch(error => {
-            //                         console.error('Error received in onError link in init-apollo')
-            //                         console.error(error)
-            //                         console.log('*****************')
-            //                         observer.error(error)
-            //                     })
-            //             })
+            onError(({ graphQLErrors, networkError, operation, forward }) => {
+                // If network error, output message to console for debugging
+                if (networkError) console.error(`[Network error]: ${networkError}`)
+                // If graphQL error...
+                if (graphQLErrors) {
+                    // If error is due to unathenticated user request and a refresh token is available...
+                    const { extensions } = graphQLErrors[0]
+                    const refreshToken = getTokens()['x-token-refresh']
+                    if (extensions.code === 'UNAUTHENTICATED' && refreshToken) {
+                        // Create a new Observerable
+                        return new Observable(async observer => {
+                            // Refresh the auth token
+                            refreshAuthToken(refreshToken, client)
+                                // On successful refresh...
+                                .then((newToken) => {
+                                    console.log('new token returned:')
+                                    console.log(newToken)
+                                    // Update cookies with new token                                    
+                                    setCookie(ctx, 'x-token-test', newToken)
+                                    // Bind observable subscribers
+                                    const subscriber = {
+                                        next: observer.next.bind(observer),
+                                        error: observer.error.bind(observer),
+                                        complete: observer.complete.bind(observer)
+                                    }
+                                    // Retry last failed request
+                                    forward(operation).subscribe(subscriber)
+                                })
+                                // Force user to login if refresh fails
+                                .catch(error => {
+                                    console.error('Error received in onError link in init-apollo')
+                                    console.error(error)
+                                    console.log('*****************')
+                                    observer.error(error)
+                                })
+                        })
 
-            //         }
-            //     }
-            // }),
+                    }
+                }
+            }),
             terminatingLink,
         ]),
         cache: new InMemoryCache().restore(initialState || {})
