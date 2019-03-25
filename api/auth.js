@@ -34,8 +34,12 @@ export function signInUser(login, password, client) {
         .then(({ data }) => {
             // Force a reload of all the current queries
             client.cache.reset()
+                .then(() => {
+                    // Redirect user to homepage
+                    redirect({}, '/')
+                })
             // Return new tokens
-            return data.data.signIn
+            return data.signIn
         })
         // Return error message on login fail for debugging
         .catch(error => {

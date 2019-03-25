@@ -9,6 +9,7 @@ import {
 // API and authentication
 import cookie from 'js-cookie'
 import {
+    signInUser,
     redirect,
 } from '../../../../api/auth'
 import {
@@ -44,27 +45,7 @@ function SignInFormContainer({ client }) {
         const login = formData.get('login')
         const password = formData.get('password')
         // Attempt to sign in
-        signIn({
-            variables: {
-                login,
-                password
-            }
-        })
-            // On successful sign-in
-            .then(() => {
-                // Reset user login state
-                dispatch(resetState('user'))
-                // Force a reload of all the current queries
-                client.cache.reset()
-                    .then(() => {
-                        // Redirect user to homepage
-                        redirect({}, '/')
-                    })
-            })
-            .catch(error => {
-                console.log('error logging in:')
-                console.log(error)
-            })
+        signInUser(login, password, client)
     }
 
     // Handle show/hide password
