@@ -20,7 +20,7 @@ function TeamProfiles() {
 }
 
 // Before page is rendered...
-Index.getInitialProps = async ctx => {
+TeamProfiles.getInitialProps = async ctx => {
     // Check if user is logged in
     const { loggedInUser } = await checkLoggedIn(ctx)
     console.log(loggedInUser)
