@@ -22,17 +22,9 @@ export function checkLoggedIn(ctx) {
 }
 
 // Refresh expired auth tokens
-export function refreshAuthToken(refreshToken, client, ctx, operation) {
+export function refreshAuthToken(refreshToken, client, ctx) {
     // Delete current auth token
     destroyCookie(ctx, 'x-token')
-    // Remove current auth token from headers
-    const oldHeaders = operation.getContext().headers
-    operation.setContext({
-        headers: {
-            ...oldHeaders,
-            'x-token': '',
-        },
-    })
     // Fetch a new auth token from the server
     return client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
