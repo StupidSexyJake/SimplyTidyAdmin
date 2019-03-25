@@ -71,7 +71,6 @@ function SignInFormContainer({ client }) {
     const onShowHidePassword = () => {
         dispatch(handleClick('user', 'showPassword', !state.user.showPassword))
     }
-    console.log('returning container')
     return (
         <Mutation
             mutation={USER_SIGN_IN}
