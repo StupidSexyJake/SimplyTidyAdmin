@@ -22,7 +22,7 @@ export function checkLoggedIn(ctx) {
 }
 
 // Refresh expired auth tokens
-export function refreshAuthToken(refreshToken, client) {
+export function refreshAuthToken(refreshToken, client, ctx) {
     // Delete current auth token
     destroyCookie(ctx, 'x-token')
     // Fetch a new auth token from the server
