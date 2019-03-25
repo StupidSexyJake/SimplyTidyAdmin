@@ -26,7 +26,7 @@ export function checkLoggedIn(ctx) {
 export function signInUser(login, password, client) {
     console.log('logging in...')
     // Attempt to sign in
-    client.query({
+    return client.query({
         query: USER_SIGN_IN,
         variables: { login, password }
     })
