@@ -78,18 +78,8 @@ function create(initialState, { getTokens, ctx }) {
                             refreshAuthToken(refreshToken, client, ctx)
                                 // On successful refresh...
                                 .then((newToken) => {
-                                    console.log('new token returned:')
-                                    console.log(newToken)
                                     // Update cookies with new token                                    
-                                    setCookie(ctx, 'x-token', newToken, { maxAge: 30 * 24 * 60 * 60 })
-                                    // Update headers with new auth token
-                                    // const oldHeaders = operation.getContext().headers
-                                    // operation.setContext({
-                                    //     headers: {
-                                    //         ...oldHeaders,
-                                    //         'x-token': newToken,
-                                    //     },
-                                    // })
+                                    setCookie(ctx, 'x-token', newToken, { maxAge: 30 * 60 })
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
