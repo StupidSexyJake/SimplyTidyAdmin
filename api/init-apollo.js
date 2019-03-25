@@ -81,7 +81,7 @@ function create(initialState, { getTokens, ctx }) {
                                     console.log('new token returned:')
                                     console.log(newToken)
                                     // Update cookies with new token                                    
-                                    setCookie(ctx, 'x-token-test', newToken, { maxAge: 30 * 24 * 60 * 60 })
+                                    setCookie(ctx, 'x-token', newToken, { maxAge: 30 * 24 * 60 * 60 })
                                     // Update headers with new auth token
                                     // const oldHeaders = operation.getContext().headers
                                     // operation.setContext({
