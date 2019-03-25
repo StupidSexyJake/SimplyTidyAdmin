@@ -78,9 +78,9 @@ function create(initialState, { getTokens, ctx }) {
                             // Refresh the auth token
                             await refreshAuthToken(refreshToken, client, ctx)
                                 // On successful refresh...
-                                .then(() => {
+                                .then((newToken) => {
                                     // Update cookies with new token                                    
-                                    setCookie(ctx, 'x-token-test', data.data.refreshAuthToken)
+                                    setCookie(ctx, 'x-token-test', 'test')
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
