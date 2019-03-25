@@ -70,11 +70,15 @@ export async function refreshAuthToken(refreshToken, client) {
 
 // Handle redirects
 export function redirect(ctx, target) {
+    console.log('ctx.res')
+    console.log(ctx.res)
     // Check if in server
     if (ctx.res) {
+        console.log('in server')
         ctx.res.writeHead(303, { Location: target })
         ctx.res.end()
     }
+    console.log('in browser')
     // Continue redirect if in browswer
     Router.replace(target)
 
