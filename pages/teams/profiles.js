@@ -22,9 +22,10 @@ function TeamProfiles() {
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
     // Check if user is logged in
-    const me = await checkLoggedIn(ctx)
+    const { loggedInUser } = await checkLoggedIn(ctx)
+    console.log(loggedInUser)
     // If not signed in, redirect to login page
-    if (!me) { redirect(ctx, '/login') }
+    if (!loggedInUser.me) { redirect(ctx, '/login') }
     // Return
     return {}
 }
