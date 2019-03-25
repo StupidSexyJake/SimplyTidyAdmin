@@ -51,6 +51,7 @@ function SignInFormContainer({ client }) {
             // On successful sign-in
             .then(({ data }) => {
                 // Save tokens to cookies
+                console.log(data)
                 setCookie('x-token', data.signIn.token)
                 setCookie('x-token', data.signIn.refreshToken)
                 // Reset user login state
