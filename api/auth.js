@@ -9,7 +9,7 @@ import cookie from 'js-cookie'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 // Check if user is logged in
-export function checkLoggedIn(ctx) {
+export async function checkLoggedIn(ctx) {
     // Verify auth token with server (auth token sent in request headers in ./init-apollo.js)
     ctx.apolloClient.query({
         query: GET_ME,
@@ -21,7 +21,7 @@ export function checkLoggedIn(ctx) {
             return data.me
         })
         // Return nothing on verification failure
-        .catch(() => { return {} })
+        .catch(() => { return null })
 }
 
 // Attempt to sign in user
