@@ -32,9 +32,6 @@ export function signInUser(login, password, client) {
     })
         // On successful login...
         .then(({ data }) => {
-            // Save tokens to cookies
-            cookie.set('x-token', data.signIn.token)
-            cookie.set('x-token-refresh', data.signIn.refreshToken)
             // Force a reload of all the current queries
             client.cache.reset()
             // Return new tokens
