@@ -30,7 +30,7 @@ export function signInUser(login, password, client) {
         variables: { login, password }
     })
         // On successful login...
-        .then(() => {
+        .then(({ data }) => {
             // Force a reload of all the current queries
             client.cache.reset()
                 .then(() => {
@@ -43,7 +43,6 @@ export function signInUser(login, password, client) {
             console.error('Eror in catch of signIn() auth.js')
             console.error(error)
             console.log('*****************')
-            return null
         })
 }
 

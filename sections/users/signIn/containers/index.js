@@ -7,7 +7,7 @@ import {
     resetState,
 } from '../../../../state/actions'
 // API and authentication
-import cookie from 'js-cookie'
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import {
     redirect,
 } from '../../../../api/auth'
@@ -28,8 +28,6 @@ function SignInFormContainer({ client }) {
 
     // Handle login value changes
     const onChange = event => {
-        console.log('on change hit')
-        console.log(state.user)
         const { name, value } = event.target
         dispatch(handleClick('user', name, value.length))
     }
@@ -51,9 +49,12 @@ function SignInFormContainer({ client }) {
             }
         })
             // On successful sign-in
-            .then(() => {
-                // // Reset user login state
-                // dispatch(resetState('user'))
+            .then(({ data }) => {
+                // Save tokens to cookies
+                setCookie('x-token', data.signIn.token)
+                setCookie('x-token', data.signIn.refreshToken)
+                // Reset user login state
+                dispatch(resetState('user'))
                 // Force a reload of all the current queries
                 client.cache.reset()
                     .then(() => {
