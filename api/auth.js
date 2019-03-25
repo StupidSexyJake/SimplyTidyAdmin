@@ -15,7 +15,10 @@ export function checkLoggedIn(ctx) {
         query: GET_ME,
     })
         // Return logged in user on verification success
-        .then(({ data }) => { return { data } })
+        .then(({ data }) => {
+            console.log(data)
+            return { data }
+        })
         // Return nothing on verification failure
         .catch(() => { return {} })
 }
