@@ -27,7 +27,7 @@ Index.getInitialProps = async ctx => {
     // If not signed in, redirect to login page
     if (!loggedInUser.me) { redirect(ctx, '/login') }
     // Return
-    return {}
+    return { loggedInUser }
 }
 
 

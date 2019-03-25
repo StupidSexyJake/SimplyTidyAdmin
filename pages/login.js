@@ -103,7 +103,7 @@ Index.getInitialProps = async ctx => {
     // If already signed in, redirect to home page
     if (!loggedInUser.me) { redirect(ctx, '/') }
     // Return me
-    return { me }
+    return { loggedInUser }
 }
 
 export default Index
