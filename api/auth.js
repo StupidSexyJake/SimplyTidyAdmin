@@ -16,8 +16,7 @@ export function checkLoggedIn(ctx) {
     })
         // Return logged in user on verification success
         .then(({ data }) => {
-            console.log(data)
-            return { data }
+            return data.me
         })
         // Return nothing on verification failure
         .catch(() => { return {} })
