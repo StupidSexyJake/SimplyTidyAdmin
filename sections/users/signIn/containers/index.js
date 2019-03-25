@@ -9,7 +9,6 @@ import {
 // API and authentication
 import cookie from 'js-cookie'
 import {
-    signInUser,
     redirect,
 } from '../../../../api/auth'
 import {
@@ -54,11 +53,15 @@ function SignInFormContainer({ client }) {
             }
         })
             // On successful sign-in
-            .then(data => {
+            .then(({ data }) => {
                 // Reset user login state
                 dispatch(resetState('user'))
-                // Redirect user to homepage
-                redirect({}, '/')
+                // Force a reload of all the current queries
+                client.cache.reset()
+                    .then(() => {
+                        // Redirect user to homepage
+                        redirect({}, '/')
+                    })
             })
             .catch(error => {
                 console.log('error logging in:')
