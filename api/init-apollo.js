@@ -82,6 +82,14 @@ function create(initialState, { getTokens, ctx }) {
                                     console.log(newToken)
                                     // Update cookies with new token                                    
                                     setCookie(ctx, 'x-token-test', newToken)
+                                    // Update headers with new auth token
+                                    const oldHeaders = operation.getContext().headers
+                                    operation.setContext({
+                                        headers: {
+                                            ...oldHeaders,
+                                            'x-token': '',
+                                        },
+                                    })
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
