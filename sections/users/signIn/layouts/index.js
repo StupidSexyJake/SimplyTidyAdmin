@@ -79,7 +79,7 @@ export default function SignInFormLayout(props) {
                         required
                         name='login'
                         id='login'
-                        onChange={(event) => console.log('changed')}
+                        onChange={(event) => props.onChange(event)}
                         classes={{
                             root: classes.input,
                             focused: 'focused',

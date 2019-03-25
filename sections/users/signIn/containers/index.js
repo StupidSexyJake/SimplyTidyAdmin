@@ -36,7 +36,7 @@ function SignInFormContainer({ client }) {
     }
 
     // Handle form submit
-    const onSubmit = async (event, signIn) => {
+    const onSubmit = (event, signIn) => {
         // Prevent default form behaviour
         event.preventDefault()
 
