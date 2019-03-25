@@ -8,9 +8,7 @@ import {
 } from '../../../../state/actions'
 // API and authentication
 import cookie from 'cookie'
-import {
-    redirect,
-} from '../../../../api/auth'
+import { redirect } from '../../../../api/auth'
 import {
     Mutation,
     withApollo

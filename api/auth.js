@@ -22,30 +22,6 @@ export function checkLoggedIn(ctx) {
         .catch(() => { return { loggedInUser: {} } })
 }
 
-// Attempt to sign in user
-export function signInUser(login, password, client) {
-    // Attempt to sign in
-    client.query({
-        query: USER_SIGN_IN,
-        variables: { login, password }
-    })
-        // On successful login...
-        .then(({ data }) => {
-            // Force a reload of all the current queries
-            client.cache.reset()
-                .then(() => {
-                    // Redirect user to homepage
-                    redirect({}, '/')
-                })
-        })
-        // Return error message on login fail for debugging
-        .catch(error => {
-            console.error('Eror in catch of signIn() auth.js')
-            console.error(error)
-            console.log('*****************')
-        })
-}
-
 // Refresh expired auth tokens
 export async function refreshAuthToken(refreshToken, client) {
     // Fetch a new auth token from the server
