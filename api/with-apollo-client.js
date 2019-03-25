@@ -22,7 +22,7 @@ export default App => {
                 {},
                 {
                     getTokens: () => parseCookies(req),
-                    ctx: ctx
+                    ctx: ctx.ctx
                 }
             )
 

@@ -66,12 +66,12 @@ export async function refreshAuthToken(refreshToken, client, ctx) {
     })
         // On success...
         .then(data => {
-            console.log('ctx')
-            console.log(ctx.ctx)
-            console.log('get cookies in refreshAuthToken')
-            console.log(nextCookie(ctx.ctx)['x-token'])
-            // Save new token to cookies
-            setCookie(ctx.ctx, 'x-token-test', data.data.refreshAuthToken)
+            // console.log('ctx')
+            // console.log(ctx.ctx)
+            // console.log('get cookies in refreshAuthToken')
+            // console.log(nextCookie(ctx.ctx)['x-token'])
+            // // Save new token to cookies
+            // setCookie(ctx.ctx, 'x-token-test', data.data.refreshAuthToken)
 
             // Return new token
             return data.data.refreshAuthToken
