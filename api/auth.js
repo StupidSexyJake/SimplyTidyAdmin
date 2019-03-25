@@ -46,6 +46,7 @@ export function signInUser(login, password, client) {
             console.error('Eror in catch of signIn() auth.js')
             console.error(error)
             console.log('*****************')
+            return null
         })
 }
 

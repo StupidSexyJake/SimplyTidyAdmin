@@ -34,7 +34,7 @@ function SignInFormContainer({ client }) {
     }
 
     // Handle form submit
-    const onSubmit = (event, signIn) => {
+    const onSubmit = (event) => {
         // Prevent default form behaviour
         event.preventDefault()
         // Get login values from form
@@ -51,22 +51,15 @@ function SignInFormContainer({ client }) {
         dispatch(handleClick('user', 'showPassword', !state.user.showPassword))
     }
     return (
-        <Mutation
-            mutation={USER_SIGN_IN}
-            variables={{ login: state.user.login, password: state.user.password }}
-        >
-            {(signIn, { data, loading, error }) => (
-                <Index
-                    loading={loading}
-                    onSubmit={(event) => onSubmit(event, signIn)}
-                    onChange={(event) => onChange(event)}
-                    onShowHidePassword={onShowHidePassword}
-                    showPassword={state.user.showPassword}
-                    isLoginDisabled={isLoginDisabled}
-                    isInvalidLogin={state.user.invalidLogin}
-                />
-            )}
-        </Mutation>
+        <Index
+            onSubmit={(event) => onSubmit(event)}
+            onChange={(event) => onChange(event)}
+            onShowHidePassword={onShowHidePassword}
+            showPassword={state.user.showPassword}
+            isLoginDisabled={isLoginDisabled}
+            isInvalidLogin={state.user.invalidLogin}
+        />
+
     )
 }
 
