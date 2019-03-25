@@ -66,6 +66,8 @@ export async function refreshAuthToken(refreshToken, client, ctx) {
     })
         // On success...
         .then(data => {
+            console.log('ctx')
+            console.log(ctx)
             console.log('get cookies in refreshAuthToken')
             console.log(nextCookie(ctx)['x-token'])
             // Save new token to cookies
@@ -77,7 +79,7 @@ export async function refreshAuthToken(refreshToken, client, ctx) {
 
         // Log refresh failures for debugging
         .catch(error => {
-            console.error('Error received in fetchNewAuthToken() catch of auth.js:')
+            console.error('Error received in refreshAuthToken() catch of auth.js:')
             console.error(error)
             console.log('*****************')
         })
