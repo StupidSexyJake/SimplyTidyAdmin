@@ -23,6 +23,8 @@ export function checkLoggedIn(ctx) {
 
 // Refresh expired auth tokens
 export function refreshAuthToken(refreshToken, client) {
+    // Delete current auth token
+    destroyCookie(ctx, 'x-token')
     // Fetch a new auth token from the server
     return client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
@@ -31,7 +33,9 @@ export function refreshAuthToken(refreshToken, client) {
         }
     })
         // Return new token on success
-        .then(({ data }) => { return data.refreshAuthToken })
+        .then(({ data }) => {
+            return data.refreshAuthToken
+        })
         // Log refresh failures for debugging
         .catch(error => {
             console.error('Error received in refreshAuthToken() catch of auth.js:')
