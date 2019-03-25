@@ -53,21 +53,10 @@ function SignInFormContainer({ client }) {
         })
             // On successful sign-in
             .then(data => {
-                console.log('login success')
-                // Save tokens in cookies
-                cookie.set('x-token', data.data.signIn.token)
-                cookie.set('x-token-refresh', data.data.signIn.refreshToken)
-
                 // Reset user login state
                 dispatch(resetState('user'))
-
-                // Force a reload of all the current queries
-                client.cache.reset()
-                    // Redirect user to homepage
-                    .then(() => {
-                        console.log('redirecting...')
-                        redirect({}, '/')
-                    })
+                // Redirect user to homepage
+                redirect({}, '/')
             })
             .catch(error => {
                 console.log('error logging in:')

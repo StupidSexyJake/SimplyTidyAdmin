@@ -15,19 +15,9 @@ export function checkLoggedIn(ctx) {
         query: GET_ME,
     })
         // Return logged in user on verification success
-        .then(({ data }) => {
-            console.log('get me results:')
-            console.log(data)
-            return { data }
-        })
-
-        // Return no user on verification failure
-        .catch((error) => {
-            console.error('Error in catch of checkLoggedIn() in auth.js:')
-            console.error(error)
-            console.log('*****************')
-            return {}
-        })
+        .then(({ data }) => { return { data } })
+        // Return nothing on verification failure
+        .catch(() => { return {} })
 }
 
 // Attempt to sign in user
@@ -39,9 +29,10 @@ export function signInUser(login, password, client) {
         variables: { login, password }
     })
         // On successful login...
-        .then((data) => {
-            console.log('success login')
-            console.log(data)
+        .then(({ data }) => {
+            // Save tokens to cookies
+            cookie.set('x-token', data.signIn.token)
+            cookie.set('x-token-refresh', data.signIn.refreshToken)
             // Force a reload of all the current queries
             client.cache.reset()
             // Return new tokens
@@ -56,7 +47,7 @@ export function signInUser(login, password, client) {
 }
 
 // Refresh expired auth tokens
-export async function refreshAuthToken(refreshToken, client, ctx) {
+export async function refreshAuthToken(refreshToken, client) {
     // Fetch a new auth token from the server
     await client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
@@ -64,40 +55,15 @@ export async function refreshAuthToken(refreshToken, client, ctx) {
             refreshToken
         }
     })
-        // On success...
-        .then(data => {
-            // console.log('ctx')
-            // console.log(ctx.ctx)
-            // console.log('get cookies in refreshAuthToken')
-            // console.log(nextCookie(ctx.ctx)['x-token'])
-            // // Save new token to cookies
-            // setCookie(ctx.ctx, 'x-token-test', data.data.refreshAuthToken)
-
-            // Return new token
-            return data.data.refreshAuthToken
-        })
-
+        // Return new token on success
+        .then(({ data }) => { return data.refreshAuthToken })
         // Log refresh failures for debugging
         .catch(error => {
             console.error('Error received in refreshAuthToken() catch of auth.js:')
             console.error(error)
             console.log('*****************')
+            return {}
         })
-}
-
-// Restrict page access
-export function restrictPageAccess(ctx, restrictedTo) {
-    // Get token from cookies
-    const token = nextCookie(ctx)['x-token']
-
-    // Get logged in user
-    const isLoggedIn = checkLoggedIn(ctx, token)
-
-    // Redirect user to login page if not logged in
-    if (!isLoggedIn && restrictedTo === 'users') { redirect(ctx, '/login') }
-
-    // Redirect user to home page if already logged in
-    if (isLoggedIn && restrictedTo === 'public') { redirect(ctx, '/') }
 }
 
 // Handle redirects

@@ -79,7 +79,6 @@ function Index() {
                             className={classes.signInFormContainer}
                         >
                             <SignInForm />
-
                             <Divider />
                             <Typography>
                                 Forgot Password?
@@ -98,8 +97,6 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    console.log('check logged in')
-    console.log(checkLoggedIn(ctx))
     // Check if user is logged in
     const me = await checkLoggedIn(ctx)
     // If already signed in, redirect to home page
