@@ -7,7 +7,7 @@ import {
     resetState,
 } from '../../../../state/actions'
 // API and authentication
-import { parseCookies, setCookie, destroyCookie } from 'nookies'
+import cookie from 'cookie'
 import {
     redirect,
 } from '../../../../api/auth'
@@ -51,9 +51,8 @@ function SignInFormContainer({ client }) {
             // On successful sign-in
             .then(({ data }) => {
                 // Save tokens to cookies
-                console.log(data)
-                setCookie('x-token', data.signIn.token)
-                setCookie('x-token', data.signIn.refreshToken)
+                document.cookie = cookie.serialize('x-token', data.signIn.token)
+                document.cookie = cookie.serialize('x-token-refresh', data.signIn.refreshToken)
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries
