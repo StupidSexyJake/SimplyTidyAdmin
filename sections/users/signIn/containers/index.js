@@ -38,13 +38,11 @@ function SignInFormContainer({ client }) {
     const onSubmit = (event, signIn) => {
         // Prevent default form behaviour
         event.preventDefault()
-
         // Get login values from form
         const form = event.target
         const formData = new window.FormData(form)
         const login = formData.get('login')
         const password = formData.get('password')
-        console.log('signing in')
         // Attempt to sign in
         signIn({
             variables: {
@@ -53,7 +51,7 @@ function SignInFormContainer({ client }) {
             }
         })
             // On successful sign-in
-            .then(({ data }) => {
+            .then(() => {
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries
@@ -73,7 +71,7 @@ function SignInFormContainer({ client }) {
     const onShowHidePassword = () => {
         dispatch(handleClick('user', 'showPassword', !state.user.showPassword))
     }
-
+    console.log('returning container')
     return (
         <Mutation
             mutation={USER_SIGN_IN}

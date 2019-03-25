@@ -97,17 +97,14 @@ function Index() {
 
 // Before page is rendered...
 Index.getInitialProps = async ctx => {
-    console.log('get init props')
     // Check if user is logged in
     const { loggedInUser } = await checkLoggedIn(ctx)
     // If already signed in, redirect to home page
     if (loggedInUser.me) {
-        console.log('already logged in')
         redirect(ctx, '/')
     }
-    console.log('continue with init props')
     // Return me
-    return { loggedInUser }
+    return {}
 }
 
 export default Index
