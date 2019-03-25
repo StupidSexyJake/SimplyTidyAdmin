@@ -87,7 +87,7 @@ function create(initialState, { getTokens, ctx }) {
                                     operation.setContext({
                                         headers: {
                                             ...oldHeaders,
-                                            'x-token': '',
+                                            'x-token': newToken,
                                         },
                                     })
                                     // Bind observable subscribers
