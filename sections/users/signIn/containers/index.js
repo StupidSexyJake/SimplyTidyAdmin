@@ -9,7 +9,6 @@ import {
 // API and authentication
 import cookie from 'js-cookie'
 import {
-    signInUser,
     redirect,
 } from '../../../../api/auth'
 import {
@@ -29,12 +28,14 @@ function SignInFormContainer({ client }) {
 
     // Handle login value changes
     const onChange = event => {
+        console.log('on change hit')
+        console.log(state.user)
         const { name, value } = event.target
         dispatch(handleClick('user', name, value.length))
     }
 
     // Handle form submit
-    const onSubmit = (event) => {
+    const onSubmit = (event, signIn) => {
         // Prevent default form behaviour
         event.preventDefault()
         // Get login values from form
@@ -43,7 +44,27 @@ function SignInFormContainer({ client }) {
         const login = formData.get('login')
         const password = formData.get('password')
         // Attempt to sign in
-        signInUser(login, password, client)
+        signIn({
+            variables: {
+                login,
+                password
+            }
+        })
+            // On successful sign-in
+            .then(() => {
+                // // Reset user login state
+                // dispatch(resetState('user'))
+                // Force a reload of all the current queries
+                client.cache.reset()
+                    .then(() => {
+                        // Redirect user to homepage
+                        redirect({}, '/')
+                    })
+            })
+            .catch(error => {
+                console.log('error logging in:')
+                console.log(error)
+            })
     }
 
     // Handle show/hide password
@@ -51,15 +72,22 @@ function SignInFormContainer({ client }) {
         dispatch(handleClick('user', 'showPassword', !state.user.showPassword))
     }
     return (
-        <Index
-            onSubmit={(event) => onSubmit(event)}
-            onChange={(event) => onChange(event)}
-            onShowHidePassword={onShowHidePassword}
-            showPassword={state.user.showPassword}
-            isLoginDisabled={isLoginDisabled}
-            isInvalidLogin={state.user.invalidLogin}
-        />
-
+        <Mutation
+            mutation={USER_SIGN_IN}
+            variables={{ login: state.user.login, password: state.user.password }}
+        >
+            {(signIn, { data, loading, error }) => (
+                <Index
+                    loading={loading}
+                    onSubmit={(event) => onSubmit(event, signIn)}
+                    onChange={(event) => onChange(event)}
+                    onShowHidePassword={onShowHidePassword}
+                    showPassword={state.user.showPassword}
+                    isLoginDisabled={isLoginDisabled}
+                    isInvalidLogin={state.user.invalidLogin}
+                />
+            )}
+        </Mutation>
     )
 }
 
