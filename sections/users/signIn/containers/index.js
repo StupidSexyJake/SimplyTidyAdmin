@@ -29,8 +29,6 @@ function SignInFormContainer({ client }) {
 
     // Handle login value changes
     const onChange = event => {
-        console.log('on change hit')
-        console.log(state.user)
         const { name, value } = event.target
         dispatch(handleClick('user', name, value.length))
     }
