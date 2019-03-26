@@ -141,6 +141,7 @@ export default function SignInFormLayout(props) {
                     className={classes.rememberContainer}
                     control={
                         <Switch
+                            checked={true}
                             id='remember'
                             // checked={state.checkedB}
                             // onChange={props.onRememberMeChange()}
