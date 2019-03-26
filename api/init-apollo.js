@@ -82,10 +82,10 @@ function create(initialState, { getTokens, ctx }) {
                                 }
                             })
                                 // On successful refresh...
-                                .then((newTokens) => {
+                                .then(({ data }) => {
                                     // Update cookies                          
-                                    setCookie(ctx, 'x-token', newTokens.token, { maxAge: 30 * 60 })
-                                    setCookie(ctx, 'x-token-refresh', newTokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
+                                    setCookie(ctx, 'x-token', data.newTokens.token, { maxAge: 30 * 60 })
+                                    setCookie(ctx, 'x-token-refresh', data.newTokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
