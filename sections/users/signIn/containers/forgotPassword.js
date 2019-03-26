@@ -50,7 +50,7 @@ export default function ForgotPasswordContainer() {
             })
     }
     return (
-        <Mutation mutation={USER_FORGOT_PASSWORD}>
+        <Query query={USER_FORGOT_PASSWORD}>
             {(userForgotPassword, { data, loading, error }) => (
                 <ForgotPassword
                     onSubmit={(event) => onSubmit(event, userForgotPassword)}
@@ -58,6 +58,6 @@ export default function ForgotPasswordContainer() {
                     closeDialog={closeDialog}
                 />
             )}
-        </Mutation>
+        </Query>
     )
 }
