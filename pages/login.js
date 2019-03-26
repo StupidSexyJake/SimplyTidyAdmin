@@ -2,11 +2,11 @@
 import '../src/bootstrap'
 import React, { useContext } from 'react'
 // State
-import { Store } from '../../../../state/store'
+import { Store } from '../state/store'
 // Actions
 import {
     handleClick,
-} from '../../../../state/actions'
+} from '../state/actions'
 // Authentication
 import { checkLoggedIn, redirect } from '../api/auth'
 // Material components
