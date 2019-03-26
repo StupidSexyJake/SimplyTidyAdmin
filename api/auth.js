@@ -20,7 +20,7 @@ export function checkLoggedIn(ctx) {
 }
 
 // Refresh expired access tokens
-export function refreshAccessToken(refreshToken, client) {
+export function refreshAccessToken(refreshToken, client, ctx) {
     // Fetch a new access token from the server
     return client.mutate({
         mutation: REFRESH_AUTH_TOKEN,

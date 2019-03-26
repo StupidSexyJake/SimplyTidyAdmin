@@ -75,7 +75,7 @@ function create(initialState, { getTokens, ctx }) {
                         // Create a new Observerable
                         return new Observable(async observer => {
                             // Refresh the access token
-                            refreshAccessToken(refreshToken, client)
+                            refreshAccessToken(refreshToken, client, ctx)
                                 // On successful refresh...
                                 .then((newTokens) => {
                                     // Update cookies with new token                                    
