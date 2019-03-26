@@ -32,8 +32,8 @@ class MyApp extends App {
     const { Component, pageProps, apolloClient } = this.props
     return (
       <Container>
-        <ApolloProvider client={apolloClient}>
-          <Provider>
+        <Provider>
+          <ApolloProvider client={apolloClient}>
             {/* Wrap every page in Styles and Theme providers */}
             <StylesProvider
               generateClassName={this.pageContext.generateClassName}
@@ -51,8 +51,8 @@ class MyApp extends App {
                 <Snackbar />
               </ThemeProvider>
             </StylesProvider>
-          </Provider>
-        </ApolloProvider>
+          </ApolloProvider>
+        </Provider>
       </Container>
     )
   }
