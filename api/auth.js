@@ -35,21 +35,10 @@ export function refreshAccessToken(refreshToken, client, ctx) {
         // Log out user on failure
         .catch(() => {
             console.log('signing user out')
-            signOut(ctx, client)
+            // Delete auth and refesh tokens from cookies
+            destroyCookie(ctx, 'x-token')
+            destroyCookie(ctx, 'x-token-refresh')
             return {}
-        })
-}
-
-// Handle sign out
-export function signOut(ctx, client) {
-    // Delete auth and refesh tokens from cookies
-    destroyCookie({}, 'x-token')
-    destroyCookie(ctx, 'x-token-refresh')
-    // Reset store 
-    return client.resetStore()
-        .then(() => {
-            // Redirect to login screen
-            redirect(ctx, '/login')
         })
 }
 
