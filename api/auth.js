@@ -6,7 +6,7 @@ import {
 
 // Check if user is logged in
 export function checkLoggedIn(ctx) {
-    // Verify auth token with server (auth token sent in request headers in ./init-apollo.js)
+    // Verify access token with server (access token sent in request headers in ./init-apollo.js)
     return ctx.apolloClient.query({
         query: GET_ME,
     })
@@ -18,9 +18,9 @@ export function checkLoggedIn(ctx) {
         .catch(() => { return { loggedInUser: {} } })
 }
 
-// Refresh expired auth tokens
-export function refreshAuthToken(refreshToken, client) {
-    // Fetch a new auth token from the server
+// Refresh expired access tokens
+export function refreshAccessToken(refreshToken, client) {
+    // Fetch a new access token from the server
     return client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
         variables: {
@@ -29,11 +29,11 @@ export function refreshAuthToken(refreshToken, client) {
     })
         // Return new token on success
         .then(({ data }) => {
-            return data.refreshAuthToken
+            return data.refreshAccessToken
         })
         // Log refresh failures for debugging
         .catch(error => {
-            console.error('Error received in refreshAuthToken() catch of auth.js:')
+            console.error('Error received in refreshAccessToken() catch of auth.js:')
             console.error(error)
             console.log('*****************')
             return {}

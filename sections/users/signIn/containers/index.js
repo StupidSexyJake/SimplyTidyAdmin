@@ -59,8 +59,8 @@ function SignInFormContainer({ client, ctx }) {
             // On successful sign-in
             .then(({ data }) => {
                 // Save tokens to cookies
-                setCookie(ctx, 'x-token', data.signIn.token, { maxAge: 30 * 60 })
-                setCookie(ctx, 'x-token-refresh', data.signIn.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
+                setCookie(ctx, 'x-token', data.signIn.token)
+                setCookie(ctx, 'x-token-refresh', data.signIn.refreshToken)
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries

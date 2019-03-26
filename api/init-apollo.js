@@ -11,7 +11,7 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 // Authorisation
 import { setCookie } from 'nookies'
-import { refreshAuthToken } from './auth'
+import { refreshAccessToken } from './auth'
 
 let apolloClient = null
 
@@ -74,12 +74,12 @@ function create(initialState, { getTokens, ctx }) {
                     if (extensions.code === 'UNAUTHENTICATED' && refreshToken) {
                         // Create a new Observerable
                         return new Observable(async observer => {
-                            // Refresh the auth token
-                            refreshAuthToken(refreshToken, client)
+                            // Refresh the access token
+                            refreshAccessToken(refreshToken, client)
                                 // On successful refresh...
                                 .then((newToken) => {
                                     // Update cookies with new token                                    
-                                    setCookie(ctx, 'x-token', newToken, { maxAge: 30 * 60 })
+                                    setCookie(ctx, 'x-token', newToken)
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
