@@ -92,11 +92,6 @@ function create(initialState, { getTokens, ctx }) {
                                 })
                                 // On refresh failure...
                                 .catch(error => {
-                                    // Delete cookies
-                                    destroyCookie(ctx, 'x-token')
-                                    destroyCookie(ctx, 'x-token-refresh')
-                                    // Return user to login page
-                                    redirect(ctx, '/login')
                                     observer.error(error)
                                 })
                         })

@@ -31,12 +31,23 @@ export function refreshAccessToken(refreshToken, client) {
         .then(({ data }) => {
             return data.refreshAccessToken
         })
-        // Log refresh failures for debugging
-        .catch(error => {
-            console.error('Error received in refreshAccessToken() catch of auth.js:')
-            console.error(error)
-            console.log('*****************')
+        // Log out user on failure
+        .catch(() => {
+            signOut(ctx, client)
             return {}
+        })
+}
+
+// Handle sign out
+export function signOut(ctx, client) {
+    // Delete auth and refesh tokens from cookies
+    destroyCookie(ctx, 'x-token')
+    destroyCookie(ctx, 'x-token-refresh')
+    // Reset store 
+    return client.resetStore()
+        .then(() => {
+            // Redirect to login screen
+            redirect({}, '/login')
         })
 }
 
