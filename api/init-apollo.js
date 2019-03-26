@@ -75,20 +75,17 @@ function create(initialState, { getTokens, ctx }) {
                         // Create a new Observerable
                         return new Observable(async observer => {
                             // Refresh the access token
-                            refreshAccessToken(refreshToken, client, ctx)
+                            client.mutate({
+                                mutation: REFRESH_AUTH_TOKEN,
+                                variables: {
+                                    refreshToken
+                                }
+                            })
                                 // On successful refresh...
                                 .then((newTokens) => {
-                                    // Handle cookies
-                                    if (!newTokens.token) {
-                                        // Delete cookies if no new access token provided
-                                        destroyCookie(ctx, 'x-token')
-                                        destroyCookie(ctx, 'x-token-refresh')
-                                    }
-                                    else {
-                                        // Update cookies if new access token available                             
-                                        setCookie(ctx, 'x-token', newTokens.token, { maxAge: 30 * 60 })
-                                        setCookie(ctx, 'x-token-refresh', newTokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
-                                    }
+                                    // Update cookies                          
+                                    setCookie(ctx, 'x-token', newTokens.token, { maxAge: 30 * 60 })
+                                    setCookie(ctx, 'x-token-refresh', newTokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
@@ -100,6 +97,10 @@ function create(initialState, { getTokens, ctx }) {
                                 })
                                 // On refresh failure...
                                 .catch(error => {
+                                    // Delete cookies
+                                    destroyCookie(ctx, 'x-token')
+                                    destroyCookie(ctx, 'x-token-refresh')
+                                    // Logout user
                                     observer.error(error)
                                 })
                         })
