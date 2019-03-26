@@ -10,8 +10,8 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 // Authorisation
-import { setCookie } from 'nookies'
-import { refreshAccessToken } from './auth'
+import { setCookie, destroyCookie } from 'nookies'
+import { refreshAccessToken, redirect } from './auth'
 
 let apolloClient = null
 
@@ -78,7 +78,6 @@ function create(initialState, { getTokens, ctx }) {
                             refreshAccessToken(refreshToken, client)
                                 // On successful refresh...
                                 .then((newTokens) => {
-                                    console.log(newTokens)
                                     // Update cookies with new token                                    
                                     setCookie(ctx, 'x-token', newTokens.token, { maxAge: 30 * 60 })
                                     setCookie(ctx, 'x-token-refresh', newTokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
@@ -91,11 +90,13 @@ function create(initialState, { getTokens, ctx }) {
                                     // Retry last failed request
                                     forward(operation).subscribe(subscriber)
                                 })
-                                // Force user to login if refresh fails
+                                // On refresh failure...
                                 .catch(error => {
-                                    console.error('Error received in onError link in init-apollo')
-                                    console.error(error)
-                                    console.log('*****************')
+                                    // Delete cookies
+                                    destroyCookie(ctx, 'x-token')
+                                    destroyCookie(ctx, 'x-token-refresh')
+                                    // Return user to login page
+                                    redirect(ctx, '/login')
                                     observer.error(error)
                                 })
                         })
