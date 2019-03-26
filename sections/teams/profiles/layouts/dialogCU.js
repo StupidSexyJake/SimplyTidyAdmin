@@ -8,8 +8,8 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
 import Slide from '@material-ui/core/Slide'
 
-function Transition() {
-    return <Slide direction="up" />
+function Transition(props) {
+    return <Slide direction="up" {...props} />
 }
 
 export default function TeamCRU(props) {

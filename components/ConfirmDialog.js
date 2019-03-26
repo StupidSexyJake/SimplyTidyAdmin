@@ -9,7 +9,7 @@ import Slide from '@material-ui/core/Slide'
 
 // Create transition
 function Transition(props) {
-    return <Slide direction="up" {...props} />;
+    return <Slide direction="up" {...props} />
 }
 
 export default function ConfirmDialog(props) {
