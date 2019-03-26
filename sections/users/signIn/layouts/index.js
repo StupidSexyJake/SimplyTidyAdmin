@@ -25,10 +25,10 @@ const SignInFormLayoutStyles = makeStyles(theme => ({
     },
     input: {
         backgroundColor: theme.palette.common.white,
-        "&:hover": {
+        '&:hover': {
             backgroundColor: theme.palette.common.white,
         },
-        "&.focused": {
+        '&.focused': {
             backgroundColor: theme.palette.common.white,
         },
     },
@@ -141,13 +141,14 @@ export default function SignInFormLayout(props) {
                     className={classes.rememberContainer}
                     control={
                         <Switch
+                            id='remember'
                             // checked={state.checkedB}
-                            // onChange={handleChange('checkedB')}
-                            value="remember"
-                            color="secondary"
+                            // onChange={props.onRememberMeChange()}
+                            value='remember'
+                            color='secondary'
                         />
                     }
-                    label="Remember me for 30 days"
+                    label='Remember me for 30 days'
                 />
                 <Button
                     fullWidth

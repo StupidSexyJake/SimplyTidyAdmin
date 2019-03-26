@@ -11,8 +11,9 @@ export const initialState = {
     user: {
         login: 0,
         password: 0,
+        remember: false,
         showPassword: false,
-        invalidLogin: false
+        invalidLogin: false,
     },
     navigation: {
         services: false
