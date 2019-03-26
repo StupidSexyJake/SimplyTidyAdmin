@@ -27,7 +27,7 @@ export function refreshAccessToken(refreshToken, client) {
             refreshToken
         }
     })
-        // Return new token on success
+        // Return new tokens on success
         .then(({ data }) => {
             return data.refreshAccessToken
         })
