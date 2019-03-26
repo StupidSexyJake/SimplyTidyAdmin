@@ -10,8 +10,8 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 // Authorisation
+import { REFRESH_AUTH_TOKEN } from './graphql'
 import { setCookie, destroyCookie } from 'nookies'
-import { refreshAccessToken, redirect } from './auth'
 
 let apolloClient = null
 
