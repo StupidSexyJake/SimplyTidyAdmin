@@ -36,7 +36,7 @@ export function refreshAccessToken(refreshToken, client, ctx) {
         .catch(() => {
             console.log('signing user out')
             // Delete auth and refesh tokens from cookies
-            destroyCookie(ctx, 'x-token')
+            destroyCookie({}, 'x-token')
             destroyCookie(ctx, 'x-token-refresh')
             return {}
         })
