@@ -17,7 +17,7 @@ import { USER_SIGN_IN } from '../../../../api/graphql'
 // Layout
 import Index from '../layouts/'
 
-function SignInFormContainer({ apolloClient, ctx }) {
+function SignInFormContainer({ client, ctx }) {
     // Get state contexts
     const { state, dispatch } = useContext(Store)
 
@@ -49,7 +49,7 @@ function SignInFormContainer({ apolloClient, ctx }) {
         const password = formData.get('password')
         const remember = isRememberMeChecked
         // Attempt to sign in
-        apolloClient.signIn({
+        client.signIn({
             variables: {
                 login,
                 password,
@@ -64,7 +64,7 @@ function SignInFormContainer({ apolloClient, ctx }) {
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries
-                apolloClient.cache.reset()
+                client.cache.reset()
                     .then(() => {
                         // Redirect user to homepage
                         redirect({}, '/')
