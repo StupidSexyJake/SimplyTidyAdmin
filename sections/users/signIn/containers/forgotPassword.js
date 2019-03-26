@@ -9,7 +9,7 @@ import { USER_FORGOT_PASSWORD } from '../../../../api/graphql'
 // Layout
 import ForgotPassword from '../layouts/forgotPassword'
 
-export default function ForgotPasswordContainer() {
+export default function ForgotPasswordContainer({ client }) {
     // Get state contexts
     const { state, dispatch } = useContext(Store)
 
@@ -19,7 +19,7 @@ export default function ForgotPasswordContainer() {
     }
 
     // Handle form submit
-    const onSubmit = (event, userForgotPassword) => {
+    const onSubmit = (event) => {
         // Prevent default form behaviour
         event.preventDefault()
         // Get login value from form
@@ -27,7 +27,7 @@ export default function ForgotPasswordContainer() {
         const formData = new window.FormData(form)
         const login = formData.get('login')
         // Attempt to reset password
-        userForgotPassword({
+        client.userForgotPassword({
             variables: {
                 login,
             }
@@ -50,14 +50,10 @@ export default function ForgotPasswordContainer() {
             })
     }
     return (
-        <Query query={USER_FORGOT_PASSWORD}>
-            {(userForgotPassword, { data, loading, error }) => (
-                <ForgotPassword
-                    onSubmit={(event) => onSubmit(event, userForgotPassword)}
-                    dialogState={state.dialog.forgotPassword}
-                    closeDialog={closeDialog}
-                />
-            )}
-        </Query>
+        <ForgotPassword
+            onSubmit={(event) => onSubmit(event)}
+            dialogState={state.dialog.forgotPassword}
+            closeDialog={closeDialog}
+        />
     )
 }

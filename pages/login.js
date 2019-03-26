@@ -104,7 +104,7 @@ function Index() {
                     </Grid>
                 </Grid>
             </section>
-            {/* <ForgotPassword /> */}
+            <ForgotPassword />
         </React.Fragment>
     )
 }
