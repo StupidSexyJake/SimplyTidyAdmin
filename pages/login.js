@@ -1,18 +1,26 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import '../src/bootstrap'
-import React from 'react'
+import React, { useContext } from 'react'
+// State
+import { Store } from '../../../../state/store'
+// Actions
+import {
+    handleClick,
+} from '../../../../state/actions'
 // Authentication
 import { checkLoggedIn, redirect } from '../api/auth'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 // Custom components
 import Wrapper from '../components/Wrappers'
 // Sections
 import Header from '../sections/global/containers/Header'
 import SignInForm from '../sections/users/signIn/containers/'
+import ForgotPassword from '../sections/users/signIn/containers/forgotPassword'
 // Icons
 import PageIcon from '@material-ui/icons/Group'
 
@@ -46,8 +54,14 @@ const indexStyles = makeStyles(theme => ({
 }))
 
 function Index() {
+    // Get state contexts
+    const { state, dispatch } = useContext(Store)
     // Define styles
     const classes = indexStyles()
+    // Handle forgot password click
+    const handleForgotPassword = () => {
+        dispatch(handleClick('dialog', 'forgotPassword', true))
+    }
     return (
         <React.Fragment>
             <Header
@@ -79,9 +93,9 @@ function Index() {
                         >
                             <SignInForm />
                             <Divider />
-                            <Typography>
+                            <Button onClick={handleForgotPassword}>
                                 Forgot Password?
-                            </Typography>
+                            </Button>
                             <Divider />
                         </Wrapper>
                         <Typography style={{ paddingTop: '48px' }} align='center'>
@@ -90,6 +104,7 @@ function Index() {
                     </Grid>
                 </Grid>
             </section>
+            <ForgotPassword />
         </React.Fragment>
     )
 }

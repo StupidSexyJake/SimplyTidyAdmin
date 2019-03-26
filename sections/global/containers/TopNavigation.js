@@ -39,7 +39,6 @@ export default function TopNavigation({ ctx }) {
         // Reset store 
         return client.resetStore()
             .then(() => {
-                console.log('redirecting')
                 // Redirect to login screen
                 redirect({}, '/login')
             })
