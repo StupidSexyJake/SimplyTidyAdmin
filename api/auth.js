@@ -42,7 +42,7 @@ export function refreshAccessToken(refreshToken, client) {
 // Handle sign out
 export function signOut(ctx, client) {
     // Delete auth and refesh tokens from cookies
-    destroyCookie(ctx, 'x-token')
+    destroyCookie({}, 'x-token')
     destroyCookie(ctx, 'x-token-refresh')
     // Reset store 
     return client.resetStore()
