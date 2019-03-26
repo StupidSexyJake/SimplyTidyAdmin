@@ -14,40 +14,42 @@ function Transition() {
 
 export default function ForgotPasswordLayout(props) {
     return (
-        <Dialog
-            open={props.dialogState}
-            onClose={props.closeDialog}
-            aria-labelledby='forgotPassword'
-            TransitionComponent={Transition}
-        >
-            <DialogTitle id='forgotPassword'>
-                Forgot Password
-            </DialogTitle>
-            <form onSubmit={props.onSubmit}>
-                <DialogContent>
-                    <TextField
-                        label='Email or username'
-                        name='login'
-                        id='login'
-                        required
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={props.closeDialog}
-                        color='primary'
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        type='submit'
-                        variant='contained'
-                        color='secondary'
-                    >
-                        Reset Password
-                    </Button>
-                </DialogActions>
-            </form>
-        </Dialog>
+        <React.Fragment>
+            <Dialog
+                open={props.dialogState}
+                onClose={props.closeDialog}
+                aria-labelledby='forgotPassword'
+                TransitionComponent={Transition}
+            >
+                <DialogTitle id='forgotPassword'>
+                    Forgot Password
+                </DialogTitle>
+                <form onSubmit={props.onSubmit}>
+                    <DialogContent>
+                        <TextField
+                            label='Email or username'
+                            name='login'
+                            id='login'
+                            required
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            onClick={props.closeDialog}
+                            color='primary'
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            color='secondary'
+                        >
+                            Reset Password
+                        </Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
+        </React.Fragment>
     )
 }
