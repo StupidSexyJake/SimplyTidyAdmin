@@ -35,18 +35,14 @@ function ForgotPasswordContainer({ client }) {
             variables: { login }
         })
             // On success...
-            .then((data) => {
-                console.log('successful reset')
-                console.log(data)
+            .then(() => {
                 // Close dialog
                 dispatch(handleClick('dialog', 'forgotPassword', false))
                 // Notify user that email has been sent
-                dispatch(openSnackbar(true, 'success', 'Please check your email', ''))
+                dispatch(openSnackbar(true, 'success', 'Please check your email to finish resetting your password', ''))
             })
             // On failure...
             .catch(error => {
-                console.log('failed to reset')
-                console.log(error)
                 // Notify user of failure
                 dispatch(openSnackbar(true, 'error', 'Email or username does not exist', ''))
             })

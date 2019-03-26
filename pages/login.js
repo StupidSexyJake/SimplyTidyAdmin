@@ -51,6 +51,9 @@ const indexStyles = makeStyles(theme => ({
     signInFormContainer: {
         maxWidth: 60 * theme.spacing.unit,
     },
+    forgotPasswordBtn: {
+        margin: '0 auto'
+    }
 }))
 
 function Index() {
@@ -93,7 +96,10 @@ function Index() {
                         >
                             <SignInForm />
                             <Divider />
-                            <Button onClick={handleForgotPassword}>
+                            <Button
+                                onClick={handleForgotPassword}
+                                className={classes.forgotPasswordBtn}
+                            >
                                 Forgot Password?
                             </Button>
                             <Divider />
