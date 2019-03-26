@@ -19,6 +19,7 @@ export const initialState = {
         services: false
     },
     dialog: {
+        forgotPassword: false,
         teamCreate: false,
         teamUpdate: false,
         teamUpdateMultiple: false,

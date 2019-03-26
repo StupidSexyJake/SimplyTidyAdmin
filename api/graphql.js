@@ -29,6 +29,14 @@ export const USER_SIGN_IN = gql`
         }
     }
 `
+export const USER_FORGOT_PASSWORD = gql`
+    query userForgotPassword($login: String!) {
+        userForgotPassword(login: $login) {
+            token
+            refreshToken
+        }
+    }
+`
 //
 // ::::::::::::::::::::::
 // Teams

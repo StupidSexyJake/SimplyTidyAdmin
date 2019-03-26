@@ -8,41 +8,25 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
 import Slide from '@material-ui/core/Slide'
 
-export default function TeamCRU(props) {
+export default function ForgotPasswordLayout(props) {
     return (
         <Dialog
             fullWidth
             open={props.dialogState}
             onClose={props.closeDialog}
-            aria-labelledby='teamCU-dialog'
+            aria-labelledby='forgotPassword'
             TransitionComponent={<Slide direction="up" />}
         >
-            <DialogTitle id='teamCU-dialog'>
-                {props.title}
+            <DialogTitle id='forgotPassword'>
+                Forgot Password
             </DialogTitle>
             <form onSubmit={props.onSubmit}>
                 <DialogContent>
                     <TextField
-                        label='Team Name'
-                        name='name'
-                        id='name'
-                        defaultValue={props.team && props.team.name}
+                        label='Email or username'
+                        name='login'
+                        id='login'
                         required
-                    />
-                    <br />
-                    <TextField
-                        label='Status'
-                        name='status'
-                        id='status'
-                        defaultValue={props.team && props.team.status}
-                        required
-                    />
-                    <br />
-                    <TextField
-                        label='Mobile'
-                        name='mobile'
-                        id='mobile'
-                        defaultValue={props.team && props.team.mobile}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -57,7 +41,7 @@ export default function TeamCRU(props) {
                         variant='contained'
                         color='secondary'
                     >
-                        {props.submitButtonTitle}
+                        Reset Password
                     </Button>
                 </DialogActions>
             </form>

@@ -81,10 +81,7 @@ function SignInFormContainer({ client, ctx }) {
         dispatch(handleClick('user', 'showPassword', !state.user.showPassword))
     }
     return (
-        <Mutation
-            mutation={USER_SIGN_IN}
-            variables={{ login: state.user.login, password: state.user.password }}
-        >
+        <Mutation mutation={USER_SIGN_IN}>
             {(signIn, { data, loading, error }) => (
                 <Index
                     loading={loading}

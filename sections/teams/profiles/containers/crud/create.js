@@ -82,14 +82,9 @@ export default function TeamUpdateContainer() {
     }
 
     return (
-        <Mutation
-            mutation={CREATE_TEAM}
-        >
+        <Mutation mutation={CREATE_TEAM}>
             {(createTeam, { data, loading, error }) => (
-
-                <Mutation
-                    mutation={DELETE_TEAM}
-                >
+                <Mutation mutation={DELETE_TEAM}>
                     {(deleteTeam, { data, loading, error }) => (
                         <TeamCreate
                             dialogState={state.dialog.teamCreate}
