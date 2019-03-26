@@ -3,8 +3,6 @@ import {
     GET_ME,
     REFRESH_AUTH_TOKEN,
 } from './graphql'
-import nextCookie from 'next-cookies'
-import cookie from 'js-cookie'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 // Check if user is logged in
@@ -23,8 +21,8 @@ export function checkLoggedIn(ctx) {
 
 // Refresh expired auth tokens
 export function refreshAuthToken(refreshToken, client, ctx) {
-    // Delete current auth token
-    destroyCookie(ctx, 'x-token')
+    // // Delete current auth token
+    // destroyCookie(ctx, 'x-token')
     // Fetch a new auth token from the server
     return client.mutate({
         mutation: REFRESH_AUTH_TOKEN,
