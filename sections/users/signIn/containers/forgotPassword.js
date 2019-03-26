@@ -49,12 +49,11 @@ function ForgotPasswordContainer({ client }) {
             })
     }
     return (
-        'test'
-        // <ForgotPassword
-        //     onSubmit={(event) => onSubmit(event)}
-        //     dialogState={state.dialog.forgotPassword}
-        //     closeDialog={closeDialog}
-        // />
+        <ForgotPassword
+            onSubmit={(event) => onSubmit(event)}
+            dialogState={state.dialog.forgotPassword}
+            closeDialog={closeDialog}
+        />
     )
 }
 
