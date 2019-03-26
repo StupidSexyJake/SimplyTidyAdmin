@@ -14,7 +14,7 @@ export default function ForgotPasswordLayout(props) {
             open={props.dialogState}
             onClose={props.closeDialog}
             aria-labelledby='forgotPassword'
-            TransitionComponent={<Slide direction="up" />}
+        // TransitionComponent={<Slide direction="up" />}
         >
             <DialogTitle id='forgotPassword'>
                 Forgot Password
