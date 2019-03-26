@@ -32,14 +32,8 @@ export function refreshAccessToken(refreshToken, client, ctx) {
         .then(({ data }) => {
             return data.refreshAccessToken
         })
-        // Logout user on failure
+        // Return empty object on failure
         .catch(() => {
-            console.log('signing user out')
-            // Delete auth and refesh tokens from cookies
-            try { destroyCookie({}, 'x-token') }
-            catch (error) { console.log(error) }
-
-            destroyCookie(ctx, 'x-token-refresh')
             return {}
         })
 }

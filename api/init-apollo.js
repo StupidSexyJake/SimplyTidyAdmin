@@ -78,9 +78,17 @@ function create(initialState, { getTokens, ctx }) {
                             refreshAccessToken(refreshToken, client, ctx)
                                 // On successful refresh...
                                 .then((newTokens) => {
-                                    // Update cookies with new token                                    
-                                    setCookie(ctx, 'x-token', newTokens.token, { maxAge: 30 * 60 })
-                                    setCookie(ctx, 'x-token-refresh', newTokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
+                                    // Handle cookies
+                                    if (!newTokens.token) {
+                                        // Delete cookies if no new access token provided
+                                        destroyCookie(ctx, 'x-token')
+                                        destroyCookie(ctx, 'x-token-refresh')
+                                    }
+                                    else {
+                                        // Update cookies if new access token available                             
+                                        setCookie(ctx, 'x-token', newTokens.token, { maxAge: 30 * 60 })
+                                        setCookie(ctx, 'x-token-refresh', newTokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
+                                    }
                                     // Bind observable subscribers
                                     const subscriber = {
                                         next: observer.next.bind(observer),
