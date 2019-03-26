@@ -96,18 +96,18 @@ function Index() {
                             className={classes.signInFormContainer}
                         >
                             <SignInForm />
-                            <Divider />
+                            {/* <Divider /> */}
                             <Button
                                 onClick={handleForgotPassword}
                                 className={classes.forgotPasswordBtn}
                             >
                                 Forgot Password?
                             </Button>
-                            <Divider />
+                            {/* <Divider /> */}
                         </Wrapper>
-                        <Typography style={{ paddingTop: '48px' }} align='center'>
+                        {/* <Typography style={{ paddingTop: '48px' }} align='center'>
                             Copyright 2019 Gold Coast Maids.
-                        </Typography>
+                        </Typography> */}
                     </Grid>
                 </Grid>
             </section>
