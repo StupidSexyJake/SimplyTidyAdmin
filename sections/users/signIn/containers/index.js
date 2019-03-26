@@ -48,12 +48,12 @@ function SignInFormContainer({ client, ctx }) {
         const login = formData.get('login')
         const password = formData.get('password')
         const remember = isRememberMeChecked
-        console.log('remember: ', remember)
         // Attempt to sign in
         signIn({
             variables: {
                 login,
-                password
+                password,
+                remember
             }
         })
             // On successful sign-in

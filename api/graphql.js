@@ -19,8 +19,8 @@ export const REFRESH_AUTH_TOKEN = gql`
     }
 `
 export const USER_SIGN_IN = gql`
-    mutation signIn($login: String!, $password: String!) {
-        signIn(login: $login, password: $password) {
+    mutation signIn($login: String!, $password: String!, $remember: Boolean!) {
+        signIn(login: $login, password: $password, remember: $remember) {
             token
             refreshToken
         }
