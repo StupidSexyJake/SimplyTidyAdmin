@@ -155,7 +155,7 @@ export default function SignInFormLayout(props) {
                     type='submit'
                     variant='contained'
                     color='secondary'
-                    disabled={props.isLoginDisabled || props.loading}
+                    disabled={props.isLoginDisabled}
                     className={classes.submitButton}
                     size='large'
                 >

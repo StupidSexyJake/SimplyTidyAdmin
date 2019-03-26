@@ -82,7 +82,6 @@ function SignInFormContainer({ apolloClient, ctx }) {
     }
     return (
         <Index
-            loading={loading}
             onSubmit={(event) => onSubmit(event)}
             onChange={(event) => onChange(event)}
             isRememberMeChecked={isRememberMeChecked}
