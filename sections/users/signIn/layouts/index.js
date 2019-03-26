@@ -143,7 +143,7 @@ export default function SignInFormLayout(props) {
                         <Switch
                             id='remember'
                             checked={props.isRememberMeChecked}
-                            onChange={props.onRememberMeToggle()}
+                            onChange={() => props.onRememberMeToggle()}
                             value='remember'
                             color='secondary'
                         />
