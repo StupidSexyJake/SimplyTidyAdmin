@@ -4,12 +4,12 @@ import { Store } from '../../../../state/store'
 // Actions
 import { openSnackbar } from '../../../../state/actions'
 // API
-import { Query } from 'react-apollo'
+import { withApollo } from 'react-apollo'
 import { USER_FORGOT_PASSWORD } from '../../../../api/graphql'
 // Layout
 import ForgotPassword from '../layouts/forgotPassword'
 
-export default function ForgotPasswordContainer({ client }) {
+function ForgotPasswordContainer({ client }) {
     // Get state contexts
     const { state, dispatch } = useContext(Store)
 
@@ -27,10 +27,9 @@ export default function ForgotPasswordContainer({ client }) {
         const formData = new window.FormData(form)
         const login = formData.get('login')
         // Attempt to reset password
-        client.userForgotPassword({
-            variables: {
-                login,
-            }
+        client.query({
+            query: USER_FORGOT_PASSWORD,
+            variables: { login }
         })
             // On success...
             .then((data) => {
@@ -57,3 +56,5 @@ export default function ForgotPasswordContainer({ client }) {
         />
     )
 }
+
+export default withApollo(ForgotPasswordContainer)

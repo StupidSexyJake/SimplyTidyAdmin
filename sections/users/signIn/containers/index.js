@@ -9,10 +9,7 @@ import {
 // API and authentication
 import { setCookie } from 'nookies'
 import { redirect } from '../../../../api/auth'
-import {
-    Mutation,
-    withApollo
-} from 'react-apollo'
+import { withApollo } from 'react-apollo'
 import { USER_SIGN_IN } from '../../../../api/graphql'
 // Layout
 import Index from '../layouts/'
@@ -49,7 +46,8 @@ function SignInFormContainer({ client, ctx }) {
         const password = formData.get('password')
         const remember = isRememberMeChecked
         // Attempt to sign in
-        client.signIn({
+        client.query({
+            query: USER_SIGN_IN,
             variables: {
                 login,
                 password,
