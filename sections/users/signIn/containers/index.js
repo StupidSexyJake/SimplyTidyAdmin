@@ -30,6 +30,12 @@ function SignInFormContainer({ client, ctx }) {
         dispatch(handleClick('user', name, value.length))
     }
 
+    // Handle 'remember me' toggle
+    const isRememberMeChecked = state.user.remember
+    const onRememberMeToggle = () => {
+        dispatch(handleClick('user', 'remember', !isRememberMeChecked))
+    }
+
     // Handle form submit
     const onSubmit = (event, signIn) => {
         // Prevent default form behaviour
@@ -82,6 +88,8 @@ function SignInFormContainer({ client, ctx }) {
                     loading={loading}
                     onSubmit={(event) => onSubmit(event, signIn)}
                     onChange={(event) => onChange(event)}
+                    isRememberMeChecked={isRememberMeChecked}
+                    onRememberMeToggle={onRememberMeToggle}
                     onShowHidePassword={onShowHidePassword}
                     showPassword={state.user.showPassword}
                     isLoginDisabled={isLoginDisabled}
