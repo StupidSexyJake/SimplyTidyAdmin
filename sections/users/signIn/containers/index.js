@@ -30,8 +30,10 @@ function SignInFormContainer({ client, ctx }) {
         dispatch(handleClick('user', name, value.length))
     }
 
-    // Handle 'remember me' toggle
+    // Get 'remember me' current value
     const isRememberMeChecked = state.user.remember
+
+    // Handle 'remember me' toggle
     const onRememberMeToggle = () => {
         dispatch(handleClick('user', 'remember', !isRememberMeChecked))
     }
@@ -45,7 +47,7 @@ function SignInFormContainer({ client, ctx }) {
         const formData = new window.FormData(form)
         const login = formData.get('login')
         const password = formData.get('password')
-        const remember = formData.get('remember')
+        const remember = isRememberMeChecked
         console.log('remember: ', remember)
         // Attempt to sign in
         signIn({
