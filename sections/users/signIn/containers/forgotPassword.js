@@ -4,7 +4,7 @@ import { Store } from '../../../../state/store'
 // Actions
 import { openSnackbar } from '../../../../state/actions'
 // API
-import { Mutation } from 'react-apollo'
+import { Query } from 'react-apollo'
 import { USER_FORGOT_PASSWORD } from '../../../../api/graphql'
 // Layout
 import ForgotPassword from '../layouts/forgotPassword'

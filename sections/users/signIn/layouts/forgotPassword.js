@@ -11,7 +11,6 @@ import Slide from '@material-ui/core/Slide'
 export default function ForgotPasswordLayout(props) {
     return (
         <Dialog
-            fullWidth
             open={props.dialogState}
             onClose={props.closeDialog}
             aria-labelledby='forgotPassword'
