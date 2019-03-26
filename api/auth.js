@@ -3,6 +3,7 @@ import {
     GET_ME,
     REFRESH_AUTH_TOKEN,
 } from './graphql'
+import { destroyCookie } from 'nookies'
 
 // Check if user is logged in
 export function checkLoggedIn(ctx) {
