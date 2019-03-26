@@ -37,7 +37,10 @@ function SignInFormContainer({ client, ctx }) {
         // Get login values from form
         const form = event.target
         const formData = new window.FormData(form)
-        const { login, password, remember } = formData
+        const login = formData.get('login')
+        const password = formData.get('password')
+        const remember = formData.get('remember')
+        console.log('remember: ', remember)
         // Attempt to sign in
         signIn({
             variables: {
