@@ -1,7 +1,7 @@
 import React from 'react'
 // API
 import { ApolloConsumer } from 'react-apollo'
-import cookie from 'cookie'
+import { destroyCookie } from 'nookies'
 import redirect from '../../../api/redirect'
 // MUI components
 import { makeStyles } from '@material-ui/styles'
@@ -29,29 +29,20 @@ const topNavigationStyles = makeStyles((theme) => ({
 }))
 
 export default function TopNavigation() {
-
     // Define styles
     const classes = topNavigationStyles()
-
     // Handle sign out
-    async function signOut(client) {
-        // Delete cookies
-        const deleteCookies = () => {
-            document.cookie = cookie.serialize('x-token', '', {
-                maxAge: -1
+    function signOut(client) {
+        // Delete auth and refesh tokens from cookies
+        destroyCookie(ctx, 'x-token')
+        destroyCookie(ctx, 'x-token-refresh')
+        // Reset store 
+        client.resetStore()
+            .then(() => {
+                // Redirect to login screen
+                redirect({}, '/login')
             })
-            document.cookie = cookie.serialize('x-token-refresh', '', {
-                maxAge: -1
-            })
-            console.log('cookies deleted')
-        }
-        await deleteCookies()
-        // Reset store and return to home
-        client.resetStore().then(() => {
-            redirect({}, '/login')
-        })
     }
-
     return (
         <AppBar
             position='fixed'
