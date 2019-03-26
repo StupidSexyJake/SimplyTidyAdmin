@@ -52,6 +52,7 @@ const indexStyles = makeStyles(theme => ({
         maxWidth: 60 * theme.spacing.unit,
     },
     forgotPasswordBtn: {
+        display: 'block',
         margin: '0 auto'
     }
 }))
