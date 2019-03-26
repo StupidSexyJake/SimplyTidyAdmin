@@ -33,6 +33,7 @@ export function refreshAccessToken(refreshToken, client) {
         })
         // Log out user on failure
         .catch(() => {
+            console.log('signing user out')
             signOut(ctx, client)
             return {}
         })
