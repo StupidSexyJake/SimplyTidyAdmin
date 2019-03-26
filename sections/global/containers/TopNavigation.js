@@ -28,7 +28,7 @@ const topNavigationStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function TopNavigation() {
+export default function TopNavigation({ ctx }) {
     // Define styles
     const classes = topNavigationStyles()
     // Handle sign out
