@@ -7,7 +7,7 @@ import {
     resetState,
 } from '../../../../state/actions'
 // API and authentication
-import cookie from 'cookie'
+import { setCookie } from 'nookies'
 import { redirect } from '../../../../api/auth'
 import {
     Mutation,
@@ -17,7 +17,7 @@ import { USER_SIGN_IN } from '../../../../api/graphql'
 // Layout
 import Index from '../layouts/'
 
-function SignInFormContainer({ client }) {
+function SignInFormContainer({ client, ctx }) {
     // Get state contexts
     const { state, dispatch } = useContext(Store)
 
@@ -37,8 +37,7 @@ function SignInFormContainer({ client }) {
         // Get login values from form
         const form = event.target
         const formData = new window.FormData(form)
-        const login = formData.get('login')
-        const password = formData.get('password')
+        const { login, password, remember } = formData
         // Attempt to sign in
         signIn({
             variables: {
@@ -49,8 +48,8 @@ function SignInFormContainer({ client }) {
             // On successful sign-in
             .then(({ data }) => {
                 // Save tokens to cookies
-                document.cookie = cookie.serialize('x-token', data.signIn.token, { maxAge: 30 * 60 })
-                document.cookie = cookie.serialize('x-token-refresh', data.signIn.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
+                setCookie(ctx, 'x-token', data.signIn.token, { maxAge: 30 * 60 })
+                setCookie(ctx, 'x-token-refresh', data.signIn.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries

@@ -37,7 +37,7 @@ export default function TopNavigation({ ctx }) {
         destroyCookie(ctx, 'x-token')
         destroyCookie(ctx, 'x-token-refresh')
         // Reset store 
-        client.resetStore()
+        return client.resetStore()
             .then(() => {
                 // Redirect to login screen
                 redirect({}, '/login')
