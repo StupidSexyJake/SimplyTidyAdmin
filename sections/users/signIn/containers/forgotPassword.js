@@ -2,7 +2,10 @@ import React, { useContext } from 'react'
 // State
 import { Store } from '../../../../state/store'
 // Actions
-import { openSnackbar } from '../../../../state/actions'
+import {
+    openSnackbar,
+    handleClick
+} from '../../../../state/actions'
 // API
 import { withApollo } from 'react-apollo'
 import { USER_FORGOT_PASSWORD } from '../../../../api/graphql'

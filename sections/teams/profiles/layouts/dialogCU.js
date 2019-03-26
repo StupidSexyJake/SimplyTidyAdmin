@@ -8,6 +8,10 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
 import Slide from '@material-ui/core/Slide'
 
+function Transition() {
+    return <Slide direction="up" />
+}
+
 export default function TeamCRU(props) {
     return (
         <Dialog
@@ -15,7 +19,7 @@ export default function TeamCRU(props) {
             open={props.dialogState}
             onClose={props.closeDialog}
             aria-labelledby='teamCU-dialog'
-            TransitionComponent={<Slide direction="up" />}
+            TransitionComponent={Transition}
         >
             <DialogTitle id='teamCU-dialog'>
                 {props.title}

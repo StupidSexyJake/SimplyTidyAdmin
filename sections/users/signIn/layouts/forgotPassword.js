@@ -8,18 +8,22 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
 import Slide from '@material-ui/core/Slide'
 
+function Transition() {
+    return <Slide direction="up" />
+}
+
 export default function ForgotPasswordLayout(props) {
     return (
         <Dialog
             open={props.dialogState}
             onClose={props.closeDialog}
             aria-labelledby='forgotPassword'
-        // TransitionComponent={<Slide direction="up" />}
+            TransitionComponent={Transition}
         >
             <DialogTitle id='forgotPassword'>
                 Forgot Password
             </DialogTitle>
-            {/* <form onSubmit={props.onSubmit}>
+            <form onSubmit={props.onSubmit}>
                 <DialogContent>
                     <TextField
                         label='Email or username'
@@ -43,7 +47,7 @@ export default function ForgotPasswordLayout(props) {
                         Reset Password
                     </Button>
                 </DialogActions>
-            </form> */}
+            </form>
         </Dialog>
     )
 }
