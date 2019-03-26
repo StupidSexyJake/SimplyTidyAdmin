@@ -17,7 +17,7 @@ import { USER_SIGN_IN } from '../../../../api/graphql'
 // Layout
 import Index from '../layouts/'
 
-function SignInFormContainer({ client, ctx }) {
+function SignInFormContainer({ apolloClient, ctx }) {
     // Get state contexts
     const { state, dispatch } = useContext(Store)
 
@@ -39,7 +39,7 @@ function SignInFormContainer({ client, ctx }) {
     }
 
     // Handle form submit
-    const onSubmit = (event, signIn) => {
+    const onSubmit = (event) => {
         // Prevent default form behaviour
         event.preventDefault()
         // Get login values from form
@@ -49,7 +49,7 @@ function SignInFormContainer({ client, ctx }) {
         const password = formData.get('password')
         const remember = isRememberMeChecked
         // Attempt to sign in
-        signIn({
+        apolloClient.signIn({
             variables: {
                 login,
                 password,
@@ -64,7 +64,7 @@ function SignInFormContainer({ client, ctx }) {
                 // Reset user login state
                 dispatch(resetState('user'))
                 // Force a reload of all the current queries
-                client.cache.reset()
+                apolloClient.cache.reset()
                     .then(() => {
                         // Redirect user to homepage
                         redirect({}, '/')
@@ -81,21 +81,17 @@ function SignInFormContainer({ client, ctx }) {
         dispatch(handleClick('user', 'showPassword', !state.user.showPassword))
     }
     return (
-        <Mutation mutation={USER_SIGN_IN}>
-            {(signIn, { data, loading, error }) => (
-                <Index
-                    loading={loading}
-                    onSubmit={(event) => onSubmit(event, signIn)}
-                    onChange={(event) => onChange(event)}
-                    isRememberMeChecked={isRememberMeChecked}
-                    onRememberMeToggle={onRememberMeToggle}
-                    onShowHidePassword={onShowHidePassword}
-                    showPassword={state.user.showPassword}
-                    isLoginDisabled={isLoginDisabled}
-                    isInvalidLogin={state.user.invalidLogin}
-                />
-            )}
-        </Mutation>
+        <Index
+            loading={loading}
+            onSubmit={(event) => onSubmit(event)}
+            onChange={(event) => onChange(event)}
+            isRememberMeChecked={isRememberMeChecked}
+            onRememberMeToggle={onRememberMeToggle}
+            onShowHidePassword={onShowHidePassword}
+            showPassword={state.user.showPassword}
+            isLoginDisabled={isLoginDisabled}
+            isInvalidLogin={state.user.invalidLogin}
+        />
     )
 }
 
