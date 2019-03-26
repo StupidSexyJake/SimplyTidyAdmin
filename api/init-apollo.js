@@ -97,6 +97,8 @@ function create(initialState, { getTokens, ctx }) {
                                 })
                                 // On refresh failure...
                                 .catch(error => {
+                                    console.log('error')
+                                    console.log(error)
                                     // Delete cookies
                                     destroyCookie(ctx, 'x-token')
                                     destroyCookie(ctx, 'x-token-refresh')
