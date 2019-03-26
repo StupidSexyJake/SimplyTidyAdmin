@@ -49,7 +49,7 @@ export function signOut(ctx, client) {
     return client.resetStore()
         .then(() => {
             // Redirect to login screen
-            redirect({}, '/login')
+            redirect(ctx, '/login')
         })
 }
 
