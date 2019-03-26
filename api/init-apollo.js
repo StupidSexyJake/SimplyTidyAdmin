@@ -78,6 +78,7 @@ function create(initialState, { getTokens, ctx }) {
                             refreshAccessToken(refreshToken, client)
                                 // On successful refresh...
                                 .then((newTokens) => {
+                                    console.log(newTokens)
                                     // Update cookies with new token                                    
                                     setCookie(ctx, 'x-token', newTokens.token, { maxAge: 30 * 60 })
                                     setCookie(ctx, 'x-token-refresh', newTokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
