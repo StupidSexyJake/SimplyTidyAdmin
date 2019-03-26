@@ -103,7 +103,7 @@ function create(initialState, { getTokens, ctx }) {
                                     destroyCookie(ctx, 'x-token')
                                     destroyCookie(ctx, 'x-token-refresh')
                                     // Logout user
-                                    observer.error(error)
+                                    // observer.error(error)
                                 })
                         })
 
