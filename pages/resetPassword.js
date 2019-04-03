@@ -1,14 +1,6 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import '../src/bootstrap'
 import React, { useContext } from 'react'
 // State
-import { Store } from '../state/store'
-// Actions
-import {
-    handleClick,
-} from '../state/actions'
-// Authentication
-import { checkLoggedIn, redirect } from '../api/auth'
+import { Store } from '../../../../state/store'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
@@ -19,13 +11,11 @@ import Divider from '@material-ui/core/Divider'
 import Wrapper from '../components/Wrappers'
 // Sections
 import Header from '../sections/global/containers/Header'
-import SignInForm from '../sections/users/signIn/containers/'
-import ForgotPassword from '../sections/users/signIn/containers/forgotPassword'
 // Icons
-import PageIcon from '@material-ui/icons/Group'
+import PageIcon from '@material-ui/icons/Lock'
 
-// Create Login styles
-const loginStyles = makeStyles(theme => ({
+// Create ResetPassword styles
+const resetPasswordStyles = makeStyles(theme => ({
     root: {
         background: `-moz-linear-gradient(225deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`,
         background: `-webkit-gradient(linear, left bottom, right top, color-stop(0%, ${theme.palette.primary.light}), color-stop(100%, ${theme.palette.primary.main}))`,
@@ -51,26 +41,16 @@ const loginStyles = makeStyles(theme => ({
     signInFormContainer: {
         maxWidth: 60 * theme.spacing.unit,
     },
-    forgotPasswordBtn: {
-        display: 'block',
-        margin: '0 auto'
-    }
 }))
 
-function Login() {
-    // Get state contexts
-    const { state, dispatch } = useContext(Store)
+export default function ResetPassword() {
     // Define styles
-    const classes = loginStyles()
-    // Handle forgot password click
-    const handleForgotPassword = () => {
-        dispatch(handleClick('dialog', 'forgotPassword', true))
-    }
+    const classes = resetPasswordStyles()
     return (
         <React.Fragment>
             <Header
-                title='Login'
-                metaDescription='Login to Gold Coast Maids admin portal'
+                title='Reset Password'
+                metaDescription='Reset password for GoldCoastMaids user accounts'
             />
             <section className={classes.root}>
                 <Grid container
@@ -89,43 +69,17 @@ function Login() {
                             align='center'
                             color='inherit'
                         >
-                            Welcome Back
+                            Reset Password
                         </Typography>
                         <Wrapper
                             variant='content'
                             className={classes.signInFormContainer}
                         >
-                            <SignInForm />
-                            {/* <Divider /> */}
-                            <Button
-                                onClick={handleForgotPassword}
-                                className={classes.forgotPasswordBtn}
-                            >
-                                Forgot Password?
-                            </Button>
-                            {/* <Divider /> */}
+                            Reset Password Form
                         </Wrapper>
-                        {/* <Typography style={{ paddingTop: '48px' }} align='center'>
-                            Copyright 2019 Gold Coast Maids.
-                        </Typography> */}
                     </Grid>
                 </Grid>
             </section>
-            <ForgotPassword />
         </React.Fragment>
     )
 }
-
-// Before page is rendered...
-Login.getInitialProps = async ctx => {
-    // Check if user is logged in
-    const { loggedInUser } = await checkLoggedIn(ctx)
-    // If already signed in, redirect to home page
-    if (loggedInUser.me) {
-        redirect(ctx, '/')
-    }
-    // Return me
-    return {}
-}
-
-export default Login
