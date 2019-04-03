@@ -14,7 +14,6 @@ import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import Divider from '@material-ui/core/Divider'
 // Custom components
 import Wrapper from '../components/Wrappers'
 // Sections
