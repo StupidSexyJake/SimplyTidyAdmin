@@ -49,8 +49,8 @@ export default function ResetPassword() {
                 title='Reset Password'
                 metaDescription='Reset password for GoldCoastMaids user accounts'
             />
-            <section className={classes.root}>
-                <Grid container
+            <section className={classes.root}>test
+                {/* <Grid container
                     alignItems='center'
                     justify='center'
                     className={classes.gridContainer}
@@ -75,7 +75,7 @@ export default function ResetPassword() {
                             <ResetPasswordForm />
                         </Wrapper>
                     </Grid>
-                </Grid>
+                </Grid> */}
             </section>
         </React.Fragment>
     )
