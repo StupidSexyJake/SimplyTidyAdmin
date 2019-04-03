@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import Wrapper from '../components/Wrappers'
 // Sections
 import Header from '../sections/global/containers/Header'
+import ResetPasswordForm from '../sections/users/signIn/containers/resetPassword'
 // Icons
 import PageIcon from '@material-ui/icons/Lock'
 
@@ -71,7 +72,7 @@ export default function ResetPassword() {
                             variant='content'
                             className={classes.signInFormContainer}
                         >
-                            Reset Password Form
+                            <ResetPasswordForm />
                         </Wrapper>
                     </Grid>
                 </Grid>
