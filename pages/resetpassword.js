@@ -49,7 +49,14 @@ export default function ResetPassword() {
                 title='Reset Password'
                 metaDescription='Reset password for GoldCoastMaids user accounts'
             />
-            <section className={classes.root}>test
+            <section className={classes.root}><Typography
+                            variant='h3'
+                            component='h1'
+                            align='center'
+                            color='inherit'
+                        >
+                            Reset Password
+                        </Typography>
                 {/* <Grid container
                     alignItems='center'
                     justify='center'
