@@ -149,7 +149,7 @@ export default function ResetPasswordFormLayout(props) {
                     className={classes.submitButton}
                     size='large'
                 >
-                    Sign In
+                    Reset Password
                 </Button>
             </form>
         </FormGroup >
