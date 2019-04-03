@@ -12,29 +12,29 @@ export const navPages = [
         id: 'home',
         icon: HowToBookIcon
     },
-    {
-        key: 200,
-        label: "Services",
-        href: "/services/",
-        id: 'services',
-        icon: WhatsIncludedIcon,
-        sub: [
-            {
-                key: 201,
-                label: "Profiles",
-                href: "services",
-                id: 'profiles',
-                icon: WhatsIncludedIcon,
-            },
-            {
-                key: 202,
-                label: "Availability",
-                href: "availability",
-                id: 'teamAvailability',
-                icon: WhatsIncludedIcon,
-            },
-        ]
-    },
+    // {
+    //     key: 200,
+    //     label: "Services",
+    //     href: "/services/",
+    //     id: 'services',
+    //     icon: WhatsIncludedIcon,
+    //     sub: [
+    //         {
+    //             key: 201,
+    //             label: "Profiles",
+    //             href: "services",
+    //             id: 'profiles',
+    //             icon: WhatsIncludedIcon,
+    //         },
+    //         {
+    //             key: 202,
+    //             label: "Availability",
+    //             href: "availability",
+    //             id: 'teamAvailability',
+    //             icon: WhatsIncludedIcon,
+    //         },
+    //     ]
+    // },
     {
         key: 300,
         label: "Teams",
@@ -49,23 +49,23 @@ export const navPages = [
                 id: 'profiles',
                 icon: WhatsIncludedIcon,
             },
-            {
-                key: 302,
-                label: "Availability",
-                href: "availability",
-                id: 'teamAvailability',
-                icon: WhatsIncludedIcon,
-            },
+            // {
+            //     key: 302,
+            //     label: "Availability",
+            //     href: "availability",
+            //     id: 'teamAvailability',
+            //     icon: WhatsIncludedIcon,
+            // },
         ]
     },
 ]
 
 export const navActions = [
-    {
-        key: 1,
-        href: "/",
-        id: 'logout',
-        label: "Log out",
-        icon: BookIcon
-    }
+    // {
+    //     key: 1,
+    //     href: "/",
+    //     id: 'logout',
+    //     label: "Log out",
+    //     icon: BookIcon
+    // }
 ]
