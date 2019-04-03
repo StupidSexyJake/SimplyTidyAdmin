@@ -41,6 +41,7 @@ const resetPasswordStyles = makeStyles(theme => ({
 }))
 
 export default function ResetPassword() {
+    console.log('rending page')
     // Define styles
     const classes = resetPasswordStyles()
     return (
@@ -50,12 +51,12 @@ export default function ResetPassword() {
                 metaDescription='Reset password for GoldCoastMaids user accounts'
             />
             <section className={classes.root}><Typography
-                            variant='h3'
-                            component='h1'
-                            align='center'
-                            color='inherit'
-                        >
-                            Reset Password
+                variant='h3'
+                component='h1'
+                align='center'
+                color='inherit'
+            >
+                Reset Password
                         </Typography>
                 {/* <Grid container
                     alignItems='center'
