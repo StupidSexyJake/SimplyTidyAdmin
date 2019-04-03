@@ -32,7 +32,7 @@ const resetPasswordStyles = makeStyles(theme => ({
     },
     pageIconContainer: {
         width: 'fit-content',
-        margin: '0 auto 32px auto'
+        margin: '0 auto 16px auto'
     },
     pageIcon: {
         fontSize: '120px',
