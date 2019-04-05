@@ -45,7 +45,7 @@ const resetPasswordStyles = makeStyles(theme => ({
 }))
 
 // Validate reset password token
-function validateResetPasswordToken(ctx, token) {
+function getUserFromToken(ctx, token) {
     // Verify token with server
     return ctx.apolloClient.query({
         query: USER_VALIDATE_RESET_PASSWORD_TOKEN,
@@ -55,17 +55,15 @@ function validateResetPasswordToken(ctx, token) {
     })
         // Return user id on verification success
         .then(({ data }) => {
-            console.log(data)
             return data.userValidateResetPasswordToken
         })
         // Return nothing on verification failure
-        .catch((error) => {
-            console.log(error)
+        .catch(() => {
             return {}
         })
 }
 
-function ResetPassword({ token }) {
+function ResetPassword({ token, userId }) {
     // Define styles
     const classes = resetPasswordStyles()
     return (
@@ -91,7 +89,7 @@ function ResetPassword({ token }) {
                             align='center'
                             color='inherit'
                         >
-                            Reset Password {token}
+                            Reset Password
                         </Typography>
                         <Wrapper
                             variant='content'
@@ -110,12 +108,11 @@ ResetPassword.getInitialProps = async ctx => {
     // Get token from URL
     const token = ctx.query.token
     // Validate token and get user
-    const userId = await validateResetPasswordToken(ctx, token)
-    console.log('user id', userId)
+    const userId = await getUserFromToken(ctx, token)
     // Redirect if invalid user
-    // if (!user) {
-    //     redirect(ctx, '/')
-    // }
+    if (!userId) {
+        redirect(ctx, '/login')
+    }
     return { token, userId }
 }
 

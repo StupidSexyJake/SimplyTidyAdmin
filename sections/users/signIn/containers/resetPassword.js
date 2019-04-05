@@ -12,13 +12,13 @@ import { USER_FORGOT_PASSWORD } from '../../../../api/graphql'
 // Layout
 import ResetPasswordForm from '../layouts/resetPassword'
 
-function ResetPasswordFormContainer({ client }) {
+function ResetPasswordFormContainer({ client, token }) {
     // Get state contexts
     const { state, dispatch } = useContext(Store)
 
-    // Close dialog
-    function closeDialog() {
-        dispatch(handleClick('dialog', 'forgotPassword', false))
+    // Handle show/hide password
+    const onShowHidePassword = () => {
+        dispatch(handleClick('user', 'showPassword', !state.user.showPassword))
     }
 
     // Handle form submit
@@ -28,30 +28,30 @@ function ResetPasswordFormContainer({ client }) {
         // Get login value from form
         const form = event.target
         const formData = new window.FormData(form)
-        const login = formData.get('login')
+        const password = formData.get('password')
         // Attempt to reset password
-        client.query({
-            query: USER_FORGOT_PASSWORD,
-            variables: { login }
+        client.mutate({
+            mutation: USER_RESET_PASSWORD,
+            variables: { token, password }
         })
             // On success...
-            .then(() => {
-                // Close dialog
-                dispatch(handleClick('dialog', 'forgotPassword', false))
-                // Notify user that email has been sent
-                dispatch(openSnackbar(true, 'success', 'Please check your email to finish resetting your password', ''))
+            .then((data) => {
+                console.log(data)
+                // Notify user that password has been changed
+                dispatch(openSnackbar(true, 'success', 'Password successfully changed', ''))
             })
             // On failure...
             .catch(error => {
+                console.log(error)
                 // Notify user of failure
-                dispatch(openSnackbar(true, 'error', 'Email or username does not exist', ''))
+                dispatch(openSnackbar(true, 'error', 'Password could not be changed', ''))
             })
     }
     return (
         <ResetPasswordForm
             onSubmit={(event) => onSubmit(event)}
-            dialogState={state.dialog.forgotPassword}
-            closeDialog={closeDialog}
+            onShowHidePassword={onShowHidePassword}
+            showPassword={state.user.showPassword}
         />
     )
 }

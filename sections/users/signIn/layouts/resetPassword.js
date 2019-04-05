@@ -66,7 +66,7 @@ export default function ResetPasswordFormLayout(props) {
                     <InputLabel
                         variant='filled'
                         htmlFor='password'
-                        error={props.isInvalidLogin}
+                        // error={props.isInvalidLogin}
                         className={classes.inputLabel}
                     >
                         Password
@@ -77,13 +77,13 @@ export default function ResetPasswordFormLayout(props) {
                         type={props.showPassword ? 'input' : 'password'}
                         name='password'
                         id='password'
-                        onChange={(event) => props.onChange(event)}
+                        // onChange={(event) => props.onChange(event)}
                         classes={{
                             root: classes.input,
                             focused: 'focused',
                         }}
                         inputProps={{ className: classes.inputProps }}
-                        error={props.isInvalidLogin}
+                        // error={props.isInvalidLogin}
                         startAdornment={
                             <React.Fragment>
                                 <PasswordIcon className={classes.inputIcon} />
@@ -104,7 +104,7 @@ export default function ResetPasswordFormLayout(props) {
                     <InputLabel
                         variant='filled'
                         htmlFor='confirmPassword'
-                        error={props.isInvalidLogin}
+                        // error={props.isInvalidLogin}
                         className={classes.inputLabel}
                     >
                         Confirm Password
@@ -115,13 +115,13 @@ export default function ResetPasswordFormLayout(props) {
                         type={props.showPassword ? 'input' : 'password'}
                         name='confirmPassword'
                         id='confirmPassword'
-                        onChange={(event) => props.onChange(event)}
+                        // onChange={(event) => props.onChange(event)}
                         classes={{
                             root: classes.input,
                             focused: 'focused',
                         }}
                         inputProps={{ className: classes.inputProps }}
-                        error={props.isInvalidLogin}
+                        // error={props.isInvalidLogin}
                         startAdornment={
                             <React.Fragment>
                                 <PasswordIcon className={classes.inputIcon} />
@@ -145,7 +145,7 @@ export default function ResetPasswordFormLayout(props) {
                     type='submit'
                     variant='contained'
                     color='secondary'
-                    disabled={props.isLoginDisabled}
+                    // disabled={props.isLoginDisabled}
                     className={classes.submitButton}
                     size='large'
                 >

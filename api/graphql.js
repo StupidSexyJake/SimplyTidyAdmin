@@ -39,6 +39,13 @@ export const USER_VALIDATE_RESET_PASSWORD_TOKEN = gql`
         userValidateResetPasswordToken(token: $token)
     }
 `
+export const USER_RESET_PASSWORD = gql`
+    mutation resetUserPassword($token: String!, $password: String!) {
+        resetUserPassword(token: $token, password: $password) {
+            id
+        }
+    }
+`
 //
 // ::::::::::::::::::::::
 // Teams
