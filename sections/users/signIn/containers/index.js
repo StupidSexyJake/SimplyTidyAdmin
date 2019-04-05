@@ -46,8 +46,8 @@ function SignInFormContainer({ client, ctx }) {
         const password = formData.get('password')
         const remember = isRememberMeChecked
         // Attempt to sign in
-        client.query({
-            query: USER_SIGN_IN,
+        client.mutate({
+            mutation: USER_SIGN_IN,
             variables: {
                 login,
                 password,
