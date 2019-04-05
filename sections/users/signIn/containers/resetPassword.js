@@ -29,10 +29,6 @@ function ResetPasswordFormContainer({ client, token }) {
         const form = event.target
         const formData = new window.FormData(form)
         const password = formData.get('password')
-        console.log('token:')
-        console.log(token)
-        console.log('password:')
-        console.log(password)
         // Attempt to reset password
         client.mutate({
             mutation: USER_RESET_PASSWORD,
@@ -40,16 +36,15 @@ function ResetPasswordFormContainer({ client, token }) {
         })
             // On success...
             .then((data) => {
-                console.log(data)
                 // Notify user that password has been changed
                 dispatch(openSnackbar(true, 'success', 'Password successfully changed', ''))
             })
             // On failure...
             .catch(error => {
-                console.log(error)
                 // Notify user of failure
                 dispatch(openSnackbar(true, 'error', 'Password could not be changed', ''))
             })
+        // Redirect to sign in page
     }
     return (
         <ResetPasswordForm

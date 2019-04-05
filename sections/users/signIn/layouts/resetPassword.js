@@ -91,7 +91,10 @@ export default function ResetPasswordFormLayout(props) {
                             </React.Fragment>
                         }
                         endAdornment={
-                            <IconButton onClick={props.onShowHidePassword}>
+                            <IconButton
+                                onClick={props.onShowHidePassword}
+                                tabIndex='-1'
+                            >
                                 {props.showPassword ? <HidePasswordIcon /> : <ShowPasswordIcon />}
                             </IconButton>
                         }
@@ -129,7 +132,10 @@ export default function ResetPasswordFormLayout(props) {
                             </React.Fragment>
                         }
                         endAdornment={
-                            <IconButton onClick={props.onShowHidePassword}>
+                            <IconButton
+                                onClick={props.onShowHidePassword}
+                                tabIndex='-1'
+                            >
                                 {props.showPassword ? <HidePasswordIcon /> : <ShowPasswordIcon />}
                             </IconButton>
                         }
