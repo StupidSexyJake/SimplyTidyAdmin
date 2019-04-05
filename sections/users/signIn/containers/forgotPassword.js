@@ -44,6 +44,7 @@ function ForgotPasswordContainer({ client }) {
             // On failure...
             .catch(error => {
                 // Notify user of failure
+                console.log(error)
                 dispatch(openSnackbar(true, 'error', 'Email or username does not exist', ''))
             })
     }
