@@ -45,34 +45,37 @@ function SignInFormContainer({ client, ctx }) {
         const login = formData.get('login')
         const password = formData.get('password')
         const remember = isRememberMeChecked
-        console.log(login, password, remember)
         // Attempt to sign in
-        client.query({
-            query: USER_SIGN_IN,
-            variables: {
-                login,
-                password,
-                remember
-            }
-        })
-            // On successful sign-in
-            .then(({ data }) => {
-                // Save tokens to cookies
-                setCookie(ctx, 'x-token', data.signIn.token, { maxAge: 30 * 60 })
-                setCookie(ctx, 'x-token-refresh', data.signIn.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
-                // Reset user login state
-                dispatch(resetState('user'))
-                // Force a reload of all the current queries
-                client.cache.reset()
-                    .then(() => {
-                        // Redirect user to homepage
-                        redirect({}, '/')
-                    })
+        try {
+            client.query({
+                query: USER_SIGN_IN,
+                variables: {
+                    login,
+                    password,
+                    remember
+                }
             })
-            .catch(error => {
-                console.log('error logging in:')
-                console.log(error)
-            })
+            // // On successful sign-in
+            // .then(({ data }) => {
+            //     // Save tokens to cookies
+            //     setCookie(ctx, 'x-token', data.signIn.token, { maxAge: 30 * 60 })
+            //     setCookie(ctx, 'x-token-refresh', data.signIn.refreshToken, { maxAge: 30 * 24 * 60 * 60 })
+            //     // Reset user login state
+            //     dispatch(resetState('user'))
+            //     // Force a reload of all the current queries
+            //     client.cache.reset()
+            //         .then(() => {
+            //             // Redirect user to homepage
+            //             redirect({}, '/')
+            //         })
+            // })
+            // .catch(error => {
+            //     console.log('error logging in:')
+            //     console.log(error)
+            // })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     // Handle show/hide password
