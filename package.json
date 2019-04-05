@@ -37,7 +37,7 @@
     "subscriptions-transport-ws": "^0.9.15"
   },
   "scripts": {
-    "dev": "next",
+    "dev": "next -p 3030",
     "build": "next build",
     "start": "next start -p 3030",
     "export": "next export"

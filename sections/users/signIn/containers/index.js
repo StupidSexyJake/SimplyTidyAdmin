@@ -45,8 +45,6 @@ function SignInFormContainer({ client, ctx }) {
         const login = formData.get('login')
         const password = formData.get('password')
         const remember = isRememberMeChecked
-        console.log('client:')
-        console.log(client)
         // Attempt to sign in
         client.query({
             query: USER_SIGN_IN,
