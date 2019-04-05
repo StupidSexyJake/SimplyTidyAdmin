@@ -3,6 +3,7 @@ import '../src/bootstrap'
 import React from 'react'
 // API
 import { USER_VALIDATE_RESET_PASSWORD_TOKEN } from '../api/graphql'
+import { redirect } from '../api/auth'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
