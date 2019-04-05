@@ -29,6 +29,10 @@ function ResetPasswordFormContainer({ client, token }) {
         const form = event.target
         const formData = new window.FormData(form)
         const password = formData.get('password')
+        console.log('token:')
+        console.log(token)
+        console.log('password:')
+        console.log(password)
         // Attempt to reset password
         client.mutate({
             mutation: USER_RESET_PASSWORD,
