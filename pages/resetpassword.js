@@ -109,6 +109,7 @@ ResetPassword.getInitialProps = async ctx => {
     const token = ctx.query.token
     // Validate token and get user
     const userId = await getUserFromToken(ctx, token)
+    console.log(userId)
     // Redirect if invalid user
     if (!userId) {
         redirect(ctx, '/login')
