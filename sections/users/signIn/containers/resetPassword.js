@@ -8,7 +8,7 @@ import {
 } from '../../../../state/actions'
 // API
 import { withApollo } from 'react-apollo'
-import { USER_FORGOT_PASSWORD } from '../../../../api/graphql'
+import { USER_RESET_PASSWORD } from '../../../../api/graphql'
 // Layout
 import ResetPasswordForm from '../layouts/resetPassword'
 
