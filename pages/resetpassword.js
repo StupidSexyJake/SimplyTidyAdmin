@@ -64,7 +64,7 @@ function getUserFromToken(ctx, token) {
         })
 }
 
-function ResetPassword({ token, userId }) {
+function ResetPassword({ token }) {
     // Define styles
     const classes = resetPasswordStyles()
     return (
@@ -96,7 +96,7 @@ function ResetPassword({ token, userId }) {
                             variant='content'
                             className={classes.signInFormContainer}
                         >
-                            <ResetPasswordForm />
+                            <ResetPasswordForm token={token} />
                         </Wrapper>
                     </Grid>
                 </Grid>
@@ -108,6 +108,10 @@ function ResetPassword({ token, userId }) {
 ResetPassword.getInitialProps = async ctx => {
     // Get token from URL
     const token = ctx.query.token
+    // Redirect if no token provided
+    if (!token) {
+        redirect(ctx, '/login')
+    }
     // Validate token and get user
     const userId = await getUserFromToken(ctx, token)
     console.log(userId)
