@@ -59,7 +59,7 @@ function getUserFromToken(ctx, token) {
         })
         // Return nothing on verification failure
         .catch(() => {
-            return {}
+            return null
         })
 }
 
