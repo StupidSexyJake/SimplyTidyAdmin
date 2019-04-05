@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import '../src/bootstrap'
 import React from 'react'
-import Link from 'next/link'
+// API
+import { USER_VALIDATE_RESET_PASSWORD_TOKEN } from '../api/graphql'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
@@ -42,6 +43,27 @@ const resetPasswordStyles = makeStyles(theme => ({
         maxWidth: 60 * theme.spacing.unit,
     },
 }))
+
+// Validate reset password token
+function validateResetPasswordToken(ctx, token) {
+    // Verify token with server
+    return ctx.apolloClient.query({
+        query: USER_VALIDATE_RESET_PASSWORD_TOKEN,
+        variables: {
+            token
+        }
+    })
+        // Return user id on verification success
+        .then(({ data }) => {
+            console.log(data)
+            return data
+        })
+        // Return nothing on verification failure
+        .catch((error) => {
+            console.log(error)
+            return {}
+        })
+}
 
 function ResetPassword({ token }) {
     // Define styles
@@ -86,9 +108,15 @@ function ResetPassword({ token }) {
 
 ResetPassword.getInitialProps = async ctx => {
     // Get token from URL
-    console.log(ctx.query)
     const token = ctx.query.token
-    return { token }
+    // Validate token and get user
+    const user = validateResetPasswordToken(ctx, token)
+    console.log(user)
+    // Redirect if invalid user
+    // if (!user) {
+    //     redirect(ctx, '/')
+    // }
+    return { token, user }
 }
 
 export default ResetPassword

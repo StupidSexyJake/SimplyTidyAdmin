@@ -1,12 +1,13 @@
 import Router from 'next/router'
 import {
     GET_ME,
-    REFRESH_AUTH_TOKEN,
+    REFRESH_ACCESS_TOKEN,
+    USER_VALIDATE_RESET_PASSWORD_TOKEN
 } from './graphql'
 
 // Check if user is logged in
 export function checkLoggedIn(ctx) {
-    // Verify access token with server (access token sent in request headers in ./init-apollo.js)
+    // Verify access token with server
     return ctx.apolloClient.query({
         query: GET_ME,
     })
@@ -22,7 +23,7 @@ export function checkLoggedIn(ctx) {
 export function refreshAccessToken(refreshToken, client) {
     // Fetch a new access token from the server
     return client.mutate({
-        mutation: REFRESH_AUTH_TOKEN,
+        mutation: REFRESH_ACCESS_TOKEN,
         variables: {
             refreshToken
         }

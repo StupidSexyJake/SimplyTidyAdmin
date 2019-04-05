@@ -13,7 +13,7 @@ export const GET_ME = gql`
         }
     }
 `
-export const REFRESH_AUTH_TOKEN = gql`
+export const REFRESH_ACCESS_TOKEN = gql`
     mutation refreshAccessToken($refreshToken: String!) {
         refreshAccessToken(refreshToken: $refreshToken) {
             token
@@ -32,6 +32,11 @@ export const USER_SIGN_IN = gql`
 export const USER_FORGOT_PASSWORD = gql`
     query userForgotPassword($login: String!) {
         userForgotPassword(login: $login)
+    }
+`
+export const USER_VALIDATE_RESET_PASSWORD_TOKEN = gql`
+    query userValidateResetPasswordToken($token: String!) {
+        userValidateResetPasswordToken(token: $token)
     }
 `
 //
