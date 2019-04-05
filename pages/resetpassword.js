@@ -56,7 +56,7 @@ function validateResetPasswordToken(ctx, token) {
         // Return user id on verification success
         .then(({ data }) => {
             console.log(data)
-            return data
+            return data.userValidateResetPasswordToken
         })
         // Return nothing on verification failure
         .catch((error) => {
@@ -110,13 +110,13 @@ ResetPassword.getInitialProps = async ctx => {
     // Get token from URL
     const token = ctx.query.token
     // Validate token and get user
-    const user = validateResetPasswordToken(ctx, token)
-    console.log(user)
+    const userId = await validateResetPasswordToken(ctx, token)
+    console.log('user id', userId)
     // Redirect if invalid user
     // if (!user) {
     //     redirect(ctx, '/')
     // }
-    return { token, user }
+    return { token, userId }
 }
 
 export default ResetPassword
