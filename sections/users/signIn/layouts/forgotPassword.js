@@ -23,7 +23,7 @@ export default function ForgotPasswordLayout(props) {
             <DialogTitle id='forgotPassword'>
                 Forgot Password
             </DialogTitle>
-            <form onSubmit={props.onResetPasswordSubmit}>
+            <form onSubmit={props.onSubmit}>
                 <DialogContent>
                     <TextField
                         label='Email or username'
