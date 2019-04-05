@@ -123,7 +123,6 @@ Login.getInitialProps = async ctx => {
     if (loggedInUser.me) {
         redirect(ctx, '/')
     }
-    // Return me
     return {}
 }
 

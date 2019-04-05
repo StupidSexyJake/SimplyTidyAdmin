@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import '../src/bootstrap'
 import React from 'react'
+import Link from 'next/link'
 // Material components
 import { makeStyles } from '@material-ui/styles'
 import Grid from '@material-ui/core/Grid'
@@ -42,7 +43,7 @@ const resetPasswordStyles = makeStyles(theme => ({
     },
 }))
 
-export default function ResetPassword() {
+function ResetPassword({ token }) {
     // Define styles
     const classes = resetPasswordStyles()
     return (
@@ -68,7 +69,7 @@ export default function ResetPassword() {
                             align='center'
                             color='inherit'
                         >
-                            Reset Password
+                            Reset Password {token}
                         </Typography>
                         <Wrapper
                             variant='content'
@@ -82,3 +83,12 @@ export default function ResetPassword() {
         </React.Fragment>
     )
 }
+
+ResetPassword.getInitialProps = async ctx => {
+    // Get token from URL
+    console.log(ctx.query)
+    const token = ctx.query.token
+    return { token }
+}
+
+export default ResetPassword
