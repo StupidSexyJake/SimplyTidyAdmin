@@ -29,23 +29,23 @@ export const USER_SIGN_IN = gql`
         }
     }
 `
-export const USER_FORGOT_PASSWORD = gql`
-    query userForgotPassword($login: String!) {
-        userForgotPassword(login: $login)
-    }
-`
-export const USER_VALIDATE_RESET_PASSWORD_TOKEN = gql`
-    query userValidateResetPasswordToken($token: String!) {
-        userValidateResetPasswordToken(token: $token)
-    }
-`
-export const USER_RESET_PASSWORD = gql`
-    mutation resetUserPassword($token: String!, $password: String!) {
-        resetUserPassword(token: $token, password: $password) {
-            id
-        }
-    }
-`
+// export const USER_FORGOT_PASSWORD = gql`
+//     query userForgotPassword($login: String!) {
+//         userForgotPassword(login: $login)
+//     }
+// `
+// export const USER_VALIDATE_RESET_PASSWORD_TOKEN = gql`
+//     query userValidateResetPasswordToken($token: String!) {
+//         userValidateResetPasswordToken(token: $token)
+//     }
+// `
+// export const USER_RESET_PASSWORD = gql`
+//     mutation resetUserPassword($token: String!, $password: String!) {
+//         resetUserPassword(token: $token, password: $password) {
+//             id
+//         }
+//     }
+// `
 //
 // ::::::::::::::::::::::
 // Teams
