@@ -10,5 +10,6 @@ module.exports = withSize(withOptimizedImages({
         PGPORT: '5432',
         DBUSER: 'goldcoastmaids',
         PGPASSWORD: 'Bof9sd3i123zebra',
-    }
+    },
+    assetPrefix: '/admin'
 }))
