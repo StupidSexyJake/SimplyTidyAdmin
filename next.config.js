@@ -11,5 +11,5 @@ module.exports = withSize(withOptimizedImages({
         DBUSER: 'goldcoastmaids',
         PGPASSWORD: 'Bof9sd3i123zebra',
     },
-    assetPrefix: '/admin'
+    assetPrefix: 'http://simplytidy.com.au/admin'
 }))
