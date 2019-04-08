@@ -121,7 +121,7 @@ Login.getInitialProps = async ctx => {
     const { loggedInUser } = await checkLoggedIn(ctx)
     // If already signed in, redirect to home page
     if (loggedInUser.me) {
-        redirect(ctx, '/')
+        redirect(ctx, '/admin/')
     }
     return {}
 }

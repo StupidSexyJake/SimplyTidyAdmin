@@ -24,7 +24,7 @@ TeamProfiles.getInitialProps = async ctx => {
     // Check if user is logged in
     const { loggedInUser } = await checkLoggedIn(ctx)
     // If not signed in, redirect to login page
-    if (!loggedInUser.me) { redirect(ctx, '/login') }
+    if (!loggedInUser.me) { redirect(ctx, '/admin/login') }
     // Return
     return { loggedInUser }
 }
