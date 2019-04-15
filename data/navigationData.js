@@ -1,4 +1,3 @@
-import React from 'react'
 // Icons
 import HowToBookIcon from '@material-ui/icons/FormatListNumbered'
 import WhatsIncludedIcon from '@material-ui/icons/Assignment'
@@ -17,22 +16,22 @@ export const navPages = [
     },
     // {
     //     key: 200,
-    //     label: "Services",
-    //     href: "/services/",
+    //     label: 'Services',
+    //     href: '/services/',
     //     id: 'services',
     //     icon: WhatsIncludedIcon,
     //     sub: [
     //         {
     //             key: 201,
-    //             label: "Profiles",
-    //             href: "services",
+    //             label: 'Profiles',
+    //             href: 'services',
     //             id: 'profiles',
     //             icon: WhatsIncludedIcon,
     //         },
     //         {
     //             key: 202,
-    //             label: "Availability",
-    //             href: "availability",
+    //             label: 'Availability',
+    //             href: 'availability',
     //             id: 'teamAvailability',
     //             icon: WhatsIncludedIcon,
     //         },
@@ -40,22 +39,22 @@ export const navPages = [
     // },
     {
         key: 300,
-        label: "Teams",
+        label: 'Teams',
         href: `${domain}/teams/`,
         id: 'teams',
         icon: WhatsIncludedIcon,
         sub: [
             {
                 key: 301,
-                label: "Profiles",
-                href: "profiles",
+                label: 'Profiles',
+                href: 'profiles',
                 id: 'profiles',
                 icon: WhatsIncludedIcon,
             },
             // {
             //     key: 302,
-            //     label: "Availability",
-            //     href: "availability",
+            //     label: 'Availability',
+            //     href: 'availability',
             //     id: 'teamAvailability',
             //     icon: WhatsIncludedIcon,
             // },
@@ -66,15 +65,15 @@ export const navPages = [
 export const navActions = [
     {
         key: 100,
-        href: `${domain}/settings`,
+        href: `${domain}/settings/`,
         id: 'settings',
-        label: "Settings",
+        label: 'Settings',
         icon: SettingsIcon,
         sub: [
             {
                 key: 101,
-                label: "Email",
-                href: "email",
+                label: 'Email',
+                href: 'email',
                 id: 'email',
                 icon: EmailIcon,
             },
