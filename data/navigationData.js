@@ -2,7 +2,8 @@ import React from 'react'
 // Icons
 import HowToBookIcon from '@material-ui/icons/FormatListNumbered'
 import WhatsIncludedIcon from '@material-ui/icons/Assignment'
-import BookIcon from '@material-ui/icons/ExitToApp'
+import SettingsIcon from '@material-ui/icons/Settings'
+import EmailIcon from '@material-ui/icons/Email'
 
 export const navPages = [
     {
@@ -61,11 +62,19 @@ export const navPages = [
 ]
 
 export const navActions = [
-    // {
-    //     key: 1,
-    //     href: "/",
-    //     id: 'logout',
-    //     label: "Log out",
-    //     icon: BookIcon
-    // }
+    {
+        key: 100,
+        href: "/settings/",
+        id: 'settings',
+        label: "Settings",
+        icon: SettingsIcon,
+        sub: [
+            {
+                key: 101,
+                label: "Email",
+                href: "email",
+                id: 'email',
+                icon: EmailIcon,
+            },
+    }
 ]
