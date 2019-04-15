@@ -76,5 +76,6 @@ export const navActions = [
                 id: 'email',
                 icon: EmailIcon,
             },
+        ]
     }
 ]
