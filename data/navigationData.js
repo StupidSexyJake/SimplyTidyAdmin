@@ -5,11 +5,13 @@ import WhatsIncludedIcon from '@material-ui/icons/Assignment'
 import SettingsIcon from '@material-ui/icons/Settings'
 import EmailIcon from '@material-ui/icons/Email'
 
+const domain = '/admin'
+
 export const navPages = [
     {
         key: 100,
         label: 'Dashboard',
-        href: '/',
+        href: `${domain}/`,
         id: 'home',
         icon: HowToBookIcon
     },
@@ -39,7 +41,7 @@ export const navPages = [
     {
         key: 300,
         label: "Teams",
-        href: "/teams/",
+        href: `${domain}/teams/`,
         id: 'teams',
         icon: WhatsIncludedIcon,
         sub: [
@@ -64,7 +66,7 @@ export const navPages = [
 export const navActions = [
     {
         key: 100,
-        href: "/settings/",
+        href: `${domain}/settings`,
         id: 'settings',
         label: "Settings",
         icon: SettingsIcon,
