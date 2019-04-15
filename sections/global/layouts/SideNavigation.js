@@ -32,13 +32,10 @@ const activeLinkStyles = makeStyles(theme => ({
 
 // Create styles for active navigation link
 export function ActiveLink(props) {
-
     // Define styles
     const classes = activeLinkStyles()
-
     // Define class if active link    
     const activeLinkClass = (href) => props.isActivePage(href) ? classes.activeLink : undefined
-
     // Create parent link layout
     const parentLink = (
         <ListItem
@@ -67,7 +64,6 @@ export function ActiveLink(props) {
             }
         </ListItem>
     )
-
     return (
         <React.Fragment>
             {props.hasSubs ?
@@ -156,15 +152,11 @@ export default function SideNavigation(props) {
             <Divider />
             <List>
                 {props.navActions.map((link) => (
-                    <ListItem
-                        button
+                    <NavLink
                         key={link.label}
-                    >
-                        <ListItemIcon>
-                            <VariantInput inputVariant={link.icon} />
-                        </ListItemIcon>
-                        <ListItemText primary={link.label} />
-                    </ListItem>
+                        href={link.href}
+                        link={link}
+                />
                 ))}
             </List>
         </Drawer>
